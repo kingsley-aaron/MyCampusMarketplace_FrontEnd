@@ -1,6 +1,6 @@
 {
-    "name": "my_campus_marketplace_front_end",
-    "short_name": "my_campus_marketplace_front_end",
+    "name": "mycampusmarketplace",
+    "short_name": "mycampusmarketplace",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
