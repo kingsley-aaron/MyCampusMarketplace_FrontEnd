@@ -1,4 +1,4 @@
-# my_campus_marketplace_front_end
+# mycampusmarketplace
 
 A new Flutter project.
 
