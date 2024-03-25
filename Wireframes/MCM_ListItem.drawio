@@ -1,0 +1,72 @@
+<mxfile host="app.diagrams.net" modified="2024-03-25T19:42:28.359Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:124.0) Gecko/20100101 Firefox/124.0" etag="ik3kDXe9pQb1aRs2vJVg" version="24.0.7" type="device">
+  <diagram name="Page-1" id="03018318-947c-dd8e-b7a3-06fadd420f32">
+    <mxGraphModel dx="1434" dy="774" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1100" pageHeight="850" background="none" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="677b7b8949515195-1" value="" style="whiteSpace=wrap;html=1;rounded=0;shadow=0;labelBackgroundColor=none;strokeColor=#000000;strokeWidth=1;fillColor=none;fontFamily=Verdana;fontSize=12;fontColor=#000000;align=center;comic=1;" parent="1" vertex="1">
+          <mxGeometry x="140" y="20" width="940" height="670" as="geometry" />
+        </mxCell>
+        <mxCell id="677b7b8949515195-2" value="My Campus Marketplace" style="whiteSpace=wrap;html=1;rounded=0;shadow=0;labelBackgroundColor=none;strokeWidth=1;fontFamily=Verdana;fontSize=28;align=center;comic=1;" parent="1" vertex="1">
+          <mxGeometry x="330" y="60" width="580" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="677b7b8949515195-9" value="" style="line;strokeWidth=1;html=1;rounded=0;shadow=0;labelBackgroundColor=none;fillColor=none;fontFamily=Verdana;fontSize=14;fontColor=#000000;align=center;comic=1;" parent="1" vertex="1">
+          <mxGeometry x="140" y="140" width="940" height="10" as="geometry" />
+        </mxCell>
+        <mxCell id="ODrWaUg-teJTPfAjZcWi-1" value="Welcome, (User)" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="920" y="40" width="140" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="ODrWaUg-teJTPfAjZcWi-2" value="Sign Out" style="shape=rectangle;strokeColor=none;fillColor=none;linkText=;fontSize=12;fontColor=#0000ff;fontStyle=4;html=1;align=center;" vertex="1" parent="1">
+          <mxGeometry x="915" y="100" width="150" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="ODrWaUg-teJTPfAjZcWi-3" value="My Listings" style="shape=rectangle;strokeColor=none;fillColor=none;linkText=;fontSize=12;fontColor=#0000ff;fontStyle=4;html=1;align=center;" vertex="1" parent="1">
+          <mxGeometry x="915" y="70" width="150" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="ODrWaUg-teJTPfAjZcWi-13" value="List New Item" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=22;" vertex="1" parent="1">
+          <mxGeometry x="515" y="170" width="190" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="ODrWaUg-teJTPfAjZcWi-14" value="" style="html=1;verticalLabelPosition=bottom;align=center;labelBackgroundColor=#ffffff;verticalAlign=top;strokeWidth=2;strokeColor=#0080F0;shadow=0;dashed=0;shape=mxgraph.ios7.icons.home;aspect=fixed;" vertex="1" parent="1">
+          <mxGeometry x="180" y="63.9" width="34" height="36.1" as="geometry" />
+        </mxCell>
+        <mxCell id="ODrWaUg-teJTPfAjZcWi-15" value="Item Price" style="rounded=0;whiteSpace=wrap;html=1;sketch=1;curveFitting=1;jiggle=2;" vertex="1" parent="1">
+          <mxGeometry x="470" y="280" width="280" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="ODrWaUg-teJTPfAjZcWi-17" value="Item Name" style="rounded=0;whiteSpace=wrap;html=1;sketch=1;curveFitting=1;jiggle=2;" vertex="1" parent="1">
+          <mxGeometry x="470" y="230" width="280" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="ODrWaUg-teJTPfAjZcWi-19" value="New" style="shape=ellipse;fillColor=#eeeeee;strokeColor=#999999;gradientColor=#cccccc;html=1;align=left;spacingLeft=4;fontSize=12;fontColor=#666666;labelPosition=right;shadow=0;sketch=1;curveFitting=1;jiggle=2;" vertex="1" parent="1">
+          <mxGeometry x="545" y="327.5" width="15" height="15" as="geometry" />
+        </mxCell>
+        <mxCell id="ODrWaUg-teJTPfAjZcWi-20" value="Used - Like New" style="shape=ellipse;fillColor=#eeeeee;strokeColor=#999999;gradientColor=#cccccc;html=1;align=left;spacingLeft=4;fontSize=12;fontColor=#666666;labelPosition=right;shadow=0;sketch=1;curveFitting=1;jiggle=2;" vertex="1" parent="1">
+          <mxGeometry x="545" y="360" width="15" height="15" as="geometry" />
+        </mxCell>
+        <mxCell id="ODrWaUg-teJTPfAjZcWi-31" value="Condition:" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="475" y="320" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="ODrWaUg-teJTPfAjZcWi-32" value="Used - Good" style="shape=ellipse;fillColor=#eeeeee;strokeColor=#999999;gradientColor=#cccccc;html=1;align=left;spacingLeft=4;fontSize=12;fontColor=#666666;labelPosition=right;shadow=0;sketch=1;curveFitting=1;jiggle=2;" vertex="1" parent="1">
+          <mxGeometry x="545" y="390" width="15" height="15" as="geometry" />
+        </mxCell>
+        <mxCell id="ODrWaUg-teJTPfAjZcWi-33" value="Used - Fair" style="shape=ellipse;fillColor=#eeeeee;strokeColor=#999999;gradientColor=#cccccc;html=1;align=left;spacingLeft=4;fontSize=12;fontColor=#666666;labelPosition=right;shadow=0;sketch=1;curveFitting=1;jiggle=2;" vertex="1" parent="1">
+          <mxGeometry x="545" y="418" width="15" height="15" as="geometry" />
+        </mxCell>
+        <mxCell id="ODrWaUg-teJTPfAjZcWi-34" value="Item Description" style="rounded=0;whiteSpace=wrap;html=1;sketch=1;curveFitting=1;jiggle=2;" vertex="1" parent="1">
+          <mxGeometry x="475" y="450" width="280" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="ODrWaUg-teJTPfAjZcWi-37" value="(photo link)" style="rounded=0;whiteSpace=wrap;html=1;sketch=1;curveFitting=1;jiggle=2;" vertex="1" parent="1">
+          <mxGeometry x="555" y="550" width="200" height="30" as="geometry" />
+        </mxCell>
+        <UserObject label="Add Photo:" id="ODrWaUg-teJTPfAjZcWi-38">
+          <mxCell style="text;html=1;strokeColor=none;fillColor=none;whiteSpace=wrap;align=center;verticalAlign=middle;fontColor=#0000EE;fontStyle=4;" vertex="1" parent="1">
+            <mxGeometry x="475" y="545" width="70" height="40" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <mxCell id="ODrWaUg-teJTPfAjZcWi-39" value="&lt;font color=&quot;#000000&quot;&gt;Submit&lt;/font&gt;" style="strokeWidth=1;shadow=0;dashed=0;align=center;html=1;shape=mxgraph.mockup.buttons.button;strokeColor=#666666;fontColor=#ffffff;mainText=;buttonStyle=round;fontSize=17;fontStyle=1;fillColor=#008cff;whiteSpace=wrap;sketch=1;curveFitting=1;jiggle=2;" vertex="1" parent="1">
+          <mxGeometry x="475" y="600" width="135" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="ODrWaUg-teJTPfAjZcWi-43" value="Clear" style="strokeWidth=1;shadow=0;dashed=0;align=center;html=1;shape=mxgraph.mockup.buttons.button;strokeColor=#666666;fontColor=#000000;mainText=;buttonStyle=round;fontSize=17;fontStyle=1;fillColor=none;whiteSpace=wrap;sketch=1;curveFitting=1;jiggle=2;" vertex="1" parent="1">
+          <mxGeometry x="630" y="600" width="125" height="40" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
