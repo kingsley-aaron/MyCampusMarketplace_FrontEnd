@@ -1,152 +1,9 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:mycampusmarketplace/loginSignUp.dart';
 
-class LoginSignupPage extends StatefulWidget {
-  const LoginSignupPage({super.key});
 
-  @override
-  _LoginSignupPageState createState() => _LoginSignupPageState();
-}
-
-class _LoginSignupPageState extends State<LoginSignupPage> {
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController =
-      TextEditingController();
-
-  bool _isLogin = true;
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(_isLogin ? 'My Campus Marketplace' : 'Sign Up'),
-      ),
-      backgroundColor: Colors.grey[800], // Dark grey background color
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            TextFormField(
-              controller: _emailController,
-              decoration: const InputDecoration(
-                labelText: 'Email',
-                labelStyle:
-                    TextStyle(color: Colors.white), // White label text color
-                enabledBorder: UnderlineInputBorder(
-                    borderSide:
-                        BorderSide(color: Colors.blue)), // Blue border color
-              ),
-              style: const TextStyle(color: Colors.white), // White text color
-            ),
-            TextFormField(
-              controller: _passwordController,
-              decoration: const InputDecoration(
-                labelText: 'Password',
-                labelStyle:
-                    TextStyle(color: Colors.white), // White label text color
-                enabledBorder: UnderlineInputBorder(
-                    borderSide:
-                        BorderSide(color: Colors.blue)), // Blue border color
-              ),
-              obscureText: true,
-              style: const TextStyle(color: Colors.white), // White text color
-            ),
-            if (!_isLogin)
-              TextFormField(
-                controller: _confirmPasswordController,
-                decoration: const InputDecoration(
-                  labelText: 'Confirm Password',
-                  labelStyle:
-                      TextStyle(color: Colors.white), // White label text color
-                  enabledBorder: UnderlineInputBorder(
-                      borderSide:
-                          BorderSide(color: Colors.blue)), // Blue border color
-                ),
-                obscureText: true,
-                style: const TextStyle(color: Colors.white), // White text color
-              ),
-            const SizedBox(height: 16.0),
-            ElevatedButton(
-              onPressed: _isLogin ? _login : _signup,
-              child: Text(_isLogin ? 'Login' : 'Sign Up'),
-            ),
-            TextButton(
-              onPressed: () {
-                setState(() {
-                  _isLogin = !_isLogin;
-                });
-              },
-              child: Text(
-                  _isLogin ? 'Create an account' : 'Have an account? Sign in'),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  void _login() {
-    // Implement login logic here
-  }
-
-  void _signup() {
-    // Implement signup logic here
-    if (!_isLogin) {
-      String email = _emailController.text.trim();
-      String password = _passwordController.text.trim();
-      String confirmPassword = _confirmPasswordController.text.trim();
-
-      if (password.isEmpty || confirmPassword.isEmpty) {
-        _showErrorDialog("Please enter password and confirm password");
-      } else if (password != confirmPassword) {
-        _showErrorDialog("Passwords do not match.");
-      } else if (email.isEmpty || !email.endsWith('@my.sctcc.edu')) {
-        _showErrorDialog(email.isEmpty
-            ? "Please enter email"
-            : "Please enter valid SCTCC email address ending in @my.sctcc.edu");
-      } else {
-        // Continue with sign up process
-
-        // Show success snackbar
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Center(child: Text('Sign up successful!')),
-            duration: Duration(seconds: 4), // Optional duration
-          ),
-        );
-
-        // Navigate to login page
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) => const LoginSignupPage(),
-          ),
-        );
-      }
-    }
-  }
-
-  void _showErrorDialog(String message) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text("Error"),
-          content: Text(message),
-          actions: <Widget>[
-            TextButton(
-              child: const Text("OK"),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
-}
 
 void main() {
   runApp(const MyApp());
@@ -162,7 +19,67 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         hintColor: Colors.lightBlueAccent, // Light blue accent color
       ),
-      home: const LoginSignupPage(),
+      home: const SplashScreen(),
+    );
+  }
+}
+
+class SplashScreen extends StatefulWidget {
+  const SplashScreen({Key? key}) : super(key: key);
+
+  @override
+  State<SplashScreen> createState() => _SplashScreenState();
+}
+
+class _SplashScreenState extends State<SplashScreen> {
+  @override
+  // Using initState to perform actions when the widget is inserted into the widget tree
+  void initState() {
+    super.initState();
+    // Using a Timer to navigate to MyHomePage after a delay
+    Timer(const Duration(seconds: 5), () {
+      if (mounted) { // Check if the widget is still in the tree
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (context) => const LoginSignupPage()), // Navigate to LoginPage instead of MyHomePage
+        );
+      }
+    });
+  }
+// Building the UI of the SplashScreen
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Stack(
+        fit: StackFit.expand,
+        children: <Widget>[
+          // Displaying a background image
+          OverflowBox(
+            // Making the image slightly larger than the screen to hide the watermark
+            minWidth: MediaQuery.of(context).size.width,
+            minHeight: MediaQuery.of(context).size.height * 1.1, // Adjust the multiplier as needed
+            maxHeight: MediaQuery.of(context).size.height * 1.1, // Adjust the multiplier as needed
+            child: Image.asset(                                  // I think it looks good
+              'assets/images/myCampusMarket.png',  
+              fit: BoxFit.cover, // Cover ensures the image covers the screen area without distortion
+            ),
+          ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Text(
+                'My Campus Marketplace', // App's name or any other text you want to display
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white, // Choose a color that contrasts with the background
+                ),
+              ),
+              SizedBox(height: 20), // Space between text and the progress indicator
+              CircularProgressIndicator(),
+            ],
+          ),
+        ],
+      ),
     );
   }
 }
