@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class LoginSignupPage extends StatefulWidget {
+  const LoginSignupPage({super.key});
+
   @override
   _LoginSignupPageState createState() => _LoginSignupPageState();
 }
@@ -10,7 +12,8 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
   final TextEditingController _lastNameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
 
   bool _isLogin = true;
 
@@ -22,7 +25,7 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
       ),
       backgroundColor: Colors.grey[800], // Dark grey background color
       body: Padding(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -47,35 +50,44 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
               ),
             TextFormField(
               controller: _emailController,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Email',
-                labelStyle: TextStyle(color: Colors.white), // White label text color
-                enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.blue)), // Blue border color
+                labelStyle:
+                    TextStyle(color: Colors.white), // White label text color
+                enabledBorder: UnderlineInputBorder(
+                    borderSide:
+                        BorderSide(color: Colors.blue)), // Blue border color
               ),
-              style: TextStyle(color: Colors.white), // White text color
+              style: const TextStyle(color: Colors.white), // White text color
             ),
             TextFormField(
               controller: _passwordController,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Password',
-                labelStyle: TextStyle(color: Colors.white), // White label text color
-                enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.blue)), // Blue border color
+                labelStyle:
+                    TextStyle(color: Colors.white), // White label text color
+                enabledBorder: UnderlineInputBorder(
+                    borderSide:
+                        BorderSide(color: Colors.blue)), // Blue border color
               ),
               obscureText: true,
-              style: TextStyle(color: Colors.white), // White text color
+              style: const TextStyle(color: Colors.white), // White text color
             ),
             if (!_isLogin)
               TextFormField(
                 controller: _confirmPasswordController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Confirm Password',
-                  labelStyle: TextStyle(color: Colors.white), // White label text color
-                  enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.blue)), // Blue border color
+                  labelStyle:
+                      TextStyle(color: Colors.white), // White label text color
+                  enabledBorder: UnderlineInputBorder(
+                      borderSide:
+                          BorderSide(color: Colors.blue)), // Blue border color
                 ),
                 obscureText: true,
-                style: TextStyle(color: Colors.white), // White text color
+                style: const TextStyle(color: Colors.white), // White text color
               ),
-            SizedBox(height: 16.0),
+            const SizedBox(height: 16.0),
             ElevatedButton(
               onPressed: _isLogin ? _login : _signup,
               child: Text(_isLogin ? 'Login' : 'Sign Up'),
@@ -86,7 +98,8 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
                   _isLogin = !_isLogin;
                 });
               },
-              child: Text(_isLogin ? 'Create an account' : 'Have an account? Sign in'),
+              child: Text(
+                  _isLogin ? 'Create an account' : 'Have an account? Sign in'),
             ),
           ],
         ),
@@ -118,6 +131,7 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
       String password = _passwordController.text.trim();
       String confirmPassword = _confirmPasswordController.text.trim();
 
+
       if (firstName.isEmpty) {
         _showErrorDialog("Please enter your first name.");
       } else if (!(lastName.isNotEmpty)) {
@@ -127,13 +141,18 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
           ? "Please enter email"
           : "Please enter a valid SCTCC email adress ending in @my.sctcc.edu");
       } else if (password.length < 8) {
-        _showErrorDialog("Password must be at least 8 characters");
+        _showErrorDialog("Password must be at least 8 characters");}
+      if (password.isEmpty || confirmPassword.isEmpty) {
+        _showErrorDialog("Please enter password and confirm password");
+
       } else if (password != confirmPassword) {
         _showErrorDialog("Passwords do not match.");
-        return;
-      }
-
-      // Continue with sign up process
+      } else if (email.isEmpty || !email.endsWith('@my.sctcc.edu')) {
+        _showErrorDialog(email.isEmpty
+            ? "Please enter email"
+            : "Please enter valid SCTCC email address ending in @my.sctcc.edu");
+      } else {
+        // Continue with sign up process
 
       //Success snackbar of valid sign up
       ScaffoldMessenger.of(context).showSnackBar(
@@ -142,6 +161,13 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
           duration: Duration(seconds: 3),
         ),
       );
+        // Navigate to login page
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => const LoginSignupPage(),
+          ),
+        );
+      }
     }
   }
 
@@ -150,11 +176,11 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text("Error"),
+          title: const Text("Error"),
           content: Text(message),
           actions: <Widget>[
             TextButton(
-              child: Text("OK"),
+              child: const Text("OK"),
               onPressed: () {
                 Navigator.of(context).pop();
               },
@@ -167,10 +193,12 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
 }
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -178,7 +206,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         hintColor: Colors.lightBlueAccent, // Light blue accent color
       ),
-      home: LoginSignupPage(),
+      home: const LoginSignupPage(),
     );
   }
 }
