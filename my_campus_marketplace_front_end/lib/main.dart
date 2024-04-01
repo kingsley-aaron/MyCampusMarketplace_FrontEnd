@@ -10,6 +10,7 @@ class LoginSignupPage extends StatefulWidget {
 class _LoginSignupPageState extends State<LoginSignupPage> {
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
+  final TextEditingController _studentIDController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController =
@@ -23,7 +24,7 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
       appBar: AppBar(
         title: Text(_isLogin ? 'My Campus Marketplace' : 'Sign Up'),
       ),
-      backgroundColor: Colors.grey[800], // Dark grey background color
+      backgroundColor: Colors.grey[800],
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -36,7 +37,8 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
                 decoration: InputDecoration(
                   labelText: 'First Name',
                   labelStyle: TextStyle(color: Colors.white),
-                  enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.blue)),
+                  enabledBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.blue)),
                 ),
               ),
             if (!_isLogin)
@@ -45,47 +47,52 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
                 decoration: InputDecoration(
                   labelText: 'Last Name',
                   labelStyle: TextStyle(color: Colors.white),
-                  enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.blue)),
+                  enabledBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.blue)),
+                ),
+              ),
+            if (!_isLogin)
+              TextFormField(
+                controller: _studentIDController,
+                decoration: InputDecoration(
+                  labelText: 'StudentID',
+                  labelStyle: TextStyle(color: Colors.white),
+                  enabledBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.blue)),
                 ),
               ),
             TextFormField(
               controller: _emailController,
               decoration: const InputDecoration(
                 labelText: 'Email',
-                labelStyle:
-                    TextStyle(color: Colors.white), // White label text color
+                labelStyle: TextStyle(color: Colors.white),
                 enabledBorder: UnderlineInputBorder(
-                    borderSide:
-                        BorderSide(color: Colors.blue)), // Blue border color
+                    borderSide: BorderSide(color: Colors.blue)),
               ),
-              style: const TextStyle(color: Colors.white), // White text color
+              style: const TextStyle(color: Colors.white),
             ),
             TextFormField(
               controller: _passwordController,
               decoration: const InputDecoration(
                 labelText: 'Password',
-                labelStyle:
-                    TextStyle(color: Colors.white), // White label text color
+                labelStyle: TextStyle(color: Colors.white),
                 enabledBorder: UnderlineInputBorder(
-                    borderSide:
-                        BorderSide(color: Colors.blue)), // Blue border color
+                    borderSide: BorderSide(color: Colors.blue)),
               ),
               obscureText: true,
-              style: const TextStyle(color: Colors.white), // White text color
+              style: const TextStyle(color: Colors.white),
             ),
             if (!_isLogin)
               TextFormField(
                 controller: _confirmPasswordController,
                 decoration: const InputDecoration(
                   labelText: 'Confirm Password',
-                  labelStyle:
-                      TextStyle(color: Colors.white), // White label text color
+                  labelStyle: TextStyle(color: Colors.white),
                   enabledBorder: UnderlineInputBorder(
-                      borderSide:
-                          BorderSide(color: Colors.blue)), // Blue border color
+                      borderSide: BorderSide(color: Colors.blue)),
                 ),
                 obscureText: true,
-                style: const TextStyle(color: Colors.white), // White text color
+                style: const TextStyle(color: Colors.white),
               ),
             const SizedBox(height: 16.0),
             ElevatedButton(
@@ -107,7 +114,7 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
     );
   }
 
-  void _login() {
+  void _login() async {
     // Implement login logic here
     if (_isLogin) {
       String email = _emailController.text.trim();
@@ -119,32 +126,46 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
         _showErrorDialog("Please enter your password.");
         return;
       }
+
+      //Checking login logic
+      /*
+      var response = await http.post(
+          Uri.parse('Insert server http here'),
+          body: json.encode({'email': email,
+                             'password': password}),
+          headers: {'Content-Type': 'application/json},
+        );
+
+        if (response.statusCode == 200) {
+          Navigator.push to application home
+        } else {
+          _showErrorDialog("Invalid email or password. Please try again.")
+        }
+      */
     }
   }
 
-  void _signup() {
+  void _signup() async {
     // Implement signup logic here
     if (!_isLogin) {
       String firstName = _firstNameController.text.trim();
       String lastName = _lastNameController.text.trim();
+      String studentID = _studentIDController.text.trim();
       String email = _emailController.text.trim();
       String password = _passwordController.text.trim();
       String confirmPassword = _confirmPasswordController.text.trim();
-
 
       if (firstName.isEmpty) {
         _showErrorDialog("Please enter your first name.");
       } else if (!(lastName.isNotEmpty)) {
         _showErrorDialog("Please enter your last name.");
-      } else if (email.isEmpty || !email.endsWith('@my.sctcc.edu')) {
-        _showErrorDialog(email.isEmpty
-          ? "Please enter email"
-          : "Please enter a valid SCTCC email adress ending in @my.sctcc.edu");
+      } else if (int.tryParse(studentID) == null) {
+        // Check if student ID is not numeric
+        _showErrorDialog("Student ID must be numeric.");
       } else if (password.length < 8) {
-        _showErrorDialog("Password must be at least 8 characters");}
-      if (password.isEmpty || confirmPassword.isEmpty) {
+        _showErrorDialog("Password must be at least 8 characters");
+      } else if (password.isEmpty || confirmPassword.isEmpty) {
         _showErrorDialog("Please enter password and confirm password");
-
       } else if (password != confirmPassword) {
         _showErrorDialog("Passwords do not match.");
       } else if (email.isEmpty || !email.endsWith('@my.sctcc.edu')) {
@@ -153,14 +174,40 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
             : "Please enter valid SCTCC email address ending in @my.sctcc.edu");
       } else {
         // Continue with sign up process
+        //Verify that the email doesn't already exist in the database
 
-      //Success snackbar of valid sign up
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Center(child: Text('Sign up successful.')),
-          duration: Duration(seconds: 3),
-        ),
-      );
+
+
+        /* Posting to http server
+        var response = await http.post(
+          Uri.parse('Insert server http here'),
+          body: json.encode({'firstName': firstName,
+                             'lastName': lastName,
+                             'studentID': studentID,
+                             'email': email,
+                             'password': password}),
+          headers: {'Content-Type': 'application/json},
+        );
+
+        if (response.statusCode == 200) {
+          Navigator.push to application login screen
+        } else {
+          _showErrorDialog("Account already exists")
+          Navigator.push to login screen
+        }
+
+
+        */
+
+
+
+        //Success snackbar of valid sign up
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Center(child: Text('Sign up successful.')),
+            duration: Duration(seconds: 3),
+          ),
+        );
         // Navigate to login page
         Navigator.of(context).push(
           MaterialPageRoute(
@@ -204,7 +251,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Login/Signup Page',
       theme: ThemeData(
-        hintColor: Colors.lightBlueAccent, // Light blue accent color
+        hintColor: Colors.lightBlueAccent,
       ),
       home: const LoginSignupPage(),
     );
