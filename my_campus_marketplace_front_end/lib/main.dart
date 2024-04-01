@@ -8,6 +8,7 @@ class LoginSignupPage extends StatefulWidget {
 }
 
 class _LoginSignupPageState extends State<LoginSignupPage> {
+  final TextEditingController _studentIDController = TextEditingController();
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
   final TextEditingController _studentIDController = TextEditingController();
@@ -154,6 +155,8 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
       String email = _emailController.text.trim();
       String password = _passwordController.text.trim();
       String confirmPassword = _confirmPasswordController.text.trim();
+      String studentID = _studentIDController.text.trim();
+
 
       if (firstName.isEmpty) {
         _showErrorDialog("Please enter your first name.");
@@ -178,6 +181,7 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
 
 
 
+
         /* Posting to http server
         var response = await http.post(
           Uri.parse('Insert server http here'),
@@ -198,6 +202,8 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
 
 
         */
+
+
 
 
 
