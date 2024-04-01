@@ -27,22 +27,24 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            TextFormField(
-              controller: _firstNameController,
-              decoration: InputDecoration(
-                labelText: 'First Name',
-                labelStyle: TextStyle(color: Colors.white),
-                enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.blue)),
+            if (!_isLogin)
+              TextFormField(
+                controller: _firstNameController,
+                decoration: InputDecoration(
+                  labelText: 'First Name',
+                  labelStyle: TextStyle(color: Colors.white),
+                  enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.blue)),
+                ),
               ),
-            ),
-            TextFormField(
-              controller: _lastNameController,
-              decoration: InputDecoration(
-                labelText: 'Last Name',
-                labelStyle: TextStyle(color: Colors.white),
-                enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.blue)),
+            if (!_isLogin)
+              TextFormField(
+                controller: _lastNameController,
+                decoration: InputDecoration(
+                  labelText: 'Last Name',
+                  labelStyle: TextStyle(color: Colors.white),
+                  enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.blue)),
+                ),
               ),
-            ),
             TextFormField(
               controller: _emailController,
               decoration: InputDecoration(
