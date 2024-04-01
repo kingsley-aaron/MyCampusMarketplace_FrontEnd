@@ -11,8 +11,8 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
   final TextEditingController _studentIDController = TextEditingController();
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
-  final TextEditingController _studentIDController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController =
       TextEditingController();
@@ -62,10 +62,20 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
                       borderSide: BorderSide(color: Colors.blue)),
                 ),
               ),
+            if (!_isLogin)
+              TextFormField(
+                controller: _emailController,
+                decoration: InputDecoration(
+                  labelText: 'Email',
+                  labelStyle: TextStyle(color: Colors.white),
+                  enabledBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.blue)),
+                ),
+              ),
             TextFormField(
-              controller: _emailController,
+              controller: _usernameController,
               decoration: const InputDecoration(
-                labelText: 'Email',
+                labelText: 'Username',
                 labelStyle: TextStyle(color: Colors.white),
                 enabledBorder: UnderlineInputBorder(
                     borderSide: BorderSide(color: Colors.blue)),
@@ -118,10 +128,10 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
   void _login() async {
     // Implement login logic here
     if (_isLogin) {
-      String email = _emailController.text.trim();
+      String username = _usernameController.text.trim();
       String password = _passwordController.text.trim();
 
-      if (email.isEmpty) {
+      if (username.isEmpty) {
         _showErrorDialog("Please enter your email address.");
       } else if (password.isEmpty) {
         _showErrorDialog("Please enter your password.");
@@ -154,16 +164,14 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
       String studentID = _studentIDController.text.trim();
       String email = _emailController.text.trim();
       String password = _passwordController.text.trim();
+      String username = _usernameController.text.trim();
       String confirmPassword = _confirmPasswordController.text.trim();
-      String studentID = _studentIDController.text.trim();
-
 
       if (firstName.isEmpty) {
         _showErrorDialog("Please enter your first name.");
       } else if (!(lastName.isNotEmpty)) {
         _showErrorDialog("Please enter your last name.");
       } else if (int.tryParse(studentID) == null) {
-        // Check if student ID is not numeric
         _showErrorDialog("Student ID must be numeric.");
       } else if (password.length < 8) {
         _showErrorDialog("Password must be at least 8 characters");
@@ -175,12 +183,11 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
         _showErrorDialog(email.isEmpty
             ? "Please enter email"
             : "Please enter valid SCTCC email address ending in @my.sctcc.edu");
+      } else if (username.isEmpty) {
+        _showErrorDialog("Please enter a username");
       } else {
         // Continue with sign up process
-        //Verify that the email doesn't already exist in the database
-
-
-
+        //Verify that the email & username don't already exist in the database
 
         /* Posting to http server
         var response = await http.post(
@@ -202,10 +209,6 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
 
 
         */
-
-
-
-
 
         //Success snackbar of valid sign up
         ScaffoldMessenger.of(context).showSnackBar(
