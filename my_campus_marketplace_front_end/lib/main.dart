@@ -11,6 +11,7 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
   final TextEditingController _studentIDController = TextEditingController();
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
+  final TextEditingController _studentIDController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController =
@@ -114,7 +115,7 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
     );
   }
 
-  void _login() {
+  void _login() async {
     // Implement login logic here
     if (_isLogin) {
       String email = _emailController.text.trim();
@@ -126,18 +127,36 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
         _showErrorDialog("Please enter your password.");
         return;
       }
+
+      //Checking login logic
+      /*
+      var response = await http.post(
+          Uri.parse('Insert server http here'),
+          body: json.encode({'email': email,
+                             'password': password}),
+          headers: {'Content-Type': 'application/json},
+        );
+
+        if (response.statusCode == 200) {
+          Navigator.push to application home
+        } else {
+          _showErrorDialog("Invalid email or password. Please try again.")
+        }
+      */
     }
   }
 
-  void _signup() {
+  void _signup() async {
     // Implement signup logic here
     if (!_isLogin) {
       String firstName = _firstNameController.text.trim();
       String lastName = _lastNameController.text.trim();
+      String studentID = _studentIDController.text.trim();
       String email = _emailController.text.trim();
       String password = _passwordController.text.trim();
       String confirmPassword = _confirmPasswordController.text.trim();
       String studentID = _studentIDController.text.trim();
+
 
       if (firstName.isEmpty) {
         _showErrorDialog("Please enter your first name.");
@@ -159,6 +178,34 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
       } else {
         // Continue with sign up process
         //Verify that the email doesn't already exist in the database
+
+
+
+
+        /* Posting to http server
+        var response = await http.post(
+          Uri.parse('Insert server http here'),
+          body: json.encode({'firstName': firstName,
+                             'lastName': lastName,
+                             'studentID': studentID,
+                             'email': email,
+                             'password': password}),
+          headers: {'Content-Type': 'application/json},
+        );
+
+        if (response.statusCode == 200) {
+          Navigator.push to application login screen
+        } else {
+          _showErrorDialog("Account already exists")
+          Navigator.push to login screen
+        }
+
+
+        */
+
+
+
+
 
         //Success snackbar of valid sign up
         ScaffoldMessenger.of(context).showSnackBar(
