@@ -8,6 +8,8 @@ class LoginSignupPage extends StatefulWidget {
 }
 
 class _LoginSignupPageState extends State<LoginSignupPage> {
+  final TextEditingController _firstNameController = TextEditingController();
+  final TextEditingController _lastNameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController =
@@ -28,6 +30,24 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
+            if (!_isLogin)
+              TextFormField(
+                controller: _firstNameController,
+                decoration: InputDecoration(
+                  labelText: 'First Name',
+                  labelStyle: TextStyle(color: Colors.white),
+                  enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.blue)),
+                ),
+              ),
+            if (!_isLogin)
+              TextFormField(
+                controller: _lastNameController,
+                decoration: InputDecoration(
+                  labelText: 'Last Name',
+                  labelStyle: TextStyle(color: Colors.white),
+                  enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.blue)),
+                ),
+              ),
             TextFormField(
               controller: _emailController,
               decoration: const InputDecoration(
@@ -89,17 +109,42 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
 
   void _login() {
     // Implement login logic here
+    if (_isLogin) {
+      String email = _emailController.text.trim();
+      String password = _passwordController.text.trim();
+
+      if (email.isEmpty) {
+        _showErrorDialog("Please enter your email address.");
+      } else if (password.isEmpty) {
+        _showErrorDialog("Please enter your password.");
+        return;
+      }
+    }
   }
 
   void _signup() {
     // Implement signup logic here
     if (!_isLogin) {
+      String firstName = _firstNameController.text.trim();
+      String lastName = _lastNameController.text.trim();
       String email = _emailController.text.trim();
       String password = _passwordController.text.trim();
       String confirmPassword = _confirmPasswordController.text.trim();
 
+
+      if (firstName.isEmpty) {
+        _showErrorDialog("Please enter your first name.");
+      } else if (!(lastName.isNotEmpty)) {
+        _showErrorDialog("Please enter your last name.");
+      } else if (email.isEmpty || !email.endsWith('@my.sctcc.edu')) {
+        _showErrorDialog(email.isEmpty
+          ? "Please enter email"
+          : "Please enter a valid SCTCC email adress ending in @my.sctcc.edu");
+      } else if (password.length < 8) {
+        _showErrorDialog("Password must be at least 8 characters");}
       if (password.isEmpty || confirmPassword.isEmpty) {
         _showErrorDialog("Please enter password and confirm password");
+
       } else if (password != confirmPassword) {
         _showErrorDialog("Passwords do not match.");
       } else if (email.isEmpty || !email.endsWith('@my.sctcc.edu')) {
@@ -109,14 +154,13 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
       } else {
         // Continue with sign up process
 
-        // Show success snackbar
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Center(child: Text('Sign up successful!')),
-            duration: Duration(seconds: 4), // Optional duration
-          ),
-        );
-
+      //Success snackbar of valid sign up
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Center(child: Text('Sign up successful.')),
+          duration: Duration(seconds: 3),
+        ),
+      );
         // Navigate to login page
         Navigator.of(context).push(
           MaterialPageRoute(
