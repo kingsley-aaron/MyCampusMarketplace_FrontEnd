@@ -96,6 +96,17 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
 
   void _login() {
     // Implement login logic here
+    if (_isLogin) {
+      String email = _emailController.text.trim();
+      String password = _passwordController.text.trim();
+
+      if (email.isEmpty) {
+        _showErrorDialog("Please enter your email address.");
+      } else if (password.isEmpty) {
+        _showErrorDialog("Please enter your password.");
+        return;
+      }
+    }
   }
 
   void _signup() {
@@ -107,12 +118,30 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
       String password = _passwordController.text.trim();
       String confirmPassword = _confirmPasswordController.text.trim();
 
-      if (password != confirmPassword) {
+      if (firstName.isEmpty) {
+        _showErrorDialog("Please enter your first name.");
+      } else if (!(lastName.isNotEmpty)) {
+        _showErrorDialog("Please enter your last name.");
+      } else if (email.isEmpty || !email.endsWith('@my.sctcc.edu')) {
+        _showErrorDialog(email.isEmpty
+          ? "Please enter email"
+          : "Please enter a valid SCTCC email adress ending in @my.sctcc.edu");
+      } else if (password.length < 8) {
+        _showErrorDialog("Password must be at least 8 characters");
+      } else if (password != confirmPassword) {
         _showErrorDialog("Passwords do not match.");
         return;
       }
 
       // Continue with sign up process
+
+      //Success snackbar of valid sign up
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Center(child: Text('Sign up successful.')),
+          duration: Duration(seconds: 3),
+        ),
+      );
     }
   }
 
