@@ -6,6 +6,8 @@ class LoginSignupPage extends StatefulWidget {
 }
 
 class _LoginSignupPageState extends State<LoginSignupPage> {
+  final TextEditingController _firstNameController = TextEditingController();
+  final TextEditingController _lastNameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController = TextEditingController();
@@ -25,6 +27,22 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
+            TextFormField(
+              controller: _firstNameController,
+              decoration: InputDecoration(
+                labelText: 'First Name',
+                labelStyle: TextStyle(color: Colors.white),
+                enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.blue)),
+              ),
+            ),
+            TextFormField(
+              controller: _lastNameController,
+              decoration: InputDecoration(
+                labelText: 'Last Name',
+                labelStyle: TextStyle(color: Colors.white),
+                enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.blue)),
+              ),
+            ),
             TextFormField(
               controller: _emailController,
               decoration: InputDecoration(
@@ -81,6 +99,8 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
   void _signup() {
     // Implement signup logic here
     if (!_isLogin) {
+      String firstName = _firstNameController.text.trim();
+      String lastName = _lastNameController.text.trim();
       String email = _emailController.text.trim();
       String password = _passwordController.text.trim();
       String confirmPassword = _confirmPasswordController.text.trim();
