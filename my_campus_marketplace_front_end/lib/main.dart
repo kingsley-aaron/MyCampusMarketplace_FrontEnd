@@ -129,11 +129,11 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
     // Implement login logic here
     if (_isLogin) {
       String username = _usernameController.text.trim();
-      String password = _passwordController.text.trim();
+      String passwordHash = _passwordController.text.trim();
 
       if (username.isEmpty) {
-        _showErrorDialog("Please enter your email address.");
-      } else if (password.isEmpty) {
+        _showErrorDialog("Please enter your username.");
+      } else if (passwordHash.isEmpty) {
         _showErrorDialog("Please enter your password.");
         return;
       }
@@ -142,15 +142,15 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
       /*
       var response = await http.post(
           Uri.parse('Insert server http here'),
-          body: json.encode({'email': email,
-                             'password': password}),
+          body: json.encode({'username': username,
+                             'passwordHash': passwordHash}),
           headers: {'Content-Type': 'application/json},
         );
 
         if (response.statusCode == 200) {
           Navigator.push to application home
         } else {
-          _showErrorDialog("Invalid email or password. Please try again.")
+          _showErrorDialog("Invalid username or password. Please try again.")
         }
       */
     }
@@ -162,8 +162,8 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
       String firstName = _firstNameController.text.trim();
       String lastName = _lastNameController.text.trim();
       String studentID = _studentIDController.text.trim();
-      String email = _emailController.text.trim();
-      String password = _passwordController.text.trim();
+      String studentEmail = _emailController.text.trim();
+      String passwordHash = _passwordController.text.trim();
       String username = _usernameController.text.trim();
       String confirmPassword = _confirmPasswordController.text.trim();
 
@@ -173,14 +173,15 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
         _showErrorDialog("Please enter your last name.");
       } else if (int.tryParse(studentID) == null) {
         _showErrorDialog("Student ID must be numeric.");
-      } else if (password.length < 8) {
+      } else if (passwordHash.length < 8) {
         _showErrorDialog("Password must be at least 8 characters");
-      } else if (password.isEmpty || confirmPassword.isEmpty) {
+      } else if (passwordHash.isEmpty || confirmPassword.isEmpty) {
         _showErrorDialog("Please enter password and confirm password");
-      } else if (password != confirmPassword) {
+      } else if (passwordHash != confirmPassword) {
         _showErrorDialog("Passwords do not match.");
-      } else if (email.isEmpty || !email.endsWith('@my.sctcc.edu')) {
-        _showErrorDialog(email.isEmpty
+      } else if (studentEmail.isEmpty ||
+          !studentEmail.endsWith('@my.sctcc.edu')) {
+        _showErrorDialog(studentEmail.isEmpty
             ? "Please enter email"
             : "Please enter valid SCTCC email address ending in @my.sctcc.edu");
       } else if (username.isEmpty) {
@@ -195,8 +196,9 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
           body: json.encode({'firstName': firstName,
                              'lastName': lastName,
                              'studentID': studentID,
-                             'email': email,
-                             'password': password}),
+                             'studentEmail': studentEmail,
+                             'passwordHash': passwordHash,
+                             'username': username}),
           headers: {'Content-Type': 'application/json},
         );
 
