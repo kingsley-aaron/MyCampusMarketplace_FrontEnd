@@ -11,7 +11,6 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
   final TextEditingController _studentIDController = TextEditingController();
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
-  final TextEditingController _studentIDController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController =
@@ -26,7 +25,8 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
         title: Text(_isLogin ? 'My Campus Marketplace' : 'Sign Up'),
       ),
       backgroundColor: Colors.grey[800],
-      body: Padding(
+      body: SingleChildScrollView(
+        child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -112,6 +112,7 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
           ],
         ),
       ),
+      ),
     );
   }
 
@@ -155,7 +156,6 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
       String email = _emailController.text.trim();
       String password = _passwordController.text.trim();
       String confirmPassword = _confirmPasswordController.text.trim();
-      String studentID = _studentIDController.text.trim();
 
 
       if (firstName.isEmpty) {
