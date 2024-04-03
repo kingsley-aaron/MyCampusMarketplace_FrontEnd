@@ -224,16 +224,15 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
         _showErrorDialog("Please enter password and confirm password");
       } else if (passwordHash != confirmPassword) {
         _showErrorDialog("Passwords do not match.");
-      } else if (studentEmail.isEmpty || !studentEmail.endsWith('@my.sctcc.edu')) {
+      } else if (studentEmail.isEmpty || !studentEmail.endsWith('@my.sctcc.edu') && !studentEmail.endsWith('@sctcc.edu')) {
         _showErrorDialog(studentEmail.isEmpty
             ? "Please enter email"
-            : "Please enter valid SCTCC email address ending in @my.sctcc.edu");
+            : "Please enter valid SCTCC email address ending in @my.sctcc.edu or @sctcc.edu");
       } else if (userName.isEmpty) {
         _showErrorDialog("Please enter a username");
       } else {
         // Continue with sign up process
         //Verify that the email & username don't already exist in the database
-
         
         final url =
                 'http://10.0.2.2/api/Signup.php'; 

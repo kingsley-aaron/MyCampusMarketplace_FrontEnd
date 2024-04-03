@@ -1,8 +1,6 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
-import 'package:mycampusmarketplace/loginSignUp.dart';
-
+import 'loginSignUp.dart';
+import 'dart:async';
 
 
 void main() {
