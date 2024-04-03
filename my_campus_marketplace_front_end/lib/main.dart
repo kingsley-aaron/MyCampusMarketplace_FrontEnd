@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Login/Signup Page',
+      title: 'Splash Screen',
       theme: ThemeData(
         hintColor: Colors.lightBlueAccent, // Light blue accent color
       ),
