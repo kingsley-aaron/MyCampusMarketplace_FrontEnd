@@ -171,7 +171,7 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
         _showErrorDialog("Please enter your first name.");
       } else if (!(lastName.isNotEmpty)) {
         _showErrorDialog("Please enter your last name.");
-      } else if (int.tryParse(studentID) == null) {
+      } else if ((studentID.isNotEmpty) && (int.tryParse(studentID) == null)) {
         _showErrorDialog("Student ID must be numeric.");
       } else if (passwordHash.length < 8) {
         _showErrorDialog("Password must be at least 8 characters");
