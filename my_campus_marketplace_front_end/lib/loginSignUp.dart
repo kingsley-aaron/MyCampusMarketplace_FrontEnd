@@ -230,8 +230,6 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
         _showErrorDialog("Please enter a username");
       } else {
         // Continue with sign up process
-        //Verify that the email & username don't already exist in the database
-        
         final url =
                 'https://helpmewithfinals.com/api/Signup.php'; 
             final response = await http.post(
