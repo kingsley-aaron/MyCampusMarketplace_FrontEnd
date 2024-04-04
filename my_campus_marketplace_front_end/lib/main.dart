@@ -34,11 +34,11 @@ class _SplashScreenState extends State<SplashScreen> {
   // Using initState to perform actions when the widget is inserted into the widget tree
   void initState() {
     super.initState();
-    // Using a Timer to navigate to MyHomePage after a delay
+    // Using a Timer to navigate to LoginSignupPage after a delay
     Timer(const Duration(seconds: 5), () {
       if (mounted) { // Check if the widget is still in the tree
         Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => const LoginSignupPage()), // Navigate to LoginPage instead of MyHomePage
+          MaterialPageRoute(builder: (context) => const LoginSignupPage()), // Navigate to LoginPage
         );
       }
     });

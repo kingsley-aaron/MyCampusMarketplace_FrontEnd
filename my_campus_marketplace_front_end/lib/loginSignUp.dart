@@ -169,7 +169,7 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
 
     //Checking login logic
     var response = await http.post(
-      Uri.parse('http://10.0.2.2/api/login.php'),
+      Uri.parse('https://helpmewithfinals.com/api/login.php'),
       body: {'userName': userName, 'passwordHash': passwordHash},
     );
 
@@ -216,8 +216,6 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
         _showErrorDialog("Please enter your first name.");
       } else if (!(lastName.isNotEmpty)) {
         _showErrorDialog("Please enter your last name.");
-      } else if (int.tryParse(studentID) == null) {
-        _showErrorDialog("Student ID must be numeric.");
       } else if (passwordHash.length < 8) {
         _showErrorDialog("Password must be at least 8 characters");
       } else if (passwordHash.isEmpty || confirmPassword.isEmpty) {
@@ -235,7 +233,7 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
         //Verify that the email & username don't already exist in the database
         
         final url =
-                'http://10.0.2.2/api/Signup.php'; 
+                'https://helpmewithfinals.com/api/Signup.php'; 
             final response = await http.post(
               Uri.parse(url),
               body: {
@@ -268,12 +266,12 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
         
 
         //Success snackbar of valid sign up
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Center(child: Text('Sign up successful.')),
-            duration: Duration(seconds: 3),
-          ),
-        );
+        // ScaffoldMessenger.of(context).showSnackBar(
+        //   const SnackBar(
+        //     content: Center(child: Text('Sign up successful.')),
+        //     duration: Duration(seconds: 3),
+        //   ),
+        // );
         // Navigate to login page
         Navigator.of(context).push(
           MaterialPageRoute(
