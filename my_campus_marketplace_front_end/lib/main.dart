@@ -7,6 +7,7 @@ void main() {
   runApp(const MyApp());
 }
 
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -16,11 +17,13 @@ class MyApp extends StatelessWidget {
       title: 'Splash Screen',
       theme: ThemeData(
         hintColor: Colors.lightBlueAccent, // Light blue accent color
+
       ),
       home: const SplashScreen(),
     );
   }
 }
+
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -39,6 +42,7 @@ class _SplashScreenState extends State<SplashScreen> {
       if (mounted) { // Check if the widget is still in the tree
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(builder: (context) => const LoginSignupPage()), // Navigate to LoginPage
+
         );
       }
     });
