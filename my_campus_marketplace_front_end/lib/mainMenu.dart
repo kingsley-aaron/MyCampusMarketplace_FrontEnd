@@ -72,22 +72,22 @@ class HomeScreen extends StatelessWidget {
     void _logout(BuildContext context) {
 
       // Make an API call to logout
-      http.post(Uri.parse('http://10.0.2.2/api/logout.php'))
-          .then((response) {
+      //http.post(Uri.parse('http://10.0.2.2/api/logout.php'))
+          //.then((response) {
         // Handle the API response here
-        if (response.statusCode == 200) {
+        //if (response.statusCode == 200) {
           // Logout successful, navigate back to the login page
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(builder: (context) => LoginSignupPage()),
           );
-        } else {
+        //} else {
           // Handle error case
           // Display an error message or perform any other necessary actions
         }
-      }).catchError((error) {
+      //}).catchError((error) {
         // Handle error case
         // Display an error message or perform any other necessary actions
-      });
-    }
+      //});
+    //}
     
