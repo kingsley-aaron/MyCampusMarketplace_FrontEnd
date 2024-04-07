@@ -1,22 +1,6 @@
 import 'package:flutter/material.dart';
 import 'expandedSale.dart';
 
-void main() {
-  runApp(ForSaleApp());
-}
-
-class ForSaleApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'My Campus Marketplace',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: ForSale(),
-    );
-  }
-}
 
 class ForSale extends StatelessWidget {
   final List<Map<String, dynamic>> items = [

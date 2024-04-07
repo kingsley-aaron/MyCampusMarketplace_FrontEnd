@@ -1,8 +1,7 @@
-import 'package:http/http.dart' as http;
+//import 'package:http/http.dart' as http;       This will be used for logout when we get it working
 import 'package:flutter/material.dart';
 import 'loginSignUp.dart';
 import 'forSale.dart';
-import 'expandedSale.dart';
 
 class HomeScreen extends StatelessWidget {
   final String userName;
@@ -58,7 +57,10 @@ class HomeScreen extends StatelessWidget {
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
-                  ForSale();
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ForSale()),
+                );
               },
               child: const Text('For Sale'),
             ),
@@ -69,24 +71,22 @@ class HomeScreen extends StatelessWidget {
   }
 }
 
-
-    // Method to handle logout button press
-    void _logout(BuildContext context) {
-
-      // Make an API call to logout
-      //http.post(Uri.parse('http://10.0.2.2/api/logout.php'))
-          //.then((response) {
-        // Handle the API response here
-        //if (response.statusCode == 200) {
-          // Logout successful, navigate back to the login page
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => LoginSignupPage()),
-          );
-        //} else {
-          // Handle error case
-          // Display an error message or perform any other necessary actions
-        }
+// Method to handle logout button press
+void _logout(BuildContext context) {
+  // Make an API call to logout
+  //http.post(Uri.parse('http://10.0.2.2/api/logout.php'))
+  //.then((response) {
+  // Handle the API response here
+  //if (response.statusCode == 200) {
+  // Logout successful, navigate back to the login page
+  Navigator.pushReplacement(
+    context,
+    MaterialPageRoute(builder: (context) => LoginSignupPage()),
+  );
+  //} else {
+  // Handle error case
+  // Display an error message or perform any other necessary actions
+}
       //}).catchError((error) {
         // Handle error case
         // Display an error message or perform any other necessary actions
