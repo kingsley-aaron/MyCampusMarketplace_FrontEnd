@@ -67,12 +67,6 @@ class HomeScreen extends StatelessWidget {
   }
 }
 
-// void main() {
-//   runApp(MaterialApp(
-//     home: HomeScreen(userName: "User"),
-//   ));
-// }
-
 
     // Method to handle logout button press
     void _logout(BuildContext context) {
