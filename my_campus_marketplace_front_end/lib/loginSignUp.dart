@@ -182,7 +182,7 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
           // Navigate to MainMenuPage upon successful authentication
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (context) => MainMenuPage()),// Or what ever page you want to navigate to after login
+            MaterialPageRoute(builder: (context) => HomeScreen(userName: '',)),// Or what ever page you want to navigate to after login
           );
         } else {
           // Display an error message if authentication fails
