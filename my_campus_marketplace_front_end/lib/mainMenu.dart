@@ -1,3 +1,4 @@
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'loginSignUp.dart';
 
@@ -72,13 +73,27 @@ class HomeScreen extends StatelessWidget {
 //   ));
 // }
 
-// Method to handle logout button press
-  void _logout(BuildContext context) {
-    // Clear the user session
-    // You may need to implement this logic based on how your session management is done
-    // For example, you may need to clear session variables and navigate back to the login page
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (context) => LoginSignupPage()), // Navigate back to the login page
-    );
-  }
+
+    // Method to handle logout button press
+    void _logout(BuildContext context) {
+
+      // Make an API call to logout
+      http.post(Uri.parse('http://10.0.2.2/api/logout.php'))
+          .then((response) {
+        // Handle the API response here
+        if (response.statusCode == 200) {
+          // Logout successful, navigate back to the login page
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => LoginSignupPage()),
+          );
+        } else {
+          // Handle error case
+          // Display an error message or perform any other necessary actions
+        }
+      }).catchError((error) {
+        // Handle error case
+        // Display an error message or perform any other necessary actions
+      });
+    }
+    
