@@ -1,6 +1,8 @@
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'loginSignUp.dart';
+import 'forSale.dart';
+import 'expandedSale.dart';
 
 class HomeScreen extends StatelessWidget {
   final String userName;
@@ -56,7 +58,7 @@ class HomeScreen extends StatelessWidget {
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
-                // Navigate to For Sale screen
+                  ForSale();
               },
               child: const Text('For Sale'),
             ),
