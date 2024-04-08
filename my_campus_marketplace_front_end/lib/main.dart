@@ -107,7 +107,7 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
               ),
             const SizedBox(height: 16.0),
             ElevatedButton(
-              onPressed: _isLogin ? _login : _signup,
+              onPressed: _isLogin ? null : null,
               child: Text(_isLogin ? 'Login' : 'Sign Up'),
             ),
             TextButton(
@@ -125,7 +125,7 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
     );
   }
 
-  void _login() async {
+  /*void _login() async {
     // Implement login logic here
     if (_isLogin) {
       String username = _usernameController.text.trim();
@@ -137,9 +137,7 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
         _showErrorDialog("Please enter your password.");
         return;
       }
-
-      //Checking login logic
-      /*
+      
       var response = await http.post(
           Uri.parse('Insert server http here'),
           body: json.encode({'username': username,
@@ -152,7 +150,6 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
         } else {
           _showErrorDialog("Invalid username or password. Please try again.")
         }
-      */
     }
   }
 
@@ -228,7 +225,7 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
       }
     }
   }
-
+*/
   void _showErrorDialog(String message) {
     showDialog(
       context: context,
