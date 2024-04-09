@@ -107,27 +107,27 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
                 style: const TextStyle(color: Colors.white),
               ),
             const SizedBox(height: 16.0),
-              ElevatedButton(
-                onPressed: _isLogin ? _login : _signup,
-                 child: Text(_isLogin ? 'Login' : 'Sign Up'),
-              ),
-              TextButton(
-                onPressed: () {
-                  setState(() {
-                   _isLogin = !_isLogin;
-                  });
-               },
-                child: Text(
-                    _isLogin ? 'Create an account' : 'Have an account? Sign in'),
-              ),
-            ],
-          ),
+            ElevatedButton(
+              onPressed: _isLogin ? null : null,
+              child: Text(_isLogin ? 'Login' : 'Sign Up'),
+            ),
+            TextButton(
+              onPressed: () {
+                setState(() {
+                  _isLogin = !_isLogin;
+                });
+              },
+              child: Text(
+                  _isLogin ? 'Create an account' : 'Have an account? Sign in'),
+            ),
+          ],
         ),
       ),
+    ),
     );
   }
 
-  void _login() async {
+  /*void _login() async {
     // Implement login logic here
     if (_isLogin) {
       String username = _usernameController.text.trim();
@@ -139,9 +139,7 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
         _showErrorDialog("Please enter your password.");
         return;
       }
-
-      //Checking login logic
-      /*
+      
       var response = await http.post(
           Uri.parse('Insert server http here'),
           body: json.encode({'username': username,
@@ -154,7 +152,6 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
         } else {
           _showErrorDialog("Invalid username or password. Please try again.")
         }
-      */
     }
   }
 
@@ -173,7 +170,7 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
         _showErrorDialog("Please enter your first name.");
       } else if (!(lastName.isNotEmpty)) {
         _showErrorDialog("Please enter your last name.");
-      } else if (int.tryParse(studentID) == null) {
+      } else if ((studentID.isNotEmpty) && (int.tryParse(studentID) == null)) {
         _showErrorDialog("Student ID must be numeric.");
       } else if (passwordHash.length < 8) {
         _showErrorDialog("Password must be at least 8 characters");
@@ -230,7 +227,7 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
       }
     }
   }
-
+*/
   void _showErrorDialog(String message) {
     showDialog(
       context: context,
