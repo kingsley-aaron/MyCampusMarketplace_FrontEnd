@@ -11,7 +11,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     // Implement login check here to direct user to correct pages
 
     return MaterialApp(
