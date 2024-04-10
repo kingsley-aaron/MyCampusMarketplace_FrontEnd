@@ -169,7 +169,7 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
 
     //Checking login logic
     var response = await http.post(
-      Uri.parse('http://10.0.2.2/api/login.php'),
+      Uri.parse('https://helpmewithfinals.com/api/login.php'),
       body: {'userName': userName, 'passwordHash': passwordHash},
     );
 
@@ -231,7 +231,7 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
       } else {
         // Continue with sign up process
         final url =
-                'http://10.0.2.2/api/Signup.php'; 
+                'https://helpmewithfinals.com/api/Signup.php'; 
             final response = await http.post(
               Uri.parse(url),
               body: {
