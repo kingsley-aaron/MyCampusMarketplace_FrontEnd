@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'myListings.dart';
 
 class ExpandedSale extends StatelessWidget {
   final Map<String, dynamic> item;
@@ -133,20 +134,6 @@ class ExpandedSale extends StatelessWidget {
             ),
           ],
         ),
-      ),
-    );
-  }
-}
-
-class MyListings extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('My Listings'),
-      ),
-      body: Center(
-        child: Text('This is where your listings will be displayed.'),
       ),
     );
   }

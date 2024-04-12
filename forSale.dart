@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'expandedSale.dart';
+import 'myListings.dart';
 
 void main() {
   runApp(ForSaleApp());
@@ -149,20 +150,6 @@ class ForSale extends StatelessWidget {
             ),
           );
         },
-      ),
-    );
-  }
-}
-
-class MyListings extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('My Listings'),
-      ),
-      body: Center(
-        child: Text('This is where your listings will be displayed.'),
       ),
     );
   }
