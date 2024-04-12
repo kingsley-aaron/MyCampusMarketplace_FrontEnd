@@ -58,13 +58,23 @@ class ForSale extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Center(child: Text('My Campus Marketplace')),
+        title: const Center(
+          child: Text(
+            'Items For Sale',
+          ),
+        ),
         actions: [
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Row(
               children: [
-                Text('Welcome, User'), // Replace User with your actual username
+                Text(
+                  'Welcome, User',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                  ),
+                ), // Replace User with your actual username
                 PopupMenuButton<String>(
                   onSelected: (value) {
                     if (value == 'myListings') {
@@ -133,14 +143,30 @@ class ForSale extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          Text(item['name'],
-                              style: TextStyle(
-                                  fontSize: 20, fontWeight: FontWeight.bold)),
+                          Text(
+                            item['name'],
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black87,
+                            ),
+                          ),
                           SizedBox(height: 10),
-                          Text('Condition: ${item['condition']}',
-                              style: TextStyle(fontSize: 16)),
-                          Text('Price: ${item['price']}',
-                              style: TextStyle(fontSize: 16)),
+                          Text(
+                            'Condition: ${item['condition']}',
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: Colors.grey[600],
+                            ),
+                          ),
+                          Text(
+                            'Price: ${item['price']}',
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: Colors.blue,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
                         ],
                       ),
                     ),
