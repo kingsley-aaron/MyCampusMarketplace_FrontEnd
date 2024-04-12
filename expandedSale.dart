@@ -1,4 +1,3 @@
-//just a place holder for what we pick for coding!!
 import 'package:flutter/material.dart';
 
 class ExpandedSale extends StatelessWidget {
@@ -8,9 +7,49 @@ class ExpandedSale extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Assume the seller's email is stored in the item map with the key 'email'
+    String sellerEmail = item['email'] ?? ''; // Assuming the key is 'email'
+
     return Scaffold(
       appBar: AppBar(
         title: Text(item['name']),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              children: [
+                Text('Welcome, User'), // Replace User with your actual username
+                PopupMenuButton<String>(
+                  onSelected: (value) {
+                    if (value == 'myListings') {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              MyListings(), // Navigate to My Listings screen
+                        ),
+                      );
+                      // Navigate to My Listings screen
+                    } else if (value == 'signOut') {
+                      // Perform sign out
+                    }
+                  },
+                  itemBuilder: (BuildContext context) =>
+                      <PopupMenuEntry<String>>[
+                    const PopupMenuItem<String>(
+                      value: 'myListings',
+                      child: Text('My Listings'),
+                    ),
+                    const PopupMenuItem<String>(
+                      value: 'signOut',
+                      child: Text('Sign Out'),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
@@ -25,10 +64,16 @@ class ExpandedSale extends StatelessWidget {
             AspectRatio(
               aspectRatio: 1.5,
               child: Container(
-                width: double.infinity,
                 decoration: BoxDecoration(
-                  color: Colors.grey[300],
                   borderRadius: BorderRadius.circular(12.0),
+                  gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [
+                      Colors.blue.shade900,
+                      Colors.blue.shade200,
+                    ],
+                  ),
                 ),
                 child: Center(
                   child: Icon(Icons.image, size: 100.0),
@@ -37,26 +82,71 @@ class ExpandedSale extends StatelessWidget {
             ),
             SizedBox(height: 8.0),
             Center(
-              child: Text('Condition: ${item['condition']}'),
+              child: Text(
+                'Condition: ${item['condition']}',
+                style: TextStyle(fontSize: 16.0), // Adjust font size here
+              ),
+            ),
+            SizedBox(
+              height: 8.0,
             ),
             Center(
-              child: Text('Price: ${item['price']}'),
+              child: Text(
+                'Price: ${item['price']}',
+                style: TextStyle(fontSize: 16.0), // Adjust font size here
+              ),
             ),
             SizedBox(height: 8.0),
             Center(
-              child: Text('Description: ${item['description']}'),
+              child: Text(
+                'Description: ${item['description']}',
+                style: TextStyle(fontSize: 16.0), // Adjust font size here
+              ),
             ),
-            SizedBox(height: 16.0),
+            SizedBox(height: 8.0),
             Center(
-              child: ElevatedButton(
-                onPressed: () {
-                  // Implement messaging functionality or another action
-                },
-                child: Text('Message Owner'),
+              child: Text(
+                'Seller\'s Email: $sellerEmail',
+                style: TextStyle(fontSize: 16.0),
+              ),
+            ),
+            SizedBox(height: 16.0), // Add some space between text and buttons
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 16.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      // Implement delete functionality
+                    },
+                    child: Text('Delete'),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      // Implement mark as sold functionality
+                    },
+                    child: Text('Mark as Sold'),
+                  ),
+                ],
               ),
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class MyListings extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('My Listings'),
+      ),
+      body: Center(
+        child: Text('This is where your listings will be displayed.'),
       ),
     );
   }

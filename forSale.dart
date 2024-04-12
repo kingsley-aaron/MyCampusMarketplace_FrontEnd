@@ -50,7 +50,6 @@ class ForSale extends StatelessWidget {
       'price': '\$50',
       'description': 'Some wear and tear visible.'
     }
-
     //replace with data from database
   ];
 
@@ -58,7 +57,43 @@ class ForSale extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('For Sale'),
+        title: const Center(child: Text('My Campus Marketplace')),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              children: [
+                Text('Welcome, User'), // Replace User with your actual username
+                PopupMenuButton<String>(
+                  onSelected: (value) {
+                    if (value == 'myListings') {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              MyListings(), // Navigate to My Listings screen
+                        ),
+                      );
+                    } else if (value == 'signOut') {
+                      // Perform sign out
+                    }
+                  },
+                  itemBuilder: (BuildContext context) =>
+                      <PopupMenuEntry<String>>[
+                    const PopupMenuItem<String>(
+                      value: 'myListings',
+                      child: Text('My Listings'),
+                    ),
+                    const PopupMenuItem<String>(
+                      value: 'signOut',
+                      child: Text('Sign Out'),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
       body: ListView.builder(
         itemCount: items.length,
@@ -82,7 +117,13 @@ class ForSale extends StatelessWidget {
                     Container(
                       width: 100,
                       height: 100,
-                      color: Colors.grey[200],
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [Colors.blue[900]!, Colors.blue[200]!],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        ),
+                      ),
                       child: Icon(Icons.image, size: 50), // Placeholder icon
                     ),
                     SizedBox(width: 16),
@@ -108,6 +149,20 @@ class ForSale extends StatelessWidget {
             ),
           );
         },
+      ),
+    );
+  }
+}
+
+class MyListings extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('My Listings'),
+      ),
+      body: Center(
+        child: Text('This is where your listings will be displayed.'),
       ),
     );
   }
