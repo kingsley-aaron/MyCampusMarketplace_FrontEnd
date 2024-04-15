@@ -6,7 +6,7 @@ class ListItemPage extends StatefulWidget {
 }
 
 class _ListItemPageState extends State<ListItemPage> {
-  int _conditionValue = 0;
+  int _selectedConditionIndex = 0;
   final TextEditingController _itemNameController = TextEditingController();
   final TextEditingController _itemPriceController = TextEditingController();
   final TextEditingController _itemDescriptionController =
@@ -79,48 +79,34 @@ class _ListItemPageState extends State<ListItemPage> {
             ),
             SizedBox(height: 16.0),
             Text('Condition'),
-            Row(
-              children: [
-                Radio(
+            DropdownButton<int>(
+              value: _selectedConditionIndex,
+              onChanged: (value) {
+                setState(() {
+                  _selectedConditionIndex = value!;
+                });
+              },
+              items: <DropdownMenuItem<int>>[
+                DropdownMenuItem(
                   value: 0,
-                  groupValue: _conditionValue,
-                  onChanged: (value) {
-                    setState(() {
-                      _conditionValue = value as int;
-                    });
-                  },
+                  child: Text('Select Condition'),
                 ),
-                Text('New'),
-                Radio(
+                DropdownMenuItem(
                   value: 1,
-                  groupValue: _conditionValue,
-                  onChanged: (value) {
-                    setState(() {
-                      _conditionValue = value as int;
-                    });
-                  },
+                  child: Text('New'),
                 ),
-                Text('Used - Like New'),
-                Radio(
+                DropdownMenuItem(
                   value: 2,
-                  groupValue: _conditionValue,
-                  onChanged: (value) {
-                    setState(() {
-                      _conditionValue = value as int;
-                    });
-                  },
+                  child: Text('Used - Like New'),
                 ),
-                Text('Used - Good'),
-                Radio(
+                DropdownMenuItem(
                   value: 3,
-                  groupValue: _conditionValue,
-                  onChanged: (value) {
-                    setState(() {
-                      _conditionValue = value as int;
-                    });
-                  },
+                  child: Text('Used - Good'),
                 ),
-                Text('Used - Fair'),
+                DropdownMenuItem(
+                  value: 4,
+                  child: Text('Used - Fair'),
+                ),
               ],
             ),
             SizedBox(height: 16.0),
@@ -141,7 +127,7 @@ class _ListItemPageState extends State<ListItemPage> {
               children: [
                 ElevatedButton(
                   onPressed: () {
-                    // Implement submit functionality
+                    _submitForm();
                   },
                   child: Text('Submit'),
                 ),
@@ -151,6 +137,9 @@ class _ListItemPageState extends State<ListItemPage> {
                     _itemNameController.clear();
                     _itemPriceController.clear();
                     _itemDescriptionController.clear();
+                    setState(() {
+                      _selectedConditionIndex = 0;
+                    });
                   },
                   child: Text('Clear'),
                 ),
@@ -160,5 +149,27 @@ class _ListItemPageState extends State<ListItemPage> {
         ),
       ),
     );
+  }
+
+  void _submitForm() {
+    // Perform validation
+    if (_selectedConditionIndex == 0) {
+      // Show error message or dialog for condition not selected
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Please select a condition.'),
+        ),
+      );
+      return;
+    }
+
+    // Continue with form submission
+    String itemName = _itemNameController.text;
+    String itemPrice = _itemPriceController.text;
+    String itemDescription = _itemDescriptionController.text;
+    int selectedCondition = _selectedConditionIndex;
+
+    // Now you can use the itemName, itemPrice, itemDescription, and selectedCondition
+    // variables to perform your form submission logic
   }
 }
