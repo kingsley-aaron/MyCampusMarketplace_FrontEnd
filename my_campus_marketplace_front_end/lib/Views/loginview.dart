@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mycampusmarketplace/Models/user.dart';
 import 'package:mycampusmarketplace/Repositories/userClient.dart';
-import 'mainMenu.dart';
+import 'package:mycampusmarketplace/Views/mainMenu.dart';
 
 final UserClient client = new UserClient();
 

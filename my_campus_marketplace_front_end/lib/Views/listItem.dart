@@ -1,11 +1,18 @@
 import 'package:flutter/material.dart';
+import 'myListings.dart';
 
 class ListItemPage extends StatefulWidget {
+  final String userName;
+
+  ListItemPage({required this.userName});
+
   @override
-  _ListItemPageState createState() => _ListItemPageState();
+  _ListItemPageState createState() => _ListItemPageState(userName);
 }
 
 class _ListItemPageState extends State<ListItemPage> {
+  _ListItemPageState(userName);
+  late String userName = widget.userName;
   int _selectedConditionIndex = 0;
   final TextEditingController _itemNameController = TextEditingController();
   final TextEditingController _itemPriceController = TextEditingController();
@@ -25,19 +32,31 @@ class _ListItemPageState extends State<ListItemPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('List New Item'),
+        //title: Text('List New Item'),
         actions: [
+          IconButton(
+            icon: Icon(Icons.home),
+            onPressed: () {
+              Navigator.pop(context); // Navigate back to the home screen
+            },
+          ),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Row(
               children: [
-                Text('Welcome, User'), // Replace 'User' with actual user name
+                Text('Welcome, $userName'),
                 PopupMenuButton<String>(
                   onSelected: (value) {
                     if (value == 'myListings') {
                       // Navigate to My Listings screen
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => MyListings(),
+                        ),
+                      );
                     } else if (value == 'signOut') {
-                      // Perform sign out
+                      //_logout();
                     }
                   },
                   itemBuilder: (BuildContext context) =>
@@ -62,6 +81,17 @@ class _ListItemPageState extends State<ListItemPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            Container(
+              padding: EdgeInsets.all(16.0),
+              child: Text(
+                'List New Item',
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ),
             Text('Item Name'),
             TextField(
               controller: _itemNameController,

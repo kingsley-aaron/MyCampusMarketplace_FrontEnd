@@ -1,16 +1,27 @@
 import 'listItem.dart';
 import 'package:flutter/material.dart';
+import 'package:mycampusmarketplace/views/loginview.dart';
+import 'forSale.dart';
+import 'myListings.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   final String userName;
 
   HomeScreen({required this.userName});
 
   @override
+  State<HomeScreen> createState() => _HomeScreenState(userName);
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  _HomeScreenState(userName);
+  late String userName = widget.userName;
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Center(child: Text('My Campus Marketplace')),
+        // title: Text('My Campus Marketplace'),
         actions: [
           Padding(
             padding: const EdgeInsets.all(8.0),
@@ -21,8 +32,14 @@ class HomeScreen extends StatelessWidget {
                   onSelected: (value) {
                     if (value == 'myListings') {
                       // Navigate to My Listings screen
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => MyListings(),
+                        ),
+                      );
                     } else if (value == 'signOut') {
-                      // Perform sign out
+                      _logout();
                     }
                   },
                   itemBuilder: (BuildContext context) =>
@@ -42,31 +59,93 @@ class HomeScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          ListItemPage()), // Navigate to ListItemPage
-                );
-              },
-              child: const Text('List New Item'),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Container(
+            padding: EdgeInsets.all(16.0),
+            child: Text(
+              'My Campus Marketplace',
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+              ),
+              textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 20),
-            ElevatedButton(
+          ),
+          Expanded(
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ListItemPage(
+                            userName: userName,
+                          ),
+                        ),
+                      );
+                    },
+                    child: const Text('List New Item'),
+                  ),
+                  const SizedBox(height: 20),
+                  ElevatedButton(
+                    onPressed: () {
+                      // Navigate to For Sale screen
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ForSale(
+                            userName: userName,
+                          ),
+                        ),
+                      );
+                    },
+                    child: const Text('For Sale'),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _logout() async {
+    // Calling the logout function
+    String logoutResponse = await client.logout();
+
+    if (logoutResponse == "Success") {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => LoginSignupPage()),
+      );
+    } else {
+      _showErrorDialog(logoutResponse);
+    }
+  }
+
+  void _showErrorDialog(String message) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Error"),
+          content: Text(message),
+          actions: <Widget>[
+            TextButton(
+              child: Text("OK"),
               onPressed: () {
-                // Navigate to For Sale screen
+                Navigator.of(context).pop();
               },
-              child: const Text('For Sale'),
             ),
           ],
-        ),
-      ),
+        );
+      },
     );
   }
 }
