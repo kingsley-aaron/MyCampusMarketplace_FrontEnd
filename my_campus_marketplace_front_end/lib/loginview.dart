@@ -26,77 +26,65 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
       backgroundColor: Colors.grey[800],
       body: SingleChildScrollView(
         child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            if (!_isLogin)
-              TextFormField(
-                controller: _firstNameController,
-                decoration: InputDecoration(
-                  labelText: 'First Name',
-                  labelStyle: TextStyle(color: Colors.white),
-                  enabledBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.blue)),
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              if (!_isLogin)
+                TextFormField(
+                  controller: _firstNameController,
+                  decoration: InputDecoration(
+                    labelText: 'First Name',
+                    labelStyle: TextStyle(color: Colors.white),
+                    enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.blue)),
+                  ),
                 ),
-              ),
-            if (!_isLogin)
-              TextFormField(
-                controller: _lastNameController,
-                decoration: InputDecoration(
-                  labelText: 'Last Name',
-                  labelStyle: TextStyle(color: Colors.white),
-                  enabledBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.blue)),
+              if (!_isLogin)
+                TextFormField(
+                  controller: _lastNameController,
+                  decoration: InputDecoration(
+                    labelText: 'Last Name',
+                    labelStyle: TextStyle(color: Colors.white),
+                    enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.blue)),
+                  ),
                 ),
-              ),
-            if (!_isLogin)
-              TextFormField(
-                controller: _studentIDController,
-                decoration: InputDecoration(
-                  labelText: 'StudentID',
-                  labelStyle: TextStyle(color: Colors.white),
-                  enabledBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.blue)),
+              if (!_isLogin)
+                TextFormField(
+                  controller: _studentIDController,
+                  decoration: InputDecoration(
+                    labelText: 'StudentID',
+                    labelStyle: TextStyle(color: Colors.white),
+                    enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.blue)),
+                  ),
                 ),
-              ),
-            if (!_isLogin)
-              TextFormField(
-                controller: _emailController,
-                decoration: InputDecoration(
-                  labelText: 'Email',
-                  labelStyle: TextStyle(color: Colors.white),
-                  enabledBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.blue)),
+              if (!_isLogin)
+                TextFormField(
+                  controller: _emailController,
+                  decoration: InputDecoration(
+                    labelText: 'Email',
+                    labelStyle: TextStyle(color: Colors.white),
+                    enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.blue)),
+                  ),
                 ),
-              ),
-            TextFormField(
-              controller: _usernameController,
-              decoration: const InputDecoration(
-                labelText: 'Username',
-                labelStyle: TextStyle(color: Colors.white),
-                enabledBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.blue)),
-              ),
-              style: const TextStyle(color: Colors.white),
-            ),
-            TextFormField(
-              controller: _passwordController,
-              decoration: const InputDecoration(
-                labelText: 'Password',
-                labelStyle: TextStyle(color: Colors.white),
-                enabledBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.blue)),
-              ),
-              obscureText: true,
-              style: const TextStyle(color: Colors.white),
-            ),
-            if (!_isLogin)
               TextFormField(
-                controller: _confirmPasswordController,
+                controller: _usernameController,
                 decoration: const InputDecoration(
-                  labelText: 'Confirm Password',
+                  labelText: 'Username',
+                  labelStyle: TextStyle(color: Colors.white),
+                  enabledBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.blue)),
+                ),
+                style: const TextStyle(color: Colors.white),
+              ),
+              TextFormField(
+                controller: _passwordController,
+                decoration: const InputDecoration(
+                  labelText: 'Password',
                   labelStyle: TextStyle(color: Colors.white),
                   enabledBorder: UnderlineInputBorder(
                       borderSide: BorderSide(color: Colors.blue)),
@@ -104,24 +92,37 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
                 obscureText: true,
                 style: const TextStyle(color: Colors.white),
               ),
-            const SizedBox(height: 16.0),
-            ElevatedButton(
-              onPressed: _isLogin ? null : null,
-              child: Text(_isLogin ? 'Login' : 'Sign Up'),
-            ),
-            TextButton(
-              onPressed: () {
-                setState(() {
-                  _isLogin = !_isLogin;
-                });
-              },
-              child: Text(
-                  _isLogin ? 'Create an account' : 'Have an account? Sign in'),
-            ),
-          ],
+              if (!_isLogin)
+                TextFormField(
+                  controller: _confirmPasswordController,
+                  decoration: const InputDecoration(
+                    labelText: 'Confirm Password',
+                    labelStyle: TextStyle(color: Colors.white),
+                    enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.blue)),
+                  ),
+                  obscureText: true,
+                  style: const TextStyle(color: Colors.white),
+                ),
+              const SizedBox(height: 16.0),
+              ElevatedButton(
+                onPressed: _isLogin ? null : null,
+                child: Text(_isLogin ? 'Login' : 'Sign Up'),
+              ),
+              TextButton(
+                onPressed: () {
+                  setState(() {
+                    _isLogin = !_isLogin;
+                  });
+                },
+                child: Text(_isLogin
+                    ? 'Create an account'
+                    : 'Have an account? Sign in'),
+              ),
+            ],
+          ),
         ),
       ),
-    ),
     );
   }
 
@@ -177,10 +178,10 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
       } else if (passwordHash != confirmPassword) {
         _showErrorDialog("Passwords do not match.");
       } else if (studentEmail.isEmpty ||
-          !studentEmail.endsWith('@my.sctcc.edu')) {
+          !studentEmail.endsWith('@my.sctcc.edu') || !studentEmail.endsWith('@sctcc.edu')) {
         _showErrorDialog(studentEmail.isEmpty
             ? "Please enter email"
-            : "Please enter valid SCTCC email address ending in @my.sctcc.edu");
+            : "Please enter valid SCTCC email address ending in @my.sctcc.edu or @sctcc.edu");
       } else if (username.isEmpty) {
         _showErrorDialog("Please enter a username");
       } else {
