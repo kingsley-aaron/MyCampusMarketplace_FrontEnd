@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:mycampusmarketplace/Models/user.dart';
+import 'package:mycampusmarketplace/Repositories/userClient.dart';
+import 'package:mycampusmarketplace/Views/mainMenu.dart';
+
+final UserClient client = new UserClient();
 
 class LoginSignupPage extends StatefulWidget {
   @override
@@ -106,7 +111,7 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
                 ),
               const SizedBox(height: 16.0),
               ElevatedButton(
-                onPressed: _isLogin ? null : null,
+                onPressed: _isLogin ? _login : _signup,
                 child: Text(_isLogin ? 'Login' : 'Sign Up'),
               ),
               TextButton(
@@ -126,107 +131,6 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
     );
   }
 
-  /*void _login() async {
-    // Implement login logic here
-    if (_isLogin) {
-      String username = _usernameController.text.trim();
-      String passwordHash = _passwordController.text.trim();
-
-      if (username.isEmpty) {
-        _showErrorDialog("Please enter your username.");
-      } else if (passwordHash.isEmpty) {
-        _showErrorDialog("Please enter your password.");
-        return;
-      }
-      
-      var response = await http.post(
-          Uri.parse('Insert server http here'),
-          body: json.encode({'username': username,
-                             'passwordHash': passwordHash}),
-          headers: {'Content-Type': 'application/json},
-        );
-
-        if (response.statusCode == 200) {
-          Navigator.push to application home
-        } else {
-          _showErrorDialog("Invalid username or password. Please try again.")
-        }
-    }
-  }
-
-  void _signup() async {
-    // Implement signup logic here
-    if (!_isLogin) {
-      String firstName = _firstNameController.text.trim();
-      String lastName = _lastNameController.text.trim();
-      String studentID = _studentIDController.text.trim();
-      String studentEmail = _emailController.text.trim();
-      String passwordHash = _passwordController.text.trim();
-      String username = _usernameController.text.trim();
-      String confirmPassword = _confirmPasswordController.text.trim();
-
-      if (firstName.isEmpty) {
-        _showErrorDialog("Please enter your first name.");
-      } else if (!(lastName.isNotEmpty)) {
-        _showErrorDialog("Please enter your last name.");
-      } else if ((studentID.isNotEmpty) && (int.tryParse(studentID) == null)) {
-        _showErrorDialog("Student ID must be numeric.");
-      } else if (passwordHash.length < 8) {
-        _showErrorDialog("Password must be at least 8 characters");
-      } else if (passwordHash.isEmpty || confirmPassword.isEmpty) {
-        _showErrorDialog("Please enter password and confirm password");
-      } else if (passwordHash != confirmPassword) {
-        _showErrorDialog("Passwords do not match.");
-      } else if (studentEmail.isEmpty ||
-          !studentEmail.endsWith('@my.sctcc.edu') || !studentEmail.endsWith('@sctcc.edu')) {
-        _showErrorDialog(studentEmail.isEmpty
-            ? "Please enter email"
-            : "Please enter valid SCTCC email address ending in @my.sctcc.edu or @sctcc.edu");
-      } else if (username.isEmpty) {
-        _showErrorDialog("Please enter a username");
-      } else {
-        // Continue with sign up process
-        //Verify that the email & username don't already exist in the database
-
-        /* Posting to http server
-        var response = await http.post(
-          Uri.parse('Insert server http here'),
-          body: json.encode({'firstName': firstName,
-                             'lastName': lastName,
-                             'studentID': studentID,
-                             'studentEmail': studentEmail,
-                             'passwordHash': passwordHash,
-                             'username': username}),
-          headers: {'Content-Type': 'application/json},
-        );
-
-        if (response.statusCode == 200) {
-          Navigator.push to application login screen
-        } else {
-          _showErrorDialog("Account already exists")
-          Navigator.push to login screen
-        }
-
-
-        */
-
-        //Success snackbar of valid sign up
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Center(child: Text('Sign up successful.')),
-            duration: Duration(seconds: 3),
-          ),
-        );
-        // Navigate to login page
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) => const LoginSignupPage(),
-          ),
-        );
-      }
-    }
-  }
-*/
   void _showErrorDialog(String message) {
     showDialog(
       context: context,
@@ -245,5 +149,103 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
         );
       },
     );
+  }
+
+  Future<String> _getUsername() async {
+    // calling the function to get a User object
+    User? user = await client.getUser();
+
+    if (user != null) {
+      return user.userName;
+    } else {
+      return client.getErrorMessage();
+    }
+  }
+
+  void _login() async {
+    // Implement login logic here
+    if (_isLogin) {
+      String userName = _usernameController.text.trim();
+      String passwordHash = _passwordController.text.trim();
+
+      if (userName.isEmpty) {
+        _showErrorDialog("Please enter your username.");
+      } else if (passwordHash.isEmpty) {
+        _showErrorDialog("Please enter your password.");
+        return;
+      }
+
+      // Calling the login function
+      String loginResponse = await client.login(userName, passwordHash);
+
+      userName = await _getUsername();
+
+      if (loginResponse == "Success") {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+              builder: (context) => HomeScreen(userName: userName)),
+        );
+      } else {
+        _showErrorDialog(loginResponse);
+      }
+    }
+  }
+
+  void _signup() async {
+    // Implement signup logic here
+    if (!_isLogin) {
+      String firstName = _firstNameController.text.trim();
+      String lastName = _lastNameController.text.trim();
+      String studentID = _studentIDController.text.trim();
+      String studentEmail = _emailController.text.trim();
+      String passwordHash = _passwordController.text.trim();
+      String userName = _usernameController.text.trim();
+      String confirmPassword = _confirmPasswordController.text.trim();
+
+      if (!_isLogin) {
+        if (firstName.isEmpty) {
+          _showErrorDialog("Please enter your first name.");
+          return;
+        }
+        if (lastName.isEmpty) {
+          _showErrorDialog("Please enter your last name.");
+          return;
+        }
+        if (studentID.isEmpty) {
+          _showErrorDialog("Please enter your student ID.");
+          return;
+        }
+        if (studentEmail.isEmpty) {
+          _showErrorDialog("Please enter your student email.");
+          return;
+        }
+        if (!studentEmail.endsWith('@my.sctcc.edu')) {
+          _showErrorDialog(
+              "Please enter a valid SCTCC email address ending in @my.sctcc.edu");
+          return;
+        }
+        if (passwordHash.length < 8) {
+          _showErrorDialog("Password must be at least 8 characters long.");
+          return;
+        }
+        if (passwordHash != confirmPassword) {
+          _showErrorDialog("Passwords do not match.");
+          return;
+        }
+      }
+      String signupResponse = await client.signup(
+          firstName, lastName, studentID, studentEmail, userName, passwordHash);
+
+      if (signupResponse == "Success") {
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => LoginSignupPage(),
+          ),
+        );
+      } else {
+        _showErrorDialog(signupResponse);
+      }
+    }
   }
 }
