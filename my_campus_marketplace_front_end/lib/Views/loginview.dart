@@ -3,7 +3,7 @@ import 'package:mycampusmarketplace/Models/user.dart';
 import 'package:mycampusmarketplace/Repositories/userClient.dart';
 import 'package:mycampusmarketplace/Views/mainMenu.dart';
 
-final UserClient client = new UserClient();
+import '../main.dart';
 
 class LoginSignupPage extends StatefulWidget {
   @override

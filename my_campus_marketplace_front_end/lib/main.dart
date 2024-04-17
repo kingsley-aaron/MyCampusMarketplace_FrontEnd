@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mycampusmarketplace/Repositories/userClient.dart';
 import 'package:mycampusmarketplace/Views/loginview.dart';
 import 'Views/mainMenu.dart';
 import 'Views/adminMain.dart';
@@ -8,6 +9,8 @@ import 'dart:async';
 void main() {
   runApp(const MyApp());
 }
+
+final UserClient client = new UserClient();
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});

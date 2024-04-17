@@ -1,4 +1,5 @@
 import 'listItem.dart';
+import '../main.dart' as m;
 import 'package:flutter/material.dart';
 import 'package:mycampusmarketplace/views/loginview.dart';
 import 'adminUsers.dart';
@@ -35,7 +36,7 @@ class _AdminHomeState extends State<AdminHome> {
                     }
                   },
                   itemBuilder: (BuildContext context) =>
-                      <PopupMenuEntry<String>>[                 
+                      <PopupMenuEntry<String>>[
                     const PopupMenuItem<String>(
                       value: 'signOut',
                       child: Text('Sign Out'),
@@ -105,7 +106,7 @@ class _AdminHomeState extends State<AdminHome> {
 
   void _logout() async {
     // Calling the logout function
-    String logoutResponse = await client.logout();
+    String logoutResponse = await m.client.logout();
 
     if (logoutResponse == "Success") {
       Navigator.pushReplacement(
