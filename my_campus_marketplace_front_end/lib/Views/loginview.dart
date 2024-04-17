@@ -4,7 +4,7 @@ import 'package:mycampusmarketplace/Repositories/userClient.dart';
 import 'package:mycampusmarketplace/Views/mainMenu.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-final UserClient client = new UserClient();
+import '../main.dart';
 
 class LoginSignupPage extends StatefulWidget {
   @override
