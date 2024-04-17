@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mycampusmarketplace/Models/user.dart';
 import 'package:mycampusmarketplace/Repositories/userClient.dart';
 import 'package:mycampusmarketplace/Views/mainMenu.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 final UserClient client = new UserClient();
 
@@ -25,10 +26,52 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(_isLogin ? 'My Campus Marketplace' : 'Sign Up'),
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(kToolbarHeight),
+        child: Container(
+          decoration: BoxDecoration(
+            color: Colors.green.shade300,
+            borderRadius: BorderRadius.only(
+              bottomLeft: Radius.circular(20),
+              bottomRight: Radius.circular(20),
+            ),
+          ),
+          child: AppBar(
+            title: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Row(
+                  children: [
+                    FaIcon(
+                      FontAwesomeIcons.graduationCap,
+                      color: Color.fromARGB(239, 114, 46, 25),
+                    ),
+                    SizedBox(width: 8),
+                    Text(
+                      '',
+                      style: TextStyle(
+                        fontFamily: 'Quicksand',
+                        color: Color.fromARGB(229, 41, 39, 39),
+                      ),
+                    ),
+                  ],
+                ),
+                Text(
+                  _isLogin ? 'My Campus Marketplace' : 'Sign Up',
+                  style: TextStyle(
+                    fontFamily: 'Quicksand',
+                    color: Color.fromARGB(229, 41, 39, 39),
+                  ),
+                ),
+              ],
+            ),
+            backgroundColor: Color.fromRGBO(159, 232, 205, 0.831),
+            elevation: 0,
+            centerTitle: true,
+          ),
+        ),
       ),
-      backgroundColor: Colors.grey[800],
+      backgroundColor: Color.fromRGBO(254, 254, 254, 1),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -41,78 +84,160 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
                   controller: _firstNameController,
                   decoration: InputDecoration(
                     labelText: 'First Name',
-                    labelStyle: TextStyle(color: Colors.white),
+                    labelStyle: TextStyle(
+                      fontFamily: 'Quicksand',
+                      color: Color.fromARGB(243, 41, 39, 39),
+                    ),
                     enabledBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: Colors.blue)),
+                      borderSide: BorderSide(
+                        color: Color.fromARGB(219, 208, 138, 116),
+                      ),
+                    ),
                   ),
+                  style: TextStyle(
+                      color: Color.fromARGB(243, 41, 39, 39),
+                      fontFamily: 'Quicksand'),
                 ),
               if (!_isLogin)
                 TextFormField(
                   controller: _lastNameController,
                   decoration: InputDecoration(
                     labelText: 'Last Name',
-                    labelStyle: TextStyle(color: Colors.white),
+                    labelStyle: TextStyle(
+                      fontFamily: 'Quicksand',
+                      color: Color.fromARGB(243, 41, 39, 39),
+                    ),
                     enabledBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: Colors.blue)),
+                      borderSide: BorderSide(
+                        color: Color.fromARGB(219, 208, 138, 116),
+                      ),
+                    ),
                   ),
+                  style: TextStyle(
+                      color: Color.fromARGB(243, 41, 39, 39),
+                      fontFamily: 'Quicksand'),
                 ),
               if (!_isLogin)
                 TextFormField(
                   controller: _studentIDController,
                   decoration: InputDecoration(
                     labelText: 'StudentID',
-                    labelStyle: TextStyle(color: Colors.white),
+                    labelStyle: TextStyle(
+                      fontFamily: 'Quicksand',
+                      color: Color.fromARGB(243, 41, 39, 39),
+                    ),
                     enabledBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: Colors.blue)),
+                      borderSide: BorderSide(
+                        color: Color.fromARGB(219, 208, 138, 116),
+                      ),
+                    ),
                   ),
+                  style: TextStyle(
+                      color: Color.fromARGB(243, 41, 39, 39),
+                      fontFamily: 'Quicksand'),
                 ),
               if (!_isLogin)
                 TextFormField(
                   controller: _emailController,
                   decoration: InputDecoration(
                     labelText: 'Email',
-                    labelStyle: TextStyle(color: Colors.white),
+                    labelStyle: TextStyle(
+                      fontFamily: 'Quicksand',
+                      color: Color.fromARGB(243, 41, 39, 39),
+                    ),
                     enabledBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: Colors.blue)),
+                      borderSide: BorderSide(
+                        color: Color.fromARGB(219, 208, 138, 116),
+                      ),
+                    ),
                   ),
+                  style: TextStyle(
+                      color: Color.fromARGB(243, 41, 39, 39),
+                      fontFamily: 'Quicksand'),
                 ),
               TextFormField(
                 controller: _usernameController,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   labelText: 'Username',
-                  labelStyle: TextStyle(color: Colors.white),
+                  labelStyle: TextStyle(
+                    fontFamily: 'Quicksand',
+                    color: Color.fromARGB(243, 41, 39, 39),
+                  ),
                   enabledBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.blue)),
+                    borderSide: BorderSide(
+                      color: Color.fromARGB(219, 208, 138, 116),
+                    ),
+                  ),
                 ),
-                style: const TextStyle(color: Colors.white),
+                style: TextStyle(
+                    color: Color.fromARGB(243, 41, 39, 39),
+                    fontFamily: 'Quicksand'),
               ),
               TextFormField(
                 controller: _passwordController,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   labelText: 'Password',
-                  labelStyle: TextStyle(color: Colors.white),
+                  labelStyle: TextStyle(
+                    fontFamily: 'Quicksand',
+                    color: Color.fromARGB(243, 41, 39, 39),
+                  ),
                   enabledBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.blue)),
+                    borderSide: BorderSide(
+                      color: Color.fromARGB(219, 208, 138, 116),
+                    ),
+                  ),
                 ),
                 obscureText: true,
-                style: const TextStyle(color: Colors.white),
+                style: TextStyle(
+                    color: Color.fromARGB(229, 41, 39, 39),
+                    fontFamily: 'Quicksand'),
               ),
               if (!_isLogin)
                 TextFormField(
                   controller: _confirmPasswordController,
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                     labelText: 'Confirm Password',
-                    labelStyle: TextStyle(color: Colors.white),
+                    labelStyle: TextStyle(
+                      fontFamily: 'Quicksand',
+                      color: Color.fromARGB(243, 41, 39, 39),
+                    ),
                     enabledBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: Colors.blue)),
+                      borderSide: BorderSide(
+                        color: Color.fromARGB(219, 208, 138, 116),
+                      ),
+                    ),
                   ),
                   obscureText: true,
-                  style: const TextStyle(color: Colors.white),
+                  style: const TextStyle(
+                      color: Color.fromARGB(243, 41, 39, 39),
+                      fontFamily: 'Quicksand'),
                 ),
               const SizedBox(height: 16.0),
-              ElevatedButton(
-                onPressed: _isLogin ? _login : _signup,
-                child: Text(_isLogin ? 'Login' : 'Sign Up'),
+              Material(
+                color: Colors.transparent,
+                child: Ink(
+                  decoration: BoxDecoration(
+                    color: Color.fromRGBO(46, 126, 97, 0.932),
+                    borderRadius: BorderRadius.circular(20.0),
+                  ),
+                  child: InkWell(
+                    onTap: _isLogin ? _login : _signup,
+                    splashColor: Color.fromARGB(219, 240, 193, 178),
+                    child: Container(
+                      padding: EdgeInsets.symmetric(
+                          vertical: 12.0, horizontal: 24.0),
+                      child: Center(
+                        child: Text(
+                          _isLogin ? 'Login' : 'Sign Up',
+                          style: TextStyle(
+                            fontFamily: 'Quicksand',
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
               ),
               TextButton(
                 onPressed: () {
@@ -120,9 +245,18 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
                     _isLogin = !_isLogin;
                   });
                 },
-                child: Text(_isLogin
-                    ? 'Create an account'
-                    : 'Have an account? Sign in'),
+                style: TextButton.styleFrom(
+                  overlayColor: MaterialStateColor.resolveWith(
+                    (states) => Color.fromARGB(219, 208, 138, 116),
+                  ),
+                ),
+                child: Text(
+                  _isLogin ? 'Create an account' : 'Have an account? Sign in',
+                  style: TextStyle(
+                    fontFamily: 'Quicksand',
+                    color: Color.fromRGBO(129, 55, 16, 1),
+                  ),
+                ),
               ),
             ],
           ),
@@ -136,14 +270,33 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text("Error"),
-          content: Text(message),
+          title: Text(
+            "Error",
+            style: TextStyle(
+              fontFamily: 'Quicksand',
+            ),
+          ),
+          content: Text(
+            message,
+            style: TextStyle(
+              fontFamily: 'Quicksand',
+            ),
+          ),
           actions: <Widget>[
-            TextButton(
-              child: const Text("OK"),
-              onPressed: () {
+            GestureDetector(
+              onTap: () {
                 Navigator.of(context).pop();
               },
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 10),
+                child: Text(
+                  "OK",
+                  style: TextStyle(
+                    fontFamily: 'Quicksand',
+                    color: Color.fromRGBO(129, 55, 16, 1),
+                  ),
+                ),
+              ),
             ),
           ],
         );
@@ -152,7 +305,6 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
   }
 
   Future<String> _getUsername() async {
-    // calling the function to get a User object
     User? user = await client.getUser();
 
     if (user != null) {
@@ -163,7 +315,6 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
   }
 
   void _login() async {
-    // Implement login logic here
     if (_isLogin) {
       String userName = _usernameController.text.trim();
       String passwordHash = _passwordController.text.trim();
@@ -175,7 +326,6 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
         return;
       }
 
-      // Calling the login function
       String loginResponse = await client.login(userName, passwordHash);
 
       userName = await _getUsername();
@@ -193,7 +343,6 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
   }
 
   void _signup() async {
-    // Implement signup logic here
     if (!_isLogin) {
       String firstName = _firstNameController.text.trim();
       String lastName = _lastNameController.text.trim();
@@ -220,9 +369,10 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
           _showErrorDialog("Please enter your student email.");
           return;
         }
-        if (!studentEmail.endsWith('@my.sctcc.edu')) {
+        if ((!studentEmail.endsWith('@my.sctcc.edu')) &&
+            (!studentEmail.endsWith('@sctcc.edu'))) {
           _showErrorDialog(
-              "Please enter a valid SCTCC email address ending in @my.sctcc.edu");
+              "Please enter a valid SCTCC email address ending in @my.sctcc.edu or @sctcc.edu");
           return;
         }
         if (passwordHash.length < 8) {

@@ -10,20 +10,21 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    // Implement login check here to direct user to correct pages
-
     return MaterialApp(
       title: 'Login/Signup Page',
       theme: ThemeData(
-        hintColor: Colors.lightBlueAccent,
+        hintColor: Color.fromARGB(219, 240, 193, 178),
+        focusColor: Color.fromARGB(219, 240, 193, 178),
+        inputDecorationTheme: InputDecorationTheme(
+          focusedBorder: UnderlineInputBorder(
+            borderSide: BorderSide(color: Color.fromARGB(219, 240, 193, 178)),
+          ),
+        ),
       ),
-
-      // home: isLoggedIn ? HomePage() : LoginSignupPage(),
-
       home: SplashScreen(),
     );
   }
@@ -81,6 +82,7 @@ class _SplashScreenState extends State<SplashScreen> {
               Text(
                 'My Campus Marketplace', // App's name or any other text you want to display
                 style: TextStyle(
+                  fontFamily: 'Quicksand',
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
                   color: Colors

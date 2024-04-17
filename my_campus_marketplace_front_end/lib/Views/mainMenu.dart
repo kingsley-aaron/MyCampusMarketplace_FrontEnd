@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:mycampusmarketplace/views/loginview.dart';
 import 'forSale.dart';
 import 'myListings.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class HomeScreen extends StatefulWidget {
   final String userName;
@@ -27,7 +28,15 @@ class _HomeScreenState extends State<HomeScreen> {
             padding: const EdgeInsets.all(8.0),
             child: Row(
               children: [
-                Text('Welcome, $userName'),
+                Text(
+                  'Welcome, $userName',
+                  style: TextStyle(
+                    fontFamily: 'Quicksand',
+                    fontSize: 16, // Adjust font size as needed
+                    fontWeight:
+                        FontWeight.normal, // Adjust font weight as needed
+                  ),
+                ),
                 PopupMenuButton<String>(
                   onSelected: (value) {
                     if (value == 'myListings') {
@@ -46,11 +55,27 @@ class _HomeScreenState extends State<HomeScreen> {
                       <PopupMenuEntry<String>>[
                     const PopupMenuItem<String>(
                       value: 'myListings',
-                      child: Text('My Listings'),
+                      child: Text(
+                        'My Listings',
+                        style: TextStyle(
+                          fontFamily: 'Quicksand',
+                          fontSize: 16, // Adjust font size as needed
+                          fontWeight:
+                              FontWeight.normal, // Adjust font weight as needed
+                        ),
+                      ),
                     ),
                     const PopupMenuItem<String>(
                       value: 'signOut',
-                      child: Text('Sign Out'),
+                      child: Text(
+                        'Sign Out',
+                        style: TextStyle(
+                          fontFamily: 'Quicksand',
+                          fontSize: 16, // Adjust font size as needed
+                          fontWeight:
+                              FontWeight.normal, // Adjust font weight as needed
+                        ),
+                      ),
                     ),
                   ],
                 ),
@@ -67,8 +92,10 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Text(
               'My Campus Marketplace',
               style: TextStyle(
+                fontFamily: 'Quicksand',
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
+                color: Color.fromARGB(229, 41, 39, 39),
               ),
               textAlign: TextAlign.center,
             ),
@@ -89,7 +116,15 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       );
                     },
-                    child: const Text('List New Item'),
+                    child: Text(
+                      'List New Item',
+                      style: TextStyle(
+                        fontFamily: 'Quicksand',
+                        fontSize: 16, // Adjust font size as needed
+                        fontWeight:
+                            FontWeight.normal, // Adjust font weight as needed
+                      ),
+                    ),
                   ),
                   const SizedBox(height: 20),
                   ElevatedButton(
@@ -104,7 +139,15 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       );
                     },
-                    child: const Text('For Sale'),
+                    child: Text(
+                      'For Sale',
+                      style: TextStyle(
+                        fontFamily: 'Quicksand',
+                        fontSize: 16, // Adjust font size as needed
+                        fontWeight:
+                            FontWeight.normal, // Adjust font weight as needed
+                      ),
+                    ),
                   ),
                 ],
               ),
