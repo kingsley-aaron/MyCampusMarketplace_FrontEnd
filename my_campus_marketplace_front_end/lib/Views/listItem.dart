@@ -18,6 +18,7 @@ class _ListItemPageState extends State<ListItemPage> {
   final TextEditingController _itemPriceController = TextEditingController();
   final TextEditingController _itemDescriptionController =
       TextEditingController();
+  final TextEditingController _quantityController = TextEditingController();
 
   @override
   void dispose() {
@@ -140,6 +141,15 @@ class _ListItemPageState extends State<ListItemPage> {
               ],
             ),
             SizedBox(height: 16.0),
+            Text('Quantity'), // New field: Quantity
+            TextFormField(
+              controller: _quantityController,
+              keyboardType: TextInputType.number,
+              decoration: InputDecoration(
+                hintText: 'Enter quantity',
+              ),
+            ),
+            SizedBox(height: 16.0),
             Text('Item Description'),
             TextField(
               controller: _itemDescriptionController,
@@ -167,6 +177,7 @@ class _ListItemPageState extends State<ListItemPage> {
                     _itemNameController.clear();
                     _itemPriceController.clear();
                     _itemDescriptionController.clear();
+                    _quantityController.clear(); // Clear quantity controller
                     setState(() {
                       _selectedConditionIndex = 0;
                     });

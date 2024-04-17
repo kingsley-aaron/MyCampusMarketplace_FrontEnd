@@ -245,7 +245,7 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
                     _isLogin = !_isLogin;
                   });
                 },
-                style: TextButton.styleFrom(
+                style: ButtonStyle(
                   overlayColor: MaterialStateColor.resolveWith(
                     (states) => Color.fromARGB(219, 208, 138, 116),
                   ),
