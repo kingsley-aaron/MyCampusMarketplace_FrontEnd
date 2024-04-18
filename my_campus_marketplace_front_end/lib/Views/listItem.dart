@@ -1,5 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:mycampusmarketplace/Repositories/itemClient.dart';
+import '../main.dart' as m;
 import 'myListings.dart';
+
+// To Do
+// Handle UserID dynamically instead of using a hard-coded value
+// Clean up code as needed
 
 class ListItemPage extends StatefulWidget {
   final String userName;
@@ -19,6 +25,8 @@ class _ListItemPageState extends State<ListItemPage> {
   final TextEditingController _itemDescriptionController =
       TextEditingController();
   final TextEditingController _quantityController = TextEditingController();
+
+  final ItemClient itemClient = ItemClient();
 
   @override
   void dispose() {
@@ -177,7 +185,6 @@ class _ListItemPageState extends State<ListItemPage> {
                     _itemNameController.clear();
                     _itemPriceController.clear();
                     _itemDescriptionController.clear();
-                    _quantityController.clear(); // Clear quantity controller
                     setState(() {
                       _selectedConditionIndex = 0;
                     });
@@ -208,9 +215,47 @@ class _ListItemPageState extends State<ListItemPage> {
     String itemName = _itemNameController.text;
     String itemPrice = _itemPriceController.text;
     String itemDescription = _itemDescriptionController.text;
-    int selectedCondition = _selectedConditionIndex;
-
-    // Now you can use the itemName, itemPrice, itemDescription, and selectedCondition
-    // variables to perform your form submission logic
+    String itemQuantity = _quantityController.text;
+    String userId = "1"; // this value is hard coded, not dynamic yet
+    String selectedCondition;
+    // condition check for item insertion
+    switch (_selectedConditionIndex) {
+      case 1:
+        selectedCondition = 'New';
+        break;
+      case 2:
+        selectedCondition = 'Used - Like New';
+        break;
+      case 3:
+        selectedCondition = 'Used - Good';
+        break;
+      case 4:
+        selectedCondition = 'Used - Fair';
+        break;
+      default:
+        selectedCondition = '';
+    }
+    // create session state via user client
+    // and post data from list item page
+    String sessionState = m.client.sessionState;
+    itemClient
+        .postItem(
+      itemName,
+      itemDescription,
+      itemPrice,
+      selectedCondition,
+      itemQuantity,
+      userId,
+      sessionState,
+    )
+        .then((response) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(response),
+        ),
+      );
+    }).catchError((error) {
+      print(error);
+    });
   }
 }
