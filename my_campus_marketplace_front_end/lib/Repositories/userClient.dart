@@ -208,10 +208,13 @@ class UserClient {
       return null;
     }
   }
-  
 
   //only use for functions that don't already return a string error message, such as the getUser function
   Future<String> getErrorMessage() async {
     return errorMessage;
+  }
+
+  String getSessionState() {
+    return sessionState;
   }
 }
