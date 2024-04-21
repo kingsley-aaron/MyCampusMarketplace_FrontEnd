@@ -7,6 +7,8 @@ import 'package:mycampusmarketplace/Models/item.dart';
 const String apiAddress = "http://10.0.2.2/api/";
 
 class ItemClient {
+  String errorMessage = "";
+
   Future<Item?> getItem(int itemId, String sessionState) async {
     try {
       // Sending getItem request to server (to be tested still)
@@ -33,14 +35,29 @@ class ItemClient {
             itemAdded: DateTime.parse(itemData['ItemAdded']),
           );
         } else {
+          //determine error message based on API response
+          if (data['reason'][0] == "missing_data") {
+            errorMessage =
+                "The application had an error. Please contact the administrators.";
+          } else if (data['reason'][0] == "server_error") {
+            errorMessage =
+                "There was an issue with the server. Please try again later.";
+          } else if (data['reason'][0] == "not_found") {
+            errorMessage = "The requested item was not found.";
+          } else {
+            errorMessage = "An error occurred.";
+          }
           return null;
         }
       } else if (response.statusCode == 404) {
+        errorMessage = "The requested item was not found.";
         return null;
       } else {
+        errorMessage = "An error occurred.";
         return null;
       }
     } catch (e) {
+      errorMessage = e.toString();
       return null;
     }
   }
@@ -85,11 +102,15 @@ class ItemClient {
           return data['data'];
         }
       } else {
-        return "Server Error";
+        return data['data'];
       }
     } catch (e) {
       print('Error: $e');
-      return "An error occurred. Please try again later.";
+      return e.toString();
     }
+  }
+
+  Future<String> getErrorMessage() async {
+    return errorMessage;
   }
 }
