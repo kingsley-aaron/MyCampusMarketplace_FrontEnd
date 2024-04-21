@@ -143,7 +143,7 @@ class ItemClient {
             if (response.statusCode == 200) {
               var newData = json.decode(response.body);
 
-              List<Item> newItemsList = _parseList(data['data']);
+              List<Item> newItemsList = _parseList(newData['data']);
 
               newItems = newItemsList.length;
               offset += newItems;
