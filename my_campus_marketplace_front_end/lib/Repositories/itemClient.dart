@@ -110,6 +110,27 @@ class ItemClient {
     }
   }
 
+  List<Item> _parseList(dynamic jsonList) {
+    List<Item> items = List.empty(growable: true);
+
+    for (var item in jsonList) {
+      items.add(Item(
+        itemId: item['ItemID'],
+        itemName: item['ItemName'],
+        itemDesc: item['ItemDesc'],
+        itemCondition: item['ItemCondition'],
+        itemQuantity: item['ItemQuantity'] as int,
+        itemPrice: double.tryParse(item['ItemPrice'] ?? '') ?? 0.0,
+        itemWanted: item['ItemWanted'],
+        //itemImage: itemData['itemImage'],
+        userId: item['UserID'],
+        itemAdded: DateTime.parse(item['ItemAdded']),
+      ));
+    }
+
+    return items;
+  }
+
   Future<String> getErrorMessage() async {
     return errorMessage;
   }
