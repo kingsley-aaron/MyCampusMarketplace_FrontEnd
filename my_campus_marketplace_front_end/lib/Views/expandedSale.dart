@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:mycampusmarketplace/Models/item.dart';
 import 'myListings.dart';
 
 class ExpandedSale extends StatelessWidget {
-  final Map<String, dynamic> item;
+  final Item item;
 
   ExpandedSale({Key? key, required this.item}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     // Assume the seller's email is stored in the item map with the key 'email'
-    String sellerEmail = item['email'] ?? ''; // Assuming the key is 'email'
+    String sellerEmail = ''; // Assuming the key is 'email'
 
     return Scaffold(
       appBar: AppBar(
@@ -64,7 +65,7 @@ class ExpandedSale extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Text(
-              item['name'],
+              item.itemName,
               style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 8.0),
@@ -90,7 +91,7 @@ class ExpandedSale extends StatelessWidget {
             SizedBox(height: 8.0),
             Center(
               child: Text(
-                'Condition: ${item['condition']}',
+                'Condition: ${item.itemCondition}',
                 style: TextStyle(fontSize: 16.0), // Adjust font size here
               ),
             ),
@@ -99,14 +100,14 @@ class ExpandedSale extends StatelessWidget {
             ),
             Center(
               child: Text(
-                'Price: ${item['price']}',
+                'Price: ${item.itemPrice}',
                 style: TextStyle(fontSize: 16.0), // Adjust font size here
               ),
             ),
             SizedBox(height: 8.0),
             Center(
               child: Text(
-                'Description: ${item['description']}',
+                'Description: ${item.itemDesc}',
                 style: TextStyle(fontSize: 16.0), // Adjust font size here
               ),
             ),

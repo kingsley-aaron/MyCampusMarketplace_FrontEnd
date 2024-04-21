@@ -237,7 +237,7 @@ class _ListItemPageState extends State<ListItemPage> {
     }
     // create session state via user client
     // and post data from list item page
-    String sessionState = m.client.sessionState;
+    String sessionState = m.userClient.sessionState;
     itemClient
         .postItem(
       itemName,

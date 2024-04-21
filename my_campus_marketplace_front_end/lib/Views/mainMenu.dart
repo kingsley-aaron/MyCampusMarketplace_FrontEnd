@@ -162,7 +162,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void _logout() async {
     // Calling the logout function
-    String logoutResponse = await m.client.logout();
+    String logoutResponse = await m.userClient.logout();
 
     if (logoutResponse == "Success") {
       Navigator.pushReplacement(

@@ -110,6 +110,72 @@ class ItemClient {
     }
   }
 
+  Future<List<Item>> getAllForSaleItems(String sessionState) async {
+    List<Item> items = List.empty(growable: true);
+    try {
+      // Sending getItem request to server (to be tested still)
+
+      var response = await http.get(
+        Uri.parse('${apiAddress}listposts.php?wanted=0'),
+        headers: {'Cookie': "PHPSESSID=$sessionState"},
+      );
+      // getting items was a success
+      if (response.statusCode == 200) {
+        var data = json.decode(response.body);
+        if (data['success']) {
+          //this counts how many items are added to the list by a single request
+          int newItems = 0;
+          //this determines how many items down the full list the server should start when returning a request
+          int offset = 0;
+
+          items = _parseList(data['data']);
+
+          newItems = items.length;
+          offset += newItems;
+
+          //continue requesting new items until all items are requested from the server
+          while (newItems == 100) {
+            response = await http.get(
+              Uri.parse('${apiAddress}listposts.php?wanted=0&start$offset'),
+              headers: {'Cookie': "PHPSESSID=$sessionState"},
+            );
+
+            if (response.statusCode == 200) {
+              var newData = json.decode(response.body);
+
+              List<Item> newItemsList = _parseList(data['data']);
+
+              newItems = newItemsList.length;
+              offset += newItems;
+
+              for (Item i in newItemsList) {
+                items.add(i);
+              }
+            }
+          }
+          return items;
+        } else {
+          //determine error message based on API response
+          if (data['reason'][0] == "server_error") {
+            errorMessage =
+                "There was an issue with the server. Please try again later.";
+          } else if (data['reason'][0] == "invalid_session") {
+            errorMessage = "The session is no longer valid.";
+          } else {
+            errorMessage = "An error occurred.";
+          }
+          return items;
+        }
+      } else {
+        errorMessage = "An error occurred.";
+        return items;
+      }
+    } catch (e) {
+      errorMessage = e.toString();
+      return items;
+    }
+  }
+
   List<Item> _parseList(dynamic jsonList) {
     List<Item> items = List.empty(growable: true);
 

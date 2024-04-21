@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:mycampusmarketplace/Models/item.dart';
 import 'package:mycampusmarketplace/Models/user.dart';
+import 'package:mycampusmarketplace/Repositories/itemClient.dart';
+import 'package:mycampusmarketplace/main.dart' as m;
 import 'expandedSale.dart';
 import 'myListings.dart';
 
@@ -7,6 +10,8 @@ class ForSale extends StatefulWidget {
   final String userName;
 
   ForSale({required this.userName});
+
+  ItemClient itemClient = m.itemClient;
 
   @override
   State<ForSale> createState() => _ForSaleState(userName);
@@ -16,39 +21,23 @@ class _ForSaleState extends State<ForSale> {
   _ForSaleState(userName);
 
   late String userName = widget.userName;
-  final List<Map<String, dynamic>> items = [
-    {
-      'name': 'Item 1',
-      'condition': 'New',
-      'price': '\$100',
-      'description': 'A great item to purchase.'
-    },
-    {
-      'name': 'Item 2',
-      'condition': 'Used',
-      'price': '\$50',
-      'description': 'Some wear and tear visible.'
-    },
-    {
-      'name': 'Item 3',
-      'condition': 'new',
-      'price': '\$60',
-      'description': 'Brand new baseball bat.'
-    },
-    {
-      'name': 'Item 4',
-      'condition': 'Used',
-      'price': '\$50',
-      'description': 'Some wear and tear visible.'
-    },
-    {
-      'name': 'Item 5',
-      'condition': 'Used',
-      'price': '\$50',
-      'description': 'Some wear and tear visible.'
-    }
-    //replace with data from database
-  ];
+  late List<Item> items = List.empty();
+
+  void getItems() {
+    setState(() {
+      widget.itemClient
+          .getAllForSaleItems(m.userClient.getSessionState())
+          .then((response) => onGetItemsSuccess(response));
+    });
+  }
+
+  void onGetItemsSuccess(List<Item>? newItems) {
+    setState(() {
+      if (newItems != null) {
+        items = newItems;
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -145,7 +134,7 @@ class _ForSaleState extends State<ForSale> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
                                 Text(
-                                  item['name'],
+                                  item.itemName,
                                   style: TextStyle(
                                     fontSize: 20,
                                     fontWeight: FontWeight.bold,
@@ -154,14 +143,14 @@ class _ForSaleState extends State<ForSale> {
                                 ),
                                 SizedBox(height: 10),
                                 Text(
-                                  'Condition: ${item['condition']}',
+                                  'Condition: ${item.itemCondition}',
                                   style: TextStyle(
                                     fontSize: 16,
                                     color: Colors.grey[600],
                                   ),
                                 ),
                                 Text(
-                                  'Price: ${item['price']}',
+                                  'Price: ${item.itemPrice}',
                                   style: TextStyle(
                                     fontSize: 16,
                                     color: Colors.blue,
