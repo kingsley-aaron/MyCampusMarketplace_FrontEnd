@@ -236,9 +236,10 @@ class _ListItemPageState extends State<ListItemPage> {
     // create session state via user client
     // and post data from list item page
 
-    String sessionState = m.client.sessionState;
+    String sessionState = m.userClient.sessionState;
 
-    m.client.getUser().then((user) { //dynamic user id
+    m.userClient.getUser().then((user) {
+      //dynamic user id
       if (user != null) {
         String userId = user.userID.toString();
         itemClient
@@ -270,4 +271,3 @@ class _ListItemPageState extends State<ListItemPage> {
     });
   }
 }
-
