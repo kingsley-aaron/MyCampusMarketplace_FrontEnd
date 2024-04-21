@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:mycampusmarketplace/Models/user.dart';
 import 'package:mycampusmarketplace/Repositories/itemClient.dart';
 import '../main.dart' as m;
 import 'myListings.dart';
-
-// To Do
-// Handle UserID dynamically instead of using a hard-coded value
-// Clean up code as needed
 
 class ListItemPage extends StatefulWidget {
   final String userName;
@@ -216,9 +213,9 @@ class _ListItemPageState extends State<ListItemPage> {
     String itemPrice = _itemPriceController.text;
     String itemDescription = _itemDescriptionController.text;
     String itemQuantity = _quantityController.text;
-    String userId = "1"; // this value is hard coded, not dynamic yet
     String selectedCondition;
-    // condition check for item insertion
+
+    // Condition check for item insertion
     switch (_selectedConditionIndex) {
       case 1:
         selectedCondition = 'New';
@@ -235,27 +232,42 @@ class _ListItemPageState extends State<ListItemPage> {
       default:
         selectedCondition = '';
     }
+
     // create session state via user client
     // and post data from list item page
+
     String sessionState = m.client.sessionState;
-    itemClient
-        .postItem(
-      itemName,
-      itemDescription,
-      itemPrice,
-      selectedCondition,
-      itemQuantity,
-      userId,
-      sessionState,
-    )
-        .then((response) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(response),
-        ),
-      );
-    }).catchError((error) {
-      print(error);
+
+    m.client.getUser().then((user) { //dynamic user id
+      if (user != null) {
+        String userId = user.userID.toString();
+        itemClient
+            .postItem(
+          itemName,
+          itemDescription,
+          itemPrice,
+          selectedCondition,
+          itemQuantity,
+          userId,
+          sessionState,
+        )
+            .then((response) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(response),
+            ),
+          );
+        }).catchError((error) {
+          print(error);
+        });
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('An error occurred while fetching user data.'),
+          ),
+        );
+      }
     });
   }
 }
+
