@@ -3,41 +3,27 @@ import 'package:mycampusmarketplace/Models/item.dart';
 import 'package:mycampusmarketplace/Models/user.dart';
 import 'package:mycampusmarketplace/Repositories/itemClient.dart';
 import 'package:mycampusmarketplace/main.dart' as m;
+import 'package:mycampusmarketplace/main.dart';
 import 'expandedSale.dart';
 import 'myListings.dart';
 
 class ForSale extends StatefulWidget {
   final String userName;
+  List<Item> items = List.empty();
 
-  ForSale({required this.userName});
+  ForSale({required this.userName, required this.items});
 
   ItemClient itemClient = m.itemClient;
 
   @override
-  State<ForSale> createState() => _ForSaleState(userName);
+  State<ForSale> createState() => _ForSaleState(userName, items);
 }
 
 class _ForSaleState extends State<ForSale> {
-  _ForSaleState(userName);
+  _ForSaleState(userName, items);
 
   late String userName = widget.userName;
-  late List<Item> items = List.empty();
-
-  void getItems() {
-    setState(() {
-      widget.itemClient
-          .getAllForSaleItems(m.userClient.getSessionState())
-          .then((response) => onGetItemsSuccess(response));
-    });
-  }
-
-  void onGetItemsSuccess(List<Item>? newItems) {
-    setState(() {
-      if (newItems != null) {
-        items = newItems;
-      }
-    });
-  }
+  late List<Item> items = widget.items;
 
   @override
   Widget build(BuildContext context) {
@@ -175,5 +161,5 @@ class _ForSaleState extends State<ForSale> {
 }
 
 void main() {
-  runApp(ForSale(userName: "User"));
+  runApp(ForSale(userName: "User", items: List.empty()));
 }

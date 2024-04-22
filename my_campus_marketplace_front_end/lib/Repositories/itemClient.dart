@@ -4,7 +4,7 @@ import 'package:mycampusmarketplace/Models/item.dart';
 
 // Still need to test item image
 
-const String apiAddress = "http://10.0.2.2/api/";
+const String apiAddress = "https://helpmewithfinals.com/api/";
 
 class ItemClient {
   String errorMessage = "";
@@ -20,20 +20,26 @@ class ItemClient {
       // getting item was a success
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
+        bool wanted = false;
+
         if (data['success']) {
           var itemData = data['data'];
+          if (data['ItemWanted'] == 0) {
+            wanted = false;
+          } else {
+            wanted = true;
+          }
           return Item(
-            itemId: itemData['ItemID'],
-            itemName: itemData['ItemName'],
-            itemDesc: itemData['ItemDesc'],
-            itemCondition: itemData['ItemCondition'],
-            itemQuantity: itemData['ItemQuantity'] as int,
-            itemPrice: double.tryParse(itemData['ItemPrice'] ?? '') ?? 0.0,
-            itemWanted: itemData['ItemWanted'],
-            //itemImage: itemData['itemImage'],
-            userId: itemData['UserID'],
-            itemAdded: DateTime.parse(itemData['ItemAdded']),
-          );
+              itemId: data['ItemID'],
+              itemName: data['ItemName'],
+              itemDesc: data['ItemDesc'],
+              itemCondition: data['ItemCondition'],
+              itemQuantity: data['ItemQuantity'],
+              itemPrice: data['ItemPrice'].toDouble(),
+              itemWanted: wanted,
+              //itemImage: itemData['itemImage'],
+              userId: data['UserID'],
+              itemAdded: DateTime.parse(data['ItemAdded']));
         } else {
           //determine error message based on API response
           if (data['reason'][0] == "missing_data") {
@@ -164,14 +170,17 @@ class ItemClient {
           } else {
             errorMessage = "An error occurred.";
           }
+          print(errorMessage);
           return items;
         }
       } else {
         errorMessage = "An error occurred.";
+        print(errorMessage);
         return items;
       }
     } catch (e) {
       errorMessage = e.toString();
+      print(errorMessage);
       return items;
     }
   }
@@ -244,16 +253,22 @@ class ItemClient {
 
   List<Item> _parseList(dynamic jsonList) {
     List<Item> items = List.empty(growable: true);
+    bool wanted = false;
 
     for (var item in jsonList) {
+      if (item['ItemWanted'] == 0) {
+        wanted = false;
+      } else {
+        wanted = true;
+      }
       items.add(Item(
         itemId: item['ItemID'],
         itemName: item['ItemName'],
         itemDesc: item['ItemDesc'],
         itemCondition: item['ItemCondition'],
-        itemQuantity: item['ItemQuantity'] as int,
-        itemPrice: double.tryParse(item['ItemPrice'] ?? '') ?? 0.0,
-        itemWanted: item['ItemWanted'],
+        itemQuantity: item['ItemQuantity'],
+        itemPrice: item['ItemPrice'].toDouble(),
+        itemWanted: wanted,
         //itemImage: itemData['itemImage'],
         userId: item['UserID'],
         itemAdded: DateTime.parse(item['ItemAdded']),
