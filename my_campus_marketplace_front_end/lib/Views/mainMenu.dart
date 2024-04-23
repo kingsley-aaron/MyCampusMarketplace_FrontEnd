@@ -1,10 +1,10 @@
-import 'package:mycampusmarketplace/Repositories/userClient.dart';
-import '../main.dart' as m;
-import 'listItem.dart';
 import 'package:flutter/material.dart';
 import 'package:mycampusmarketplace/views/loginview.dart';
+import '../main.dart' as m;
+import 'listItem.dart';
 import 'forSale.dart';
 import 'myListings.dart';
+import '../theme.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -22,6 +22,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // Accessing the theme outside constant expressions
+    final theme = Theme.of(context);
+
     return Scaffold(
       appBar: AppBar(
         // title: Text('My Campus Marketplace'),
@@ -32,12 +35,7 @@ class _HomeScreenState extends State<HomeScreen> {
               children: [
                 Text(
                   'Welcome, $userName',
-                  style: TextStyle(
-                    fontFamily: 'Quicksand',
-                    fontSize: 16, // Adjust font size as needed
-                    fontWeight:
-                        FontWeight.normal, // Adjust font weight as needed
-                  ),
+                  style: theme.textTheme.bodyLarge,
                 ),
                 PopupMenuButton<String>(
                   onSelected: (value) {
@@ -55,28 +53,18 @@ class _HomeScreenState extends State<HomeScreen> {
                   },
                   itemBuilder: (BuildContext context) =>
                       <PopupMenuEntry<String>>[
-                    const PopupMenuItem<String>(
+                    PopupMenuItem<String>(
                       value: 'myListings',
                       child: Text(
                         'My Listings',
-                        style: TextStyle(
-                          fontFamily: 'Quicksand',
-                          fontSize: 16, // Adjust font size as needed
-                          fontWeight:
-                              FontWeight.normal, // Adjust font weight as needed
-                        ),
+                        style: theme.textTheme.bodyMedium,
                       ),
                     ),
-                    const PopupMenuItem<String>(
+                    PopupMenuItem<String>(
                       value: 'signOut',
                       child: Text(
                         'Sign Out',
-                        style: TextStyle(
-                          fontFamily: 'Quicksand',
-                          fontSize: 16, // Adjust font size as needed
-                          fontWeight:
-                              FontWeight.normal, // Adjust font weight as needed
-                        ),
+                        style: theme.textTheme.bodyMedium,
                       ),
                     ),
                   ],
@@ -93,12 +81,7 @@ class _HomeScreenState extends State<HomeScreen> {
             padding: EdgeInsets.all(16.0),
             child: Text(
               'My Campus Marketplace',
-              style: TextStyle(
-                fontFamily: 'Quicksand',
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-                color: Color.fromARGB(229, 41, 39, 39),
-              ),
+              style: theme.textTheme.displayLarge,
               textAlign: TextAlign.center,
             ),
           ),
@@ -120,12 +103,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     },
                     child: Text(
                       'List New Item',
-                      style: TextStyle(
-                        fontFamily: 'Quicksand',
-                        fontSize: 16, // Adjust font size as needed
-                        fontWeight:
-                            FontWeight.normal, // Adjust font weight as needed
-                      ),
+                      style: theme.textTheme.labelLarge,
                     ),
                   ),
                   const SizedBox(height: 20),
@@ -143,12 +121,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     },
                     child: Text(
                       'For Sale',
-                      style: TextStyle(
-                        fontFamily: 'Quicksand',
-                        fontSize: 16, // Adjust font size as needed
-                        fontWeight:
-                            FontWeight.normal, // Adjust font weight as needed
-                      ),
+                      style: theme.textTheme.labelLarge,
                     ),
                   ),
                 ],
@@ -196,7 +169,10 @@ class _HomeScreenState extends State<HomeScreen> {
 }
 
 void main() {
-  runApp(MaterialApp(
-    home: HomeScreen(userName: "User"),
-  ));
+  runApp(
+    MaterialApp(
+      theme: myTheme, // Provide your theme here
+      home: HomeScreen(userName: "User"),
+    ),
+  );
 }

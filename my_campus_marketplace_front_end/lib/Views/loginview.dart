@@ -3,7 +3,7 @@ import 'package:mycampusmarketplace/Models/user.dart';
 import 'package:mycampusmarketplace/Repositories/userClient.dart';
 import 'package:mycampusmarketplace/Views/mainMenu.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-
+import '../theme.dart';
 import '../main.dart';
 
 class LoginSignupPage extends StatefulWidget {
@@ -25,240 +25,211 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(kToolbarHeight),
-        child: Container(
-          decoration: BoxDecoration(
-            color: Colors.green.shade300,
-            borderRadius: BorderRadius.only(
-              bottomLeft: Radius.circular(20),
-              bottomRight: Radius.circular(20),
+    return Theme(
+      data: myTheme,
+      child: Scaffold(
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(kToolbarHeight),
+          child: Container(
+            decoration: BoxDecoration(
+              color: myTheme.primaryColor,
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(20),
+                bottomRight: Radius.circular(20),
+              ),
             ),
-          ),
-          child: AppBar(
-            title: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Row(
-                  children: [
-                    FaIcon(
-                      FontAwesomeIcons.graduationCap,
-                      color: Color.fromARGB(239, 114, 46, 25),
-                    ),
-                    SizedBox(width: 8),
-                    Text(
-                      '',
-                      style: TextStyle(
-                        fontFamily: 'Quicksand',
-                        color: Color.fromARGB(229, 41, 39, 39),
+            child: AppBar(
+              title: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Row(
+                    children: [
+                      FaIcon(
+                        FontAwesomeIcons.graduationCap,
+                        color: myTheme.secondaryHeaderColor,
                       ),
-                    ),
-                  ],
-                ),
-                Text(
-                  _isLogin ? 'My Campus Marketplace' : 'Sign Up',
-                  style: TextStyle(
-                    fontFamily: 'Quicksand',
-                    color: Color.fromARGB(229, 41, 39, 39),
+                      SizedBox(width: 8),
+                      Text(''),
+                    ],
                   ),
-                ),
-              ],
+                  Text(
+                    _isLogin ? 'My Campus Marketplace' : 'Sign Up',
+                  ),
+                ],
+              ),
+              backgroundColor: myTheme.hintColor,
+              elevation: 0,
+              centerTitle: true,
             ),
-            backgroundColor: Color.fromRGBO(159, 232, 205, 0.831),
-            elevation: 0,
-            centerTitle: true,
           ),
         ),
-      ),
-      backgroundColor: Color.fromRGBO(254, 254, 254, 1),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              if (!_isLogin)
-                TextFormField(
-                  controller: _firstNameController,
-                  decoration: InputDecoration(
-                    labelText: 'First Name',
-                    labelStyle: TextStyle(
+        backgroundColor: myTheme.scaffoldBackgroundColor,
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                if (!_isLogin)
+                  TextFormField(
+                    controller: _firstNameController,
+                    decoration: InputDecoration(
+                      labelText: 'First Name',
+                      labelStyle: myTheme.textTheme.bodyLarge!.copyWith(
+                        color: myTheme.primaryColorDark,
+                      ),
+                      enabledBorder: UnderlineInputBorder(),
+                    ),
+                  ),
+                if (!_isLogin)
+                  TextFormField(
+                    controller: _lastNameController,
+                    decoration: InputDecoration(
+                      labelText: 'Last Name',
+                      labelStyle: myTheme.textTheme.bodyLarge!.copyWith(
+                        color: myTheme.primaryColorDark,
+                      ),
+                      enabledBorder: UnderlineInputBorder(),
+                    ),
+                  ),
+                if (!_isLogin)
+                  TextFormField(
+                    controller: _studentIDController,
+                    decoration: InputDecoration(
+                      labelText: 'StudentID',
+                      labelStyle: myTheme.textTheme.bodyLarge!.copyWith(
+                        color: myTheme.primaryColorDark,
+                      ),
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                          color: myTheme.unselectedWidgetColor,
+                        ),
+                      ),
+                    ),
+                    style: myTheme.textTheme.bodyLarge!.copyWith(
+                      color: myTheme.primaryColorDark,
                       fontFamily: 'Quicksand',
-                      color: Color.fromARGB(243, 41, 39, 39),
+                    ),
+                  ),
+                if (!_isLogin)
+                  TextFormField(
+                    controller: _emailController,
+                    decoration: InputDecoration(
+                      labelText: 'Email',
+                      labelStyle: myTheme.textTheme.bodyLarge!.copyWith(
+                        color: myTheme.primaryColorDark,
+                      ),
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                          color: myTheme.unselectedWidgetColor,
+                        ),
+                      ),
+                    ),
+                    style: myTheme.textTheme.bodyLarge!.copyWith(
+                      color: myTheme.primaryColorDark,
+                      fontFamily: 'Quicksand',
+                    ),
+                  ),
+                TextFormField(
+                  controller: _usernameController,
+                  decoration: InputDecoration(
+                    labelText: 'Username',
+                    labelStyle: myTheme.textTheme.bodyLarge!.copyWith(
+                      color: myTheme.primaryColorDark,
                     ),
                     enabledBorder: UnderlineInputBorder(
                       borderSide: BorderSide(
-                        color: Color.fromARGB(219, 208, 138, 116),
+                        color: myTheme.unselectedWidgetColor,
                       ),
                     ),
                   ),
-                  style: TextStyle(
-                      color: Color.fromARGB(243, 41, 39, 39),
-                      fontFamily: 'Quicksand'),
-                ),
-              if (!_isLogin)
-                TextFormField(
-                  controller: _lastNameController,
-                  decoration: InputDecoration(
-                    labelText: 'Last Name',
-                    labelStyle: TextStyle(
-                      fontFamily: 'Quicksand',
-                      color: Color.fromARGB(243, 41, 39, 39),
-                    ),
-                    enabledBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Color.fromARGB(219, 208, 138, 116),
-                      ),
-                    ),
-                  ),
-                  style: TextStyle(
-                      color: Color.fromARGB(243, 41, 39, 39),
-                      fontFamily: 'Quicksand'),
-                ),
-              if (!_isLogin)
-                TextFormField(
-                  controller: _studentIDController,
-                  decoration: InputDecoration(
-                    labelText: 'StudentID',
-                    labelStyle: TextStyle(
-                      fontFamily: 'Quicksand',
-                      color: Color.fromARGB(243, 41, 39, 39),
-                    ),
-                    enabledBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Color.fromARGB(219, 208, 138, 116),
-                      ),
-                    ),
-                  ),
-                  style: TextStyle(
-                      color: Color.fromARGB(243, 41, 39, 39),
-                      fontFamily: 'Quicksand'),
-                ),
-              if (!_isLogin)
-                TextFormField(
-                  controller: _emailController,
-                  decoration: InputDecoration(
-                    labelText: 'Email',
-                    labelStyle: TextStyle(
-                      fontFamily: 'Quicksand',
-                      color: Color.fromARGB(243, 41, 39, 39),
-                    ),
-                    enabledBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Color.fromARGB(219, 208, 138, 116),
-                      ),
-                    ),
-                  ),
-                  style: TextStyle(
-                      color: Color.fromARGB(243, 41, 39, 39),
-                      fontFamily: 'Quicksand'),
-                ),
-              TextFormField(
-                controller: _usernameController,
-                decoration: InputDecoration(
-                  labelText: 'Username',
-                  labelStyle: TextStyle(
+                  style: myTheme.textTheme.bodyLarge!.copyWith(
+                    color: myTheme.primaryColorDark,
                     fontFamily: 'Quicksand',
-                    color: Color.fromARGB(243, 41, 39, 39),
-                  ),
-                  enabledBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Color.fromARGB(219, 208, 138, 116),
-                    ),
                   ),
                 ),
-                style: TextStyle(
-                    color: Color.fromARGB(243, 41, 39, 39),
-                    fontFamily: 'Quicksand'),
-              ),
-              TextFormField(
-                controller: _passwordController,
-                decoration: InputDecoration(
-                  labelText: 'Password',
-                  labelStyle: TextStyle(
-                    fontFamily: 'Quicksand',
-                    color: Color.fromARGB(243, 41, 39, 39),
-                  ),
-                  enabledBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Color.fromARGB(219, 208, 138, 116),
-                    ),
-                  ),
-                ),
-                obscureText: true,
-                style: TextStyle(
-                    color: Color.fromARGB(229, 41, 39, 39),
-                    fontFamily: 'Quicksand'),
-              ),
-              if (!_isLogin)
                 TextFormField(
-                  controller: _confirmPasswordController,
+                  controller: _passwordController,
                   decoration: InputDecoration(
-                    labelText: 'Confirm Password',
-                    labelStyle: TextStyle(
-                      fontFamily: 'Quicksand',
-                      color: Color.fromARGB(243, 41, 39, 39),
-                    ),
+                    labelText: 'Password',
                     enabledBorder: UnderlineInputBorder(
                       borderSide: BorderSide(
-                        color: Color.fromARGB(219, 208, 138, 116),
+                        color: myTheme.unselectedWidgetColor,
                       ),
                     ),
                   ),
                   obscureText: true,
-                  style: const TextStyle(
-                      color: Color.fromARGB(243, 41, 39, 39),
-                      fontFamily: 'Quicksand'),
-                ),
-              const SizedBox(height: 16.0),
-              Material(
-                color: Colors.transparent,
-                child: Ink(
-                  decoration: BoxDecoration(
-                    color: Color.fromRGBO(46, 126, 97, 0.932),
-                    borderRadius: BorderRadius.circular(20.0),
+                  style: myTheme.textTheme.bodyLarge!.copyWith(
+                    color: myTheme.primaryColorDark,
+                    fontFamily: 'Quicksand',
                   ),
-                  child: InkWell(
-                    onTap: _isLogin ? _login : _signup,
-                    splashColor: Color.fromARGB(219, 240, 193, 178),
-                    child: Container(
-                      padding: EdgeInsets.symmetric(
-                          vertical: 12.0, horizontal: 24.0),
-                      child: Center(
-                        child: Text(
-                          _isLogin ? 'Login' : 'Sign Up',
-                          style: TextStyle(
-                            fontFamily: 'Quicksand',
-                            color: Colors.white,
+                ),
+                if (!_isLogin)
+                  TextFormField(
+                    controller: _confirmPasswordController,
+                    decoration: InputDecoration(
+                      labelText: 'Confirm Password',
+                      labelStyle: myTheme.textTheme.bodyLarge!.copyWith(
+                        color: myTheme.primaryColorDark,
+                      ),
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                          color: myTheme.unselectedWidgetColor,
+                        ),
+                      ),
+                    ),
+                    obscureText: true,
+                    style: myTheme.textTheme.bodyLarge!.copyWith(
+                      color: myTheme.primaryColorDark,
+                      fontFamily: 'Quicksand',
+                    ),
+                  ),
+                SizedBox(height: 16.0),
+                Material(
+                  color: Colors.transparent,
+                  child: Ink(
+                    decoration: BoxDecoration(
+                      color: myTheme.hintColor,
+                      borderRadius: BorderRadius.circular(20.0),
+                    ),
+                    child: InkWell(
+                      onTap: _isLogin ? _login : _signup,
+                      splashColor: myTheme.highlightColor,
+                      child: Container(
+                        padding: EdgeInsets.symmetric(
+                          vertical: 12.0,
+                          horizontal: 24.0,
+                        ),
+                        child: Center(
+                          child: Text(
+                            _isLogin ? 'Login' : 'Sign Up',
+                            style: myTheme.textTheme.labelLarge!.copyWith(
+                              color: myTheme.primaryTextTheme.labelLarge!.color,
+                            ),
                           ),
                         ),
                       ),
                     ),
                   ),
                 ),
-              ),
-              TextButton(
-                onPressed: () {
-                  setState(() {
-                    _isLogin = !_isLogin;
-                  });
-                },
-                style: ButtonStyle(
-                  overlayColor: MaterialStateColor.resolveWith(
-                    (states) => Color.fromARGB(219, 208, 138, 116),
+                TextButton(
+                  onPressed: () {
+                    setState(() {
+                      _isLogin = !_isLogin;
+                    });
+                  },
+                  style: ButtonStyle(
+                    overlayColor: WidgetStateColor.resolveWith(
+                      (states) => myTheme.highlightColor,
+                    ),
+                  ),
+                  child: Text(
+                    _isLogin ? 'Create an account' : 'Have an account? Sign in',
                   ),
                 ),
-                child: Text(
-                  _isLogin ? 'Create an account' : 'Have an account? Sign in',
-                  style: TextStyle(
-                    fontFamily: 'Quicksand',
-                    color: Color.fromRGBO(129, 55, 16, 1),
-                  ),
-                ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
@@ -272,13 +243,13 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
         return AlertDialog(
           title: Text(
             "Error",
-            style: TextStyle(
+            style: myTheme.textTheme.bodyLarge!.copyWith(
               fontFamily: 'Quicksand',
             ),
           ),
           content: Text(
             message,
-            style: TextStyle(
+            style: myTheme.textTheme.bodyLarge!.copyWith(
               fontFamily: 'Quicksand',
             ),
           ),
@@ -291,10 +262,6 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
                 padding: EdgeInsets.symmetric(horizontal: 10),
                 child: Text(
                   "OK",
-                  style: TextStyle(
-                    fontFamily: 'Quicksand',
-                    color: Color.fromRGBO(129, 55, 16, 1),
-                  ),
                 ),
               ),
             ),

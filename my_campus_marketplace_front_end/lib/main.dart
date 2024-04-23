@@ -5,6 +5,7 @@ import 'Views/mainMenu.dart';
 import 'Views/adminMain.dart';
 import 'package:mycampusmarketplace/homeview.dart';
 import 'dart:async';
+import 'theme.dart';
 
 void main() {
   runApp(const MyApp());
@@ -19,15 +20,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Login/Signup Page',
-      theme: ThemeData(
-        hintColor: Color.fromARGB(219, 240, 193, 178),
-        focusColor: Color.fromARGB(219, 240, 193, 178),
-        inputDecorationTheme: InputDecorationTheme(
-          focusedBorder: UnderlineInputBorder(
-            borderSide: BorderSide(color: Color.fromARGB(219, 240, 193, 178)),
-          ),
-        ),
-      ),
+      theme: myTheme,
       home: SplashScreen(),
     );
   }

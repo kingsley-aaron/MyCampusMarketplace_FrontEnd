@@ -1,33 +1,37 @@
 import 'package:flutter/material.dart';
-import 'forSale.dart'; // Importing forSale.dart
+import 'forSale.dart';
+import '../theme.dart';
 
 class MyListings extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('My Listings'),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text('This is where your listings will be displayed.'),
-            ElevatedButton(
-              onPressed: () {
-                // Navigate to forSale screen
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ForSale(
-                      userName: "User", //Add user context
+    return Theme(
+      data: myTheme, // Provide your theme here
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text('My Listings'),
+        ),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text('This is where your listings will be displayed.'),
+              ElevatedButton(
+                onPressed: () {
+                  // Navigate to forSale screen
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ForSale(
+                        userName: "User", // Add user context
+                      ),
                     ),
-                  ),
-                );
-              },
-              child: Text('Go to For Sale Page'),
-            ),
-          ],
+                  );
+                },
+                child: Text('Go to For Sale Page'),
+              ),
+            ],
+          ),
         ),
       ),
     );
