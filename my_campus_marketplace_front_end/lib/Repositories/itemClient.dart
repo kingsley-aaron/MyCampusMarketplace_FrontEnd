@@ -1,17 +1,18 @@
+import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:mycampusmarketplace/Models/item.dart';
 
-// Still need to test item image
+const String apiAddress = "http://10.0.2.2/api/";
+//const String apiAddress = "https://helpmewithfinals.com/api/";
 
-const String apiAddress = "https://helpmewithfinals.com/api/";
 
 class ItemClient {
   String errorMessage = "";
 
   Future<Item?> getItem(int itemId, String sessionState) async {
     try {
-      // Sending getItem request to server (to be tested still)
+      // Sending getItem request to server
 
       var response = await http.get(
         Uri.parse('${apiAddress}fetchitem.php?id=$itemId'),
@@ -37,7 +38,7 @@ class ItemClient {
               itemQuantity: data['ItemQuantity'],
               itemPrice: data['ItemPrice'].toDouble(),
               itemWanted: wanted,
-              //itemImage: itemData['itemImage'],
+              itemImage: itemData['itemImage'],
               userId: data['UserID'],
               itemAdded: DateTime.parse(data['ItemAdded']));
         } else {
@@ -76,42 +77,53 @@ class ItemClient {
     String itemQuantity,
     String userID,
     String sessionState,
-    // String itemImage,
+    File itemImage,
   ) async {
     try {
       // Sending post item request to server
-      var response = await http.post(
+      var request = http.MultipartRequest(
+        'POST',
         Uri.parse('${apiAddress}postitem.php'),
-        headers: {'Cookie': "PHPSESSID=$sessionState"},
-        body: {
-          'itemName': itemName,
-          'itemDesc': itemDesc,
-          'itemPrice': itemPrice,
-          'itemCondition': itemCondition,
-          'itemWanted': '0',
-          'userID': userID,
-          // 'itemImage': itemImage,
-          'itemQuantity': itemQuantity,
-        },
       );
-      // test responses (will remove later on)
-      print('Session ID: $sessionState');
-      print('Response Status Code: ${response.statusCode}');
-      print('Response Body: ${response.body}');
 
-      var data = json.decode(response.body);
-      // posting item was successful (still needs to be worked a bit)
+      // set required headers
+      request.headers['Content-Type'] = 'multipart/form-data';
+
+      // set request body fields
+      request.fields.addAll({
+        'itemName': itemName,
+        'itemDesc': itemDesc,
+        'itemPrice': itemPrice,
+        'itemCondition': itemCondition,
+        'itemQuantity': itemQuantity,
+        'itemWanted': '0',
+        'userID': userID,
+      });
+
+      // add image file to the request
+      request.files.add(
+        await http.MultipartFile.fromPath('itemImage', itemImage.path),
+      );
+
+      // set session state cookie
+      request.headers['Cookie'] = "PHPSESSID=$sessionState";
+
+      var response = await request.send();
+
+      // check the response status code
       if (response.statusCode == 200) {
+        var responseData = await response.stream.bytesToString();
+        var data = json.decode(responseData);
+
         if (data['success']) {
           return "Success";
         } else {
           return data['data'];
         }
       } else {
-        return data['data'];
+        return "An error occurred.";
       }
     } catch (e) {
-      print('Error: $e');
       return e.toString();
     }
   }
@@ -269,7 +281,7 @@ class ItemClient {
         itemQuantity: item['ItemQuantity'],
         itemPrice: item['ItemPrice'].toDouble(),
         itemWanted: wanted,
-        //itemImage: itemData['itemImage'],
+        itemImage: item['itemImage'], //from itemData to item
         userId: item['UserID'],
         itemAdded: DateTime.parse(item['ItemAdded']),
       ));
