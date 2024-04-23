@@ -6,7 +6,7 @@ class Item {
   double itemPrice;
   int itemQuantity;
   bool itemWanted;
-  //String itemImage;
+  String itemImage;
   int userId;
   DateTime itemAdded;
 
@@ -18,7 +18,7 @@ class Item {
     required this.itemPrice,
     required this.itemQuantity,
     required this.itemWanted,
-    //required this.itemImage,
+    required this.itemImage,
     required this.userId,
     required this.itemAdded,
   });
