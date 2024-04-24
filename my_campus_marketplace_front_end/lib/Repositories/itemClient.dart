@@ -100,7 +100,7 @@ class ItemClient {
 
       // add image file to the request
       request.files.add(
-        await http.MultipartFile.fromPath('ItemImage', itemImage.path),
+        await http.MultipartFile.fromPath('itemImage', itemImage.path),
       );
 
       // set session state cookie
