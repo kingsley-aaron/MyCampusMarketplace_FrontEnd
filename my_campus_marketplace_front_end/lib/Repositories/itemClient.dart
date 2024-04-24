@@ -138,7 +138,6 @@ class ItemClient {
     // getting items was a success
     if (response.statusCode == 200) {
       var data = json.decode(response.body);
-      print('Received data: $data'); // Print received data
 
       if (data['success']) {
         //this counts how many items are added to the list by a single request
