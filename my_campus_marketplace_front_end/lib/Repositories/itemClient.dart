@@ -3,8 +3,8 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:mycampusmarketplace/Models/item.dart';
 
-const String apiAddress = "http://10.0.2.2/api/";
-//const String apiAddress = "https://helpmewithfinals.com/api/";
+//const String apiAddress = "http://10.0.2.2/api/";
+const String apiAddress = "https://helpmewithfinals.com/api/";
 
 
 class ItemClient {
@@ -281,7 +281,7 @@ class ItemClient {
         itemQuantity: item['ItemQuantity'],
         itemPrice: item['ItemPrice'].toDouble(),
         itemWanted: wanted,
-        itemImage: item['itemImage'], //from itemData to item
+        itemImage: 'https://helpmewithfinals.com/api/uploads/${item['itemImage']}',
         userId: item['UserID'],
         itemAdded: DateTime.parse(item['ItemAdded']),
       ));
