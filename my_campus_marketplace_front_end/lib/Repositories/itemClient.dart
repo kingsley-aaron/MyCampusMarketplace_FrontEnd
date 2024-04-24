@@ -6,7 +6,6 @@ import 'package:mycampusmarketplace/Models/item.dart';
 //const String apiAddress = "http://10.0.2.2/api/";
 const String apiAddress = "https://helpmewithfinals.com/api/";
 
-
 class ItemClient {
   String errorMessage = "";
 
@@ -24,7 +23,6 @@ class ItemClient {
         bool wanted = false;
 
         if (data['success']) {
-          var itemData = data['data'];
           if (data['ItemWanted'] == 0) {
             wanted = false;
           } else {
@@ -38,7 +36,7 @@ class ItemClient {
               itemQuantity: data['ItemQuantity'],
               itemPrice: data['ItemPrice'].toDouble(),
               itemWanted: wanted,
-              itemImage: itemData['itemImage'],
+              itemImage: data['ItemImage'],
               userId: data['UserID'],
               itemAdded: DateTime.parse(data['ItemAdded']));
         } else {
@@ -102,7 +100,7 @@ class ItemClient {
 
       // add image file to the request
       request.files.add(
-        await http.MultipartFile.fromPath('itemImage', itemImage.path),
+        await http.MultipartFile.fromPath('ItemImage', itemImage.path),
       );
 
       // set session state cookie
@@ -129,73 +127,76 @@ class ItemClient {
   }
 
   Future<List<Item>> getAllForSaleItems(String sessionState) async {
-    List<Item> items = List.empty(growable: true);
-    try {
-      // Sending getItem request to server (to be tested still)
+  List<Item> items = List.empty(growable: true);
+  try {
+    // Sending getItem request to server (to be tested still)
 
-      var response = await http.get(
-        Uri.parse('${apiAddress}listposts.php?wanted=0'),
-        headers: {'Cookie': "PHPSESSID=$sessionState"},
-      );
-      // getting items was a success
-      if (response.statusCode == 200) {
-        var data = json.decode(response.body);
-        if (data['success']) {
-          //this counts how many items are added to the list by a single request
-          int newItems = 0;
-          //this determines how many items down the full list the server should start when returning a request
-          int offset = 0;
+    var response = await http.get(
+      Uri.parse('${apiAddress}listposts.php?wanted=0'),
+      headers: {'Cookie': "PHPSESSID=$sessionState"},
+    );
+    // getting items was a success
+    if (response.statusCode == 200) {
+      var data = json.decode(response.body);
+      print('Received data: $data'); // Print received data
 
-          items = _parseList(data['data']);
+      if (data['success']) {
+        //this counts how many items are added to the list by a single request
+        int newItems = 0;
+        //this determines how many items down the full list the server should start when returning a request
+        int offset = 0;
 
-          newItems = items.length;
-          offset += newItems;
+        items = _parseList(data['data']);
 
-          //continue requesting new items until all items are requested from the server
-          while (newItems == 100) {
-            response = await http.get(
-              Uri.parse('${apiAddress}listposts.php?wanted=0&start$offset'),
-              headers: {'Cookie': "PHPSESSID=$sessionState"},
-            );
+        newItems = items.length;
+        offset += newItems;
 
-            if (response.statusCode == 200) {
-              var newData = json.decode(response.body);
+        //continue requesting new items until all items are requested from the server
+        while (newItems == 100) {
+          response = await http.get(
+            Uri.parse('${apiAddress}listposts.php?wanted=0&start$offset'),
+            headers: {'Cookie': "PHPSESSID=$sessionState"},
+          );
 
-              List<Item> newItemsList = _parseList(newData['data']);
+          if (response.statusCode == 200) {
+            var newData = json.decode(response.body);
 
-              newItems = newItemsList.length;
-              offset += newItems;
+            List<Item> newItemsList = _parseList(newData['data']);
 
-              for (Item i in newItemsList) {
-                items.add(i);
-              }
+            newItems = newItemsList.length;
+            offset += newItems;
+
+            for (Item i in newItemsList) {
+              items.add(i);
             }
           }
-          return items;
-        } else {
-          //determine error message based on API response
-          if (data['reason'][0] == "server_error") {
-            errorMessage =
-                "There was an issue with the server. Please try again later.";
-          } else if (data['reason'][0] == "invalid_session") {
-            errorMessage = "The session is no longer valid.";
-          } else {
-            errorMessage = "An error occurred.";
-          }
-          print(errorMessage);
-          return items;
         }
+        return items;
       } else {
-        errorMessage = "An error occurred.";
+        //determine error message based on API response
+        if (data['reason'][0] == "server_error") {
+          errorMessage =
+              "There was an issue with the server. Please try again later.";
+        } else if (data['reason'][0] == "invalid_session") {
+          errorMessage = "The session is no longer valid.";
+        } else {
+          errorMessage = "An error occurred.";
+        }
         print(errorMessage);
         return items;
       }
-    } catch (e) {
-      errorMessage = e.toString();
+    } else {
+      errorMessage = "An error occurred.";
       print(errorMessage);
       return items;
     }
+  } catch (e) {
+    errorMessage = e.toString();
+    print(errorMessage);
+    return items;
   }
+}
+
 
   Future<List<Item>> getAllWantedItems(String sessionState) async {
     List<Item> items = List.empty(growable: true);
@@ -281,7 +282,7 @@ class ItemClient {
         itemQuantity: item['ItemQuantity'],
         itemPrice: item['ItemPrice'].toDouble(),
         itemWanted: wanted,
-        itemImage: 'https://helpmewithfinals.com/api/uploads/${item['itemImage']}',
+        itemImage: 'https://helpmewithfinals.com/api/${item['ItemImage']}',
         userId: item['UserID'],
         itemAdded: DateTime.parse(item['ItemAdded']),
       ));
@@ -294,3 +295,4 @@ class ItemClient {
     return errorMessage;
   }
 }
+
