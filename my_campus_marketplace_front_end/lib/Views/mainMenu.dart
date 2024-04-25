@@ -31,10 +31,10 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() {
       widget.itemClient
           .getForSaleItems(m.userClient.getSessionState(),
-              condition: ["new"],
+              condition: ["new", "likenew"],
               minPrice: 30,
-              maxPrice: 50,
-              orderBy: ["Items.ItemPrice"])
+              maxPrice: 1000,
+              orderBy: ["Items.ItemPrice", "-Items.ItemName"])
           .then((response) => onGetItemsSuccess(response));
     });
   }
@@ -43,6 +43,13 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() {
       if (newItems != null && newItems.isNotEmpty) {
         items = newItems;
+        // Navigate to For Sale screen
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ForSale(userName: userName, items: items),
+          ),
+        );
       } else {
         ScaffoldMessenger.of(context)
             .showSnackBar(const SnackBar(content: Text("Error")));
@@ -162,14 +169,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   ElevatedButton(
                     onPressed: () {
                       getItems();
-                      // Navigate to For Sale screen
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              ForSale(userName: userName, items: items),
-                        ),
-                      );
                     },
                     child: Text(
                       'For Sale',

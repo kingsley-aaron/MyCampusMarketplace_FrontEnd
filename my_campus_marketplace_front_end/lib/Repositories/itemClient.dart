@@ -164,9 +164,6 @@ class ItemClient {
         orderBy: orderBy);
   }
 
-  //orderBy is an optional array of values the list should be sorted by, acceptable values are Items.ItemName, Items.ItemDesc,
-  //Items.ItemCondition, Items.ItemAdded, and Items.ItemPrice
-  //For descending sorting, include "-" in front of the orderBy string. Example: -Items.ItemName
   Future<List<Item>> _getItems(String sessionState, bool wanted,
       {int? listSize,
       List<String>? condition,
