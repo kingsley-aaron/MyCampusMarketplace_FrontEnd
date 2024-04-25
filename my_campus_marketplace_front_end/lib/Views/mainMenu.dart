@@ -30,7 +30,11 @@ class _HomeScreenState extends State<HomeScreen> {
   void getItems() {
     setState(() {
       widget.itemClient
-          .getAllForSaleItems(m.userClient.getSessionState())
+          .getForSaleItems(m.userClient.getSessionState(),
+              condition: ["new"],
+              minPrice: 30,
+              maxPrice: 50,
+              orderBy: ["Items.ItemPrice"])
           .then((response) => onGetItemsSuccess(response));
     });
   }

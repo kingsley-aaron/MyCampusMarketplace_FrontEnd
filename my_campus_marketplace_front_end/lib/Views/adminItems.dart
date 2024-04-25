@@ -145,7 +145,7 @@ class _AdminItemsState extends State<AdminItems> {
 
 Future<List<Item>> getItems() async {
   List<Item> items =
-      await itemClient.getAllForSaleItems(userClient.getSessionState());
+      await itemClient.getForSaleItems(userClient.getSessionState());
 
   return items;
 }
