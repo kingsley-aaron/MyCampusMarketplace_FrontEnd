@@ -23,7 +23,6 @@ class ItemClient {
         bool wanted = false;
 
         if (data['success']) {
-          var itemData = data['data'];
           if (data['ItemWanted'] == 0) {
             wanted = false;
           } else {
@@ -37,7 +36,7 @@ class ItemClient {
               itemQuantity: data['ItemQuantity'],
               itemPrice: data['ItemPrice'].toDouble(),
               itemWanted: wanted,
-              itemImage: itemData['itemImage'],
+              itemImage: data['ItemImage'],
               userId: data['UserID'],
               itemAdded: DateTime.parse(data['ItemAdded']));
         } else {
@@ -237,34 +236,51 @@ class ItemClient {
           //this determines how many items down the full list the server should start when returning a request
           int offset = 0;
 
-          items = _parseList(data['data']);
+          if (data['success']) {
+            //this counts how many items are added to the list by a single request
+            int newItems = 0;
+            //this determines how many items down the full list the server should start when returning a request
+            int offset = 0;
 
-          newItems = items.length;
-          offset += newItems;
+            items = _parseList(data['data']);
 
-          if (listSize == null) {
-            //continue requesting new items until all items are requested from the server
-            while (newItems == 100) {
-              response = await http.get(
-                Uri.parse('$apiAddress$request&start$offset'),
-                headers: {'Cookie': "PHPSESSID=$sessionState"},
-              );
+            if (listSize == null) {
+              //continue requesting new items until all items are requested from the server
+              while (newItems == 100) {
+                response = await http.get(
+                  Uri.parse('$apiAddress$request&start$offset'),
+                  headers: {'Cookie': "PHPSESSID=$sessionState"},
+                );
 
-              if (response.statusCode == 200) {
-                var newData = json.decode(response.body);
+                if (response.statusCode == 200) {
+                  var newData = json.decode(response.body);
 
-                List<Item> newItemsList = _parseList(newData['data']);
+                  List<Item> newItemsList = _parseList(newData['data']);
 
-                newItems = newItemsList.length;
-                offset += newItems;
+                  newItems = newItemsList.length;
+                  offset += newItems;
 
-                for (Item i in newItemsList) {
-                  items.add(i);
+                  for (Item i in newItemsList) {
+                    items.add(i);
+                  }
                 }
               }
             }
-          }
 
+            return items;
+          } else {
+            //determine error message based on API response
+            if (data['reason'][0] == "server_error") {
+              errorMessage =
+                  "There was an issue with the server. Please try again later.";
+            } else if (data['reason'][0] == "invalid_session") {
+              errorMessage = "The session is no longer valid.";
+            } else {
+              errorMessage = "An error occurred.";
+            }
+            print(errorMessage);
+            return items;
+          }
           return items;
         } else {
           //determine error message based on API response
@@ -309,8 +325,7 @@ class ItemClient {
         itemQuantity: item['ItemQuantity'],
         itemPrice: item['ItemPrice'].toDouble(),
         itemWanted: wanted,
-        itemImage:
-            'https://helpmewithfinals.com/api/uploads/${item['itemImage']}',
+        itemImage: 'https://helpmewithfinals.com/api/${item['ItemImage']}',
         userId: item['UserID'],
         itemAdded: DateTime.parse(item['ItemAdded']),
       ));
