@@ -1,24 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:mycampusmarketplace/Models/item.dart';
 import 'package:mycampusmarketplace/Models/user.dart';
-import 'package:mycampusmarketplace/main.dart';
+import 'package:mycampusmarketplace/Repositories/itemClient.dart';
+import 'package:mycampusmarketplace/main.dart' as m;
 import 'expandedSale.dart';
 import 'adminUsers.dart';
 
 class AdminItems extends StatefulWidget {
   final String userName;
+  List<Item> items = List.empty();
 
-  AdminItems({required this.userName});
+  AdminItems({required this.userName, required this.items});
+
+  ItemClient itemClient = m.itemClient;
 
   @override
-  State<AdminItems> createState() => _AdminItemsState(userName);
+  State<AdminItems> createState() => _AdminItemsState(userName, items);
 }
 
 class _AdminItemsState extends State<AdminItems> {
-  _AdminItemsState(userName);
+  _AdminItemsState(userName, items);
 
   late String userName = widget.userName;
-  final List<Item> items = getItems() as List<Item>;
+  late List<Item> items = widget.items;
 
   @override
   Widget build(BuildContext context) {
@@ -143,13 +147,6 @@ class _AdminItemsState extends State<AdminItems> {
   }
 }
 
-Future<List<Item>> getItems() async {
-  List<Item> items =
-      await itemClient.getForSaleItems(userClient.getSessionState());
-
-  return items;
-}
-
 void main() {
-  runApp(AdminItems(userName: "User"));
+  runApp(AdminItems(userName: "User", items: List.empty()));
 }

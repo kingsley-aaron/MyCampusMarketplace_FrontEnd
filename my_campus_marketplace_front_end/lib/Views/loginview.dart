@@ -316,12 +316,12 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
   }
 
   Future<Object> _getAdmin() async {
-    User? user = await client.getUser();
+    User? user = await userClient.getUser();
 
     if (user != null) {
       return user.admin;
     } else {
-      return client.getErrorMessage();
+      return userClient.getErrorMessage();
     }
   }
 
