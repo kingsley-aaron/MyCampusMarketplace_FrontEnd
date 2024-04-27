@@ -1,54 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:mycampusmarketplace/Models/item.dart';
 import 'package:mycampusmarketplace/Models/user.dart';
+import 'package:mycampusmarketplace/Repositories/itemClient.dart';
+import 'package:mycampusmarketplace/main.dart' as m;
+import 'package:mycampusmarketplace/main.dart';
 import 'expandedSale.dart';
 import 'myListings.dart';
 
 class ForSale extends StatefulWidget {
   final String userName;
+  List<Item> items = List.empty();
 
-  ForSale({required this.userName});
+  ForSale({required this.userName, required this.items});
+
+  ItemClient itemClient = m.itemClient;
 
   @override
-  State<ForSale> createState() => _ForSaleState(userName);
+  State<ForSale> createState() => _ForSaleState(userName, items);
 }
 
 class _ForSaleState extends State<ForSale> {
-  _ForSaleState(userName);
+  _ForSaleState(userName, items);
 
   late String userName = widget.userName;
-  final List<Map<String, dynamic>> items = [
-    {
-      'name': 'Item 1',
-      'condition': 'New',
-      'price': '\$100',
-      'description': 'A great item to purchase.'
-    },
-    {
-      'name': 'Item 2',
-      'condition': 'Used',
-      'price': '\$50',
-      'description': 'Some wear and tear visible.'
-    },
-    {
-      'name': 'Item 3',
-      'condition': 'new',
-      'price': '\$60',
-      'description': 'Brand new baseball bat.'
-    },
-    {
-      'name': 'Item 4',
-      'condition': 'Used',
-      'price': '\$50',
-      'description': 'Some wear and tear visible.'
-    },
-    {
-      'name': 'Item 5',
-      'condition': 'Used',
-      'price': '\$50',
-      'description': 'Some wear and tear visible.'
-    }
-    //replace with data from database
-  ];
+  late List<Item> items = widget.items;
 
   @override
   Widget build(BuildContext context) {
@@ -124,19 +99,16 @@ class _ForSaleState extends State<ForSale> {
                       padding: const EdgeInsets.all(16.0),
                       child: Row(
                         children: <Widget>[
-                          // This container is a placeholder for your item's image
+                          // display the item image
                           Container(
                             width: 100,
                             height: 100,
                             decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                colors: [Colors.blue[900]!, Colors.blue[200]!],
-                                begin: Alignment.topLeft,
-                                end: Alignment.bottomRight,
+                              image: DecorationImage(
+                                image: NetworkImage(item.itemImage),
+                                fit: BoxFit.cover,
                               ),
                             ),
-                            child:
-                                Icon(Icons.image, size: 50), // Placeholder icon
                           ),
                           SizedBox(width: 16),
                           // This column contains the item's name, condition, and price
@@ -145,7 +117,7 @@ class _ForSaleState extends State<ForSale> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
                                 Text(
-                                  item['name'],
+                                  item.itemName,
                                   style: TextStyle(
                                     fontSize: 20,
                                     fontWeight: FontWeight.bold,
@@ -154,14 +126,14 @@ class _ForSaleState extends State<ForSale> {
                                 ),
                                 SizedBox(height: 10),
                                 Text(
-                                  'Condition: ${item['condition']}',
+                                  'Condition: ${item.itemCondition}',
                                   style: TextStyle(
                                     fontSize: 16,
                                     color: Colors.grey[600],
                                   ),
                                 ),
                                 Text(
-                                  'Price: ${item['price']}',
+                                  'Price: ${item.itemPrice}',
                                   style: TextStyle(
                                     fontSize: 16,
                                     color: Colors.blue,
@@ -186,5 +158,5 @@ class _ForSaleState extends State<ForSale> {
 }
 
 void main() {
-  runApp(ForSale(userName: "User"));
+  runApp(ForSale(userName: "User", items: List.empty()));
 }

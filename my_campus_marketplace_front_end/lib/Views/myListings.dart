@@ -20,8 +20,9 @@ class MyListings extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                     builder: (context) => ForSale(
-                      userName: "User", //Add user context
-                    ),
+                        userName: "User",
+                        items: new List.empty() //Add user context
+                        ),
                   ),
                 );
               },

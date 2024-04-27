@@ -1,5 +1,12 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:mycampusmarketplace/Models/user.dart';
+import 'package:mycampusmarketplace/Repositories/itemClient.dart';
+import '../main.dart' as m;
 import 'myListings.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:path/path.dart' as path;
 
 class ListItemPage extends StatefulWidget {
   final String userName;
@@ -20,20 +27,48 @@ class _ListItemPageState extends State<ListItemPage> {
       TextEditingController();
   final TextEditingController _quantityController = TextEditingController();
 
+  final ItemClient itemClient = ItemClient();
+
+  List<String> selectedImages = []; //plan on saving one image
+
   @override
   void dispose() {
     // Clean up the controllers when the widget is disposed
     _itemNameController.dispose();
     _itemPriceController.dispose();
     _itemDescriptionController.dispose();
+    _quantityController.dispose();
     super.dispose();
+  }
+
+  Future<void> _pickImages() async {
+    final picker = ImagePicker();
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+
+    if (pickedFile != null) {
+      // extracting the file extension
+      final fileExtension = path.extension(pickedFile.path);
+      // generate a unique filename based on current timestamp
+      final uniqueFileName =
+          DateTime.now().millisecondsSinceEpoch.toString() + fileExtension;
+
+      // save the file to the temporary directory with the unique filename
+      final tempDir = await getTemporaryDirectory();
+      final tempPath = tempDir.path;
+      final File newImage =
+          await File(pickedFile.path).copy('$tempPath/$uniqueFileName');
+
+      setState(() {
+        selectedImages.clear(); // clear the previous selected image
+        selectedImages.add(newImage.path); // add the new selected image
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        //title: Text('List New Item'),
         actions: [
           IconButton(
             icon: Icon(Icons.home),
@@ -160,7 +195,29 @@ class _ListItemPageState extends State<ListItemPage> {
             ),
             SizedBox(height: 16.0),
             Text('Upload Photo'),
-            // Add a button or widget to load a photo here
+            ElevatedButton(
+              onPressed: _pickImages,
+              child: Text('Pick Images'),
+            ),
+            SizedBox(height: 16.0),
+            Text('Selected Images:'),
+            SizedBox(height: 8.0),
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: selectedImages.map((imagePath) {
+                  return Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Image.file(
+                      File(imagePath),
+                      width: 100,
+                      height: 100,
+                      fit: BoxFit.cover,
+                    ),
+                  );
+                }).toList(),
+              ),
+            ),
             SizedBox(height: 16.0),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -180,6 +237,7 @@ class _ListItemPageState extends State<ListItemPage> {
                     _quantityController.clear(); // Clear quantity controller
                     setState(() {
                       _selectedConditionIndex = 0;
+                      selectedImages.clear();
                     });
                   },
                   child: Text('Clear'),
@@ -208,9 +266,71 @@ class _ListItemPageState extends State<ListItemPage> {
     String itemName = _itemNameController.text;
     String itemPrice = _itemPriceController.text;
     String itemDescription = _itemDescriptionController.text;
-    int selectedCondition = _selectedConditionIndex;
+    String itemQuantity = _quantityController.text;
+    String selectedCondition;
 
-    // Now you can use the itemName, itemPrice, itemDescription, and selectedCondition
-    // variables to perform your form submission logic
+    // Condition check for item insertion
+    switch (_selectedConditionIndex) {
+      case 1:
+        selectedCondition = 'New';
+        break;
+      case 2:
+        selectedCondition = 'Used - Like New';
+        break;
+      case 3:
+        selectedCondition = 'Used - Good';
+        break;
+      case 4:
+        selectedCondition = 'Used - Fair';
+        break;
+      default:
+        selectedCondition = '';
+    }
+
+    // create session state via user client
+    // and post data from list item page
+
+    String sessionState = m.userClient.sessionState;
+
+    m.userClient.getUser().then((user) {
+      // dynamic user id
+      if (user != null) {
+        String userId = user.userID.toString();
+
+        // post each selected image
+        for (String imagePath in selectedImages) {
+          File itemImage = File(imagePath);
+
+          itemClient
+              .postItem(
+            itemName,
+            itemDescription,
+            itemPrice,
+            selectedCondition,
+            itemQuantity,
+            userId,
+            sessionState,
+            itemImage,
+          )
+              .then((response) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(response),
+              ),
+            );
+            Navigator.pop(context);
+          }).catchError((error) {
+            print(error);
+          });
+        }
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('An error occurred.'),
+          ),
+        );
+      }
+    });
   }
 }
+

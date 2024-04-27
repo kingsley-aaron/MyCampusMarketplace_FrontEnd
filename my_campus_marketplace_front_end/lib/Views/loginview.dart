@@ -306,12 +306,12 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
   }
 
   Future<String> _getUsername() async {
-    User? user = await client.getUser();
+    User? user = await userClient.getUser();
 
     if (user != null) {
       return user.userName;
     } else {
-      return client.getErrorMessage();
+      return userClient.getErrorMessage();
     }
   }
 
@@ -338,7 +338,7 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
         return;
       }
 
-      String loginResponse = await client.login(userName, passwordHash);
+      String loginResponse = await userClient.login(userName, passwordHash);
 
       userName = await _getUsername();
       Object admin = await _getAdmin();
@@ -404,7 +404,7 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
           return;
         }
       }
-      String signupResponse = await client.signup(
+      String signupResponse = await userClient.signup(
           firstName, lastName, studentID, studentEmail, userName, passwordHash);
 
       if (signupResponse == "Success") {

@@ -1,4 +1,7 @@
+import 'package:mycampusmarketplace/Models/item.dart';
+import 'package:mycampusmarketplace/Repositories/itemClient.dart';
 import 'package:mycampusmarketplace/Repositories/userClient.dart';
+import 'package:mycampusmarketplace/main.dart';
 import '../main.dart' as m;
 import 'listItem.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +15,8 @@ class HomeScreen extends StatefulWidget {
 
   HomeScreen({required this.userName});
 
+  ItemClient itemClient = m.itemClient;
+
   @override
   State<HomeScreen> createState() => _HomeScreenState(userName);
 }
@@ -19,6 +24,38 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   _HomeScreenState(userName);
   late String userName = widget.userName;
+
+  List<Item> items = List.empty();
+
+  void getItems() {
+    setState(() {
+      widget.itemClient
+          .getForSaleItems(m.userClient.getSessionState(),
+              condition: ["new", "likenew"],
+              minPrice: 30,
+              maxPrice: 1000,
+              orderBy: ["Items.ItemPrice", "-Items.ItemName"])
+          .then((response) => onGetItemsSuccess(response));
+    });
+  }
+
+  void onGetItemsSuccess(List<Item>? newItems) {
+    setState(() {
+      if (newItems != null && newItems.isNotEmpty) {
+        items = newItems;
+        // Navigate to For Sale screen
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ForSale(userName: userName, items: items),
+          ),
+        );
+      } else {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(const SnackBar(content: Text("Error")));
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -131,15 +168,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   const SizedBox(height: 20),
                   ElevatedButton(
                     onPressed: () {
-                      // Navigate to For Sale screen
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => ForSale(
-                            userName: userName,
-                          ),
-                        ),
-                      );
+                      getItems();
                     },
                     child: Text(
                       'For Sale',
@@ -162,7 +191,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void _logout() async {
     // Calling the logout function
-    String logoutResponse = await m.client.logout();
+    String logoutResponse = await m.userClient.logout();
 
     if (logoutResponse == "Success") {
       Navigator.pushReplacement(
