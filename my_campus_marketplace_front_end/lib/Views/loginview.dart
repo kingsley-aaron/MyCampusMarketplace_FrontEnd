@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mycampusmarketplace/Models/user.dart';
 import 'package:mycampusmarketplace/Repositories/userClient.dart';
 import 'package:mycampusmarketplace/Views/mainMenu.dart';
+import 'package:mycampusmarketplace/Views/adminMain.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../main.dart';
@@ -314,10 +315,21 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
     }
   }
 
+  Future<Object> _getAdmin() async {
+    User? user = await client.getUser();
+
+    if (user != null) {
+      return user.admin;
+    } else {
+      return client.getErrorMessage();
+    }
+  }
+
   void _login() async {
     if (_isLogin) {
       String userName = _usernameController.text.trim();
       String passwordHash = _passwordController.text.trim();
+      
 
       if (userName.isEmpty) {
         _showErrorDialog("Please enter your username.");
@@ -329,15 +341,23 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
       String loginResponse = await client.login(userName, passwordHash);
 
       userName = await _getUsername();
+      Object admin = await _getAdmin();
 
       if (loginResponse == "Success") {
+        if (admin == true) {
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(
+            MaterialPageRoute(
+              builder: (context) => AdminHome(userName: userName)));
+        } else if (admin == false) {
+        Navigator.pushReplacement(
+          context,
+            MaterialPageRoute(
               builder: (context) => HomeScreen(userName: userName)),
         );
-      } else {
+        } else {
         _showErrorDialog(loginResponse);
+        }
       }
     }
   }
