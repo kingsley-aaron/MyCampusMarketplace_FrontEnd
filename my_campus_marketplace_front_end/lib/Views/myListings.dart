@@ -6,13 +6,20 @@ class MyListings extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('My Listings'),
+        title: Text(
+          'My Listings',
+          style: Theme.of(context).textTheme.headline6,
+        ),
       ),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('This is where your listings will be displayed.'),
+            Text(
+              'This is where your listings will be displayed.',
+              style: Theme.of(context).textTheme.bodyText1,
+            ),
             ElevatedButton(
               onPressed: () {
                 // Navigate to forSale screen
@@ -20,13 +27,16 @@ class MyListings extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                     builder: (context) => ForSale(
-                        userName: "User",
-                        items: new List.empty() //Add user context
-                        ),
+                      userName: "User", // Add user context
+                      items: [], // Add user context, assuming items is a list
+                    ),
                   ),
                 );
               },
-              child: Text('Go to For Sale Page'),
+              child: Text(
+                'Go to For Sale Page',
+                style: Theme.of(context).textTheme.bodyText1,
+              ),
             ),
           ],
         ),

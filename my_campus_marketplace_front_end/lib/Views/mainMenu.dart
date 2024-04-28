@@ -1,13 +1,12 @@
+import 'package:flutter/material.dart';
+import 'forSale.dart';
+import 'listItem.dart';
+import 'myListings.dart';
+import 'package:mycampusmarketplace/views/loginview.dart';
+import 'package:mycampusmarketplace/main.dart' as m;
 import 'package:mycampusmarketplace/Models/item.dart';
 import 'package:mycampusmarketplace/Repositories/itemClient.dart';
 import 'package:mycampusmarketplace/Repositories/userClient.dart';
-import 'package:mycampusmarketplace/main.dart';
-import '../main.dart' as m;
-import 'listItem.dart';
-import 'package:flutter/material.dart';
-import 'package:mycampusmarketplace/views/loginview.dart';
-import 'forSale.dart';
-import 'myListings.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -22,7 +21,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  _HomeScreenState(userName);
+  _HomeScreenState(this.userName);
   late String userName = widget.userName;
 
   List<Item> items = List.empty();
@@ -61,7 +60,6 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        // title: Text('My Campus Marketplace'),
         actions: [
           Padding(
             padding: const EdgeInsets.all(8.0),
@@ -69,12 +67,7 @@ class _HomeScreenState extends State<HomeScreen> {
               children: [
                 Text(
                   'Welcome, $userName',
-                  style: TextStyle(
-                    fontFamily: 'Quicksand',
-                    fontSize: 16, // Adjust font size as needed
-                    fontWeight:
-                        FontWeight.normal, // Adjust font weight as needed
-                  ),
+                  style: Theme.of(context).textTheme.titleMedium,
                 ),
                 PopupMenuButton<String>(
                   onSelected: (value) {
@@ -92,28 +85,18 @@ class _HomeScreenState extends State<HomeScreen> {
                   },
                   itemBuilder: (BuildContext context) =>
                       <PopupMenuEntry<String>>[
-                    const PopupMenuItem<String>(
+                    PopupMenuItem<String>(
                       value: 'myListings',
                       child: Text(
                         'My Listings',
-                        style: TextStyle(
-                          fontFamily: 'Quicksand',
-                          fontSize: 16, // Adjust font size as needed
-                          fontWeight:
-                              FontWeight.normal, // Adjust font weight as needed
-                        ),
+                        style: Theme.of(context).textTheme.titleMedium,
                       ),
                     ),
-                    const PopupMenuItem<String>(
+                    PopupMenuItem<String>(
                       value: 'signOut',
                       child: Text(
                         'Sign Out',
-                        style: TextStyle(
-                          fontFamily: 'Quicksand',
-                          fontSize: 16, // Adjust font size as needed
-                          fontWeight:
-                              FontWeight.normal, // Adjust font weight as needed
-                        ),
+                        style: Theme.of(context).textTheme.titleMedium,
                       ),
                     ),
                   ],
@@ -123,6 +106,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ],
       ),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -130,12 +114,7 @@ class _HomeScreenState extends State<HomeScreen> {
             padding: EdgeInsets.all(16.0),
             child: Text(
               'My Campus Marketplace',
-              style: TextStyle(
-                fontFamily: 'Quicksand',
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-                color: Color.fromARGB(229, 41, 39, 39),
-              ),
+              style: Theme.of(context).textTheme.titleLarge,
               textAlign: TextAlign.center,
             ),
           ),
@@ -155,29 +134,40 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       );
                     },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Color.fromARGB(223, 5, 40, 27),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
+                    ),
                     child: Text(
                       'List New Item',
-                      style: TextStyle(
-                        fontFamily: 'Quicksand',
-                        fontSize: 16, // Adjust font size as needed
-                        fontWeight:
-                            FontWeight.normal, // Adjust font weight as needed
-                      ),
+                      style: Theme.of(context).textTheme.labelLarge,
                     ),
                   ),
                   const SizedBox(height: 20),
                   ElevatedButton(
                     onPressed: () {
-                      getItems();
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ForSale(
+                            userName: userName,
+                            items: [],
+                          ),
+                        ),
+                      );
+                      getItems(); // Moved outside the child property
                     },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Color.fromARGB(223, 5, 40, 27),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
+                    ),
                     child: Text(
                       'For Sale',
-                      style: TextStyle(
-                        fontFamily: 'Quicksand',
-                        fontSize: 16, // Adjust font size as needed
-                        fontWeight:
-                            FontWeight.normal, // Adjust font weight as needed
-                      ),
+                      style: Theme.of(context).textTheme.labelLarge,
                     ),
                   ),
                 ],

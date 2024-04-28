@@ -31,7 +31,7 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
         preferredSize: Size.fromHeight(kToolbarHeight),
         child: Container(
           decoration: BoxDecoration(
-            color: Colors.green.shade300,
+            color: Colors.transparent,
             borderRadius: BorderRadius.only(
               bottomLeft: Radius.circular(20),
               bottomRight: Radius.circular(20),
@@ -66,13 +66,13 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
                 ),
               ],
             ),
-            backgroundColor: Color.fromRGBO(159, 232, 205, 0.831),
+            backgroundColor: Colors.transparent,
             elevation: 0,
             centerTitle: true,
           ),
         ),
       ),
-      backgroundColor: Color.fromRGBO(254, 254, 254, 1),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -218,7 +218,7 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
                 color: Colors.transparent,
                 child: Ink(
                   decoration: BoxDecoration(
-                    color: Color.fromRGBO(46, 126, 97, 0.932),
+                    color: Color.fromARGB(223, 5, 40, 27),
                     borderRadius: BorderRadius.circular(20.0),
                   ),
                   child: InkWell(
@@ -247,7 +247,7 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
                   });
                 },
                 style: ButtonStyle(
-                  overlayColor: MaterialStateColor.resolveWith(
+                  overlayColor: WidgetStateColor.resolveWith(
                     (states) => Color.fromARGB(219, 208, 138, 116),
                   ),
                 ),
@@ -329,7 +329,6 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
     if (_isLogin) {
       String userName = _usernameController.text.trim();
       String passwordHash = _passwordController.text.trim();
-      
 
       if (userName.isEmpty) {
         _showErrorDialog("Please enter your username.");
@@ -345,18 +344,18 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
 
       if (loginResponse == "Success") {
         if (admin == true) {
-        Navigator.pushReplacement(
-          context,
-            MaterialPageRoute(
-              builder: (context) => AdminHome(userName: userName)));
+          Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => AdminHome(userName: userName)));
         } else if (admin == false) {
-        Navigator.pushReplacement(
-          context,
+          Navigator.pushReplacement(
+            context,
             MaterialPageRoute(
-              builder: (context) => HomeScreen(userName: userName)),
-        );
+                builder: (context) => HomeScreen(userName: userName)),
+          );
         } else {
-        _showErrorDialog(loginResponse);
+          _showErrorDialog(loginResponse);
         }
       }
     }

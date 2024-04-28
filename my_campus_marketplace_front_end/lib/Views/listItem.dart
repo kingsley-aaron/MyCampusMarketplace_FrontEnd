@@ -80,7 +80,10 @@ class _ListItemPageState extends State<ListItemPage> {
             padding: const EdgeInsets.all(8.0),
             child: Row(
               children: [
-                Text('Welcome, $userName'),
+                Text(
+                  'Welcome, $userName',
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
                 PopupMenuButton<String>(
                   onSelected: (value) {
                     if (value == 'myListings') {
@@ -97,13 +100,19 @@ class _ListItemPageState extends State<ListItemPage> {
                   },
                   itemBuilder: (BuildContext context) =>
                       <PopupMenuEntry<String>>[
-                    const PopupMenuItem<String>(
+                    PopupMenuItem<String>(
                       value: 'myListings',
-                      child: Text('My Listings'),
+                      child: Text(
+                        'My Listings',
+                        style: Theme.of(context).textTheme.titleMedium,
+                      ),
                     ),
-                    const PopupMenuItem<String>(
+                    PopupMenuItem<String>(
                       value: 'signOut',
-                      child: Text('Sign Out'),
+                      child: Text(
+                        'Sign Out',
+                        style: Theme.of(context).textTheme.titleMedium,
+                      ),
                     ),
                   ],
                 ),
@@ -112,6 +121,7 @@ class _ListItemPageState extends State<ListItemPage> {
           ),
         ],
       ),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SingleChildScrollView(
         padding: EdgeInsets.all(16.0),
         child: Column(
@@ -121,14 +131,11 @@ class _ListItemPageState extends State<ListItemPage> {
               padding: EdgeInsets.all(16.0),
               child: Text(
                 'List New Item',
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: Theme.of(context).textTheme.titleLarge,
                 textAlign: TextAlign.center,
               ),
             ),
-            Text('Item Name'),
+            Text('Item Name', style: Theme.of(context).textTheme.bodyLarge),
             TextField(
               controller: _itemNameController,
               decoration: InputDecoration(
@@ -136,7 +143,7 @@ class _ListItemPageState extends State<ListItemPage> {
               ),
             ),
             SizedBox(height: 16.0),
-            Text('Item Price'),
+            Text('Item Price', style: Theme.of(context).textTheme.bodyLarge),
             TextField(
               controller: _itemPriceController,
               decoration: InputDecoration(
@@ -144,7 +151,7 @@ class _ListItemPageState extends State<ListItemPage> {
               ),
             ),
             SizedBox(height: 16.0),
-            Text('Condition'),
+            Text('Condition', style: Theme.of(context).textTheme.bodyLarge),
             DropdownButton<int>(
               value: _selectedConditionIndex,
               onChanged: (value) {
@@ -176,7 +183,10 @@ class _ListItemPageState extends State<ListItemPage> {
               ],
             ),
             SizedBox(height: 16.0),
-            Text('Quantity'), // New field: Quantity
+            Text('Quantity',
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyLarge), // New field: Quantity
             TextFormField(
               controller: _quantityController,
               keyboardType: TextInputType.number,
@@ -185,7 +195,8 @@ class _ListItemPageState extends State<ListItemPage> {
               ),
             ),
             SizedBox(height: 16.0),
-            Text('Item Description'),
+            Text('Item Description',
+                style: Theme.of(context).textTheme.bodyLarge),
             TextField(
               controller: _itemDescriptionController,
               maxLines: null,
@@ -194,7 +205,7 @@ class _ListItemPageState extends State<ListItemPage> {
               ),
             ),
             SizedBox(height: 16.0),
-            Text('Upload Photo'),
+            Text('Upload Photo', style: Theme.of(context).textTheme.bodyLarge),
             ElevatedButton(
               onPressed: _pickImages,
               child: Text('Pick Images'),
@@ -226,7 +237,10 @@ class _ListItemPageState extends State<ListItemPage> {
                   onPressed: () {
                     _submitForm();
                   },
-                  child: Text('Submit'),
+                  child: Text(
+                    'Submit',
+                    style: Theme.of(context).textTheme.labelLarge,
+                  ),
                 ),
                 ElevatedButton(
                   onPressed: () {
@@ -240,7 +254,10 @@ class _ListItemPageState extends State<ListItemPage> {
                       selectedImages.clear();
                     });
                   },
-                  child: Text('Clear'),
+                  child: Text(
+                    'Clear',
+                    style: Theme.of(context).textTheme.labelLarge,
+                  ),
                 ),
               ],
             ),
@@ -333,4 +350,3 @@ class _ListItemPageState extends State<ListItemPage> {
     });
   }
 }
-
