@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mycampusmarketplace/Models/item.dart';
+import 'package:mycampusmarketplace/theme.dart';
 import 'myListings.dart';
 
 class ExpandedSale extends StatelessWidget {
@@ -26,7 +27,10 @@ class ExpandedSale extends StatelessWidget {
             padding: const EdgeInsets.all(8.0),
             child: Row(
               children: [
-                Text('Welcome, User'), // Replace User with your actual username
+                Text(
+                  'Welcome, User',
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
                 PopupMenuButton<String>(
                   onSelected: (value) {
                     if (value == 'myListings') {
@@ -44,13 +48,19 @@ class ExpandedSale extends StatelessWidget {
                   },
                   itemBuilder: (BuildContext context) =>
                       <PopupMenuEntry<String>>[
-                    const PopupMenuItem<String>(
+                    PopupMenuItem<String>(
                       value: 'myListings',
-                      child: Text('My Listings'),
+                      child: Text(
+                        'My Listings',
+                        style: AppTheme.themeData.textTheme.titleMedium,
+                      ),
                     ),
-                    const PopupMenuItem<String>(
+                    PopupMenuItem<String>(
                       value: 'signOut',
-                      child: Text('Sign Out'),
+                      child: Text(
+                        'Sign Out',
+                        style: AppTheme.themeData.textTheme.titleMedium,
+                      ),
                     ),
                   ],
                 ),
@@ -59,6 +69,7 @@ class ExpandedSale extends StatelessWidget {
           ),
         ],
       ),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -66,7 +77,7 @@ class ExpandedSale extends StatelessWidget {
           children: <Widget>[
             Text(
               item.itemName,
-              style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
+              style: AppTheme.themeData.textTheme.bodyMedium,
             ),
             SizedBox(height: 8.0),
             AspectRatio(
@@ -92,7 +103,7 @@ class ExpandedSale extends StatelessWidget {
             Center(
               child: Text(
                 'Condition: ${item.itemCondition}',
-                style: TextStyle(fontSize: 16.0), // Adjust font size here
+                style: AppTheme.themeData.textTheme.bodyMedium,
               ),
             ),
             SizedBox(
@@ -101,24 +112,24 @@ class ExpandedSale extends StatelessWidget {
             Center(
               child: Text(
                 'Price: ${item.itemPrice}',
-                style: TextStyle(fontSize: 16.0), // Adjust font size here
+                style: AppTheme.themeData.textTheme.bodyMedium,
               ),
             ),
             SizedBox(height: 8.0),
             Center(
               child: Text(
                 'Description: ${item.itemDesc}',
-                style: TextStyle(fontSize: 16.0), // Adjust font size here
+                style: AppTheme.themeData.textTheme.bodyMedium,
               ),
             ),
             SizedBox(height: 8.0),
             Center(
               child: Text(
                 'Seller\'s Email: $sellerEmail',
-                style: TextStyle(fontSize: 16.0),
+                style: AppTheme.themeData.textTheme.bodyMedium,
               ),
             ),
-            SizedBox(height: 16.0), // Add some space between text and buttons
+            SizedBox(height: 16.0),
             Container(
               padding: EdgeInsets.symmetric(horizontal: 16.0),
               child: Row(
@@ -129,12 +140,18 @@ class ExpandedSale extends StatelessWidget {
                       // Implement delete functionality
                     },
                     child: Text('Delete'),
+                    style: ElevatedButton.styleFrom(
+                      textStyle: AppTheme.themeData.textTheme.bodyLarge,
+                    ),
                   ),
                   ElevatedButton(
                     onPressed: () {
                       // Implement mark as sold functionality
                     },
                     child: Text('Mark as Sold'),
+                    style: ElevatedButton.styleFrom(
+                      textStyle: AppTheme.themeData.textTheme.bodyLarge,
+                    ),
                   ),
                 ],
               ),
