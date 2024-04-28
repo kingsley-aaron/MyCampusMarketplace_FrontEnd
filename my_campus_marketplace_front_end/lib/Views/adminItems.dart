@@ -1,54 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:mycampusmarketplace/Models/item.dart';
 import 'package:mycampusmarketplace/Models/user.dart';
+import 'package:mycampusmarketplace/Repositories/itemClient.dart';
+import 'package:mycampusmarketplace/main.dart' as m;
 import 'expandedSale.dart';
 import 'adminUsers.dart';
 
 class AdminItems extends StatefulWidget {
   final String userName;
+  List<Item> items = List.empty();
 
-  AdminItems({required this.userName});
+  AdminItems({required this.userName, required this.items});
+
+  ItemClient itemClient = m.itemClient;
 
   @override
-  State<AdminItems> createState() => _AdminItemsState(userName);
+  State<AdminItems> createState() => _AdminItemsState(userName, items);
 }
 
 class _AdminItemsState extends State<AdminItems> {
-  _AdminItemsState(userName);
+  _AdminItemsState(userName, items);
 
   late String userName = widget.userName;
-  final List<Map<String, dynamic>> items = [
-    {
-      'name': 'Item 1',
-      'condition': 'New',
-      'price': '\$100',
-      'description': 'A great item to purchase.'
-    },
-    {
-      'name': 'Item 2',
-      'condition': 'Used',
-      'price': '\$50',
-      'description': 'Some wear and tear visible.'
-    },
-    {
-      'name': 'Item 3',
-      'condition': 'new',
-      'price': '\$60',
-      'description': 'Brand new baseball bat.'
-    },
-    {
-      'name': 'Item 4',
-      'condition': 'Used',
-      'price': '\$50',
-      'description': 'Some wear and tear visible.'
-    },
-    {
-      'name': 'Item 5',
-      'condition': 'Used',
-      'price': '\$50',
-      'description': 'Some wear and tear visible.'
-    }
-    //replace with item data from database
-  ];
+  late List<Item> items = widget.items;
 
   @override
   Widget build(BuildContext context) {
@@ -133,7 +107,7 @@ class _AdminItemsState extends State<AdminItems> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
                                 Text(
-                                  item['name'],
+                                  item.itemName,
                                   style: TextStyle(
                                     fontSize: 20,
                                     fontWeight: FontWeight.bold,
@@ -142,14 +116,14 @@ class _AdminItemsState extends State<AdminItems> {
                                 ),
                                 SizedBox(height: 10),
                                 Text(
-                                  'Condition: ${item['condition']}',
+                                  'Condition: ${item.itemCondition}',
                                   style: TextStyle(
                                     fontSize: 16,
                                     color: Colors.grey[600],
                                   ),
                                 ),
                                 Text(
-                                  'Price: ${item['price']}',
+                                  'Price: ${item.itemPrice}',
                                   style: TextStyle(
                                     fontSize: 16,
                                     color: Colors.blue,
@@ -174,5 +148,5 @@ class _AdminItemsState extends State<AdminItems> {
 }
 
 void main() {
-  runApp(AdminItems(userName: "User"));
+  runApp(AdminItems(userName: "User", items: List.empty()));
 }

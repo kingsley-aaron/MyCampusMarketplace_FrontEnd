@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mycampusmarketplace/Models/user.dart';
 import 'package:mycampusmarketplace/Repositories/userClient.dart';
 import 'package:mycampusmarketplace/Views/mainMenu.dart';
+import 'package:mycampusmarketplace/Views/adminMain.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../main.dart';
@@ -30,7 +31,7 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
         preferredSize: Size.fromHeight(kToolbarHeight),
         child: Container(
           decoration: BoxDecoration(
-            color: Colors.green.shade300,
+            color: Colors.transparent,
             borderRadius: BorderRadius.only(
               bottomLeft: Radius.circular(20),
               bottomRight: Radius.circular(20),
@@ -65,13 +66,13 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
                 ),
               ],
             ),
-            backgroundColor: Color.fromRGBO(159, 232, 205, 0.831),
+            backgroundColor: Colors.transparent,
             elevation: 0,
             centerTitle: true,
           ),
         ),
       ),
-      backgroundColor: Color.fromRGBO(254, 254, 254, 1),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -217,7 +218,7 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
                 color: Colors.transparent,
                 child: Ink(
                   decoration: BoxDecoration(
-                    color: Color.fromRGBO(46, 126, 97, 0.932),
+                    color: Color.fromARGB(223, 5, 40, 27),
                     borderRadius: BorderRadius.circular(20.0),
                   ),
                   child: InkWell(
@@ -246,7 +247,7 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
                   });
                 },
                 style: ButtonStyle(
-                  overlayColor: MaterialStateColor.resolveWith(
+                  overlayColor: WidgetStateColor.resolveWith(
                     (states) => Color.fromARGB(219, 208, 138, 116),
                   ),
                 ),
@@ -305,12 +306,22 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
   }
 
   Future<String> _getUsername() async {
-    User? user = await client.getUser();
+    User? user = await userClient.getUser();
 
     if (user != null) {
       return user.userName;
     } else {
-      return client.getErrorMessage();
+      return userClient.getErrorMessage();
+    }
+  }
+
+  Future<Object> _getAdmin() async {
+    User? user = await userClient.getUser();
+
+    if (user != null) {
+      return user.admin;
+    } else {
+      return userClient.getErrorMessage();
     }
   }
 
@@ -326,18 +337,26 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
         return;
       }
 
-      String loginResponse = await client.login(userName, passwordHash);
+      String loginResponse = await userClient.login(userName, passwordHash);
 
       userName = await _getUsername();
+      Object admin = await _getAdmin();
 
       if (loginResponse == "Success") {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-              builder: (context) => HomeScreen(userName: userName)),
-        );
-      } else {
-        _showErrorDialog(loginResponse);
+        if (admin == true) {
+          Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => AdminHome(userName: userName)));
+        } else if (admin == false) {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+                builder: (context) => HomeScreen(userName: userName)),
+          );
+        } else {
+          _showErrorDialog(loginResponse);
+        }
       }
     }
   }
@@ -384,7 +403,7 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
           return;
         }
       }
-      String signupResponse = await client.signup(
+      String signupResponse = await userClient.signup(
           firstName, lastName, studentID, studentEmail, userName, passwordHash);
 
       if (signupResponse == "Success") {

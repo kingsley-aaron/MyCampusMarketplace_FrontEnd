@@ -1,54 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:mycampusmarketplace/Models/item.dart';
 import 'package:mycampusmarketplace/Models/user.dart';
+import 'package:mycampusmarketplace/Repositories/itemClient.dart';
+import 'package:mycampusmarketplace/main.dart' as m;
 import 'expandedSale.dart';
 import 'myListings.dart';
 
 class ForSale extends StatefulWidget {
   final String userName;
+  List<Item> items = List.empty();
 
-  ForSale({required this.userName});
+  ForSale({required this.userName, required this.items});
+
+  ItemClient itemClient = m.itemClient;
 
   @override
-  State<ForSale> createState() => _ForSaleState(userName);
+  State<ForSale> createState() => _ForSaleState(userName, items);
 }
 
 class _ForSaleState extends State<ForSale> {
-  _ForSaleState(userName);
+  _ForSaleState(userName, items);
 
   late String userName = widget.userName;
-  final List<Map<String, dynamic>> items = [
-    {
-      'name': 'Item 1',
-      'condition': 'New',
-      'price': '\$100',
-      'description': 'A great item to purchase.'
-    },
-    {
-      'name': 'Item 2',
-      'condition': 'Used',
-      'price': '\$50',
-      'description': 'Some wear and tear visible.'
-    },
-    {
-      'name': 'Item 3',
-      'condition': 'new',
-      'price': '\$60',
-      'description': 'Brand new baseball bat.'
-    },
-    {
-      'name': 'Item 4',
-      'condition': 'Used',
-      'price': '\$50',
-      'description': 'Some wear and tear visible.'
-    },
-    {
-      'name': 'Item 5',
-      'condition': 'Used',
-      'price': '\$50',
-      'description': 'Some wear and tear visible.'
-    }
-    //replace with data from database
-  ];
+  late List<Item> items = widget.items;
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +34,10 @@ class _ForSaleState extends State<ForSale> {
             padding: const EdgeInsets.all(8.0),
             child: Row(
               children: [
-                Text('Welcome, $userName'),
+                Text(
+                  'Welcome, $userName',
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
                 PopupMenuButton<String>(
                   onSelected: (value) {
                     if (value == 'myListings') {
@@ -77,13 +54,19 @@ class _ForSaleState extends State<ForSale> {
                   },
                   itemBuilder: (BuildContext context) =>
                       <PopupMenuEntry<String>>[
-                    const PopupMenuItem<String>(
+                    PopupMenuItem<String>(
                       value: 'myListings',
-                      child: Text('My Listings'),
+                      child: Text(
+                        'My Listings',
+                        style: Theme.of(context).textTheme.titleMedium,
+                      ),
                     ),
-                    const PopupMenuItem<String>(
+                    PopupMenuItem<String>(
                       value: 'signOut',
-                      child: Text('Sign Out'),
+                      child: Text(
+                        'Sign Out',
+                        style: Theme.of(context).textTheme.titleMedium,
+                      ),
                     ),
                   ],
                 ),
@@ -92,6 +75,7 @@ class _ForSaleState extends State<ForSale> {
           ),
         ],
       ),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -99,10 +83,7 @@ class _ForSaleState extends State<ForSale> {
             padding: const EdgeInsets.all(16.0),
             child: Text(
               'Items for Sale',
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-              ),
+              style: Theme.of(context).textTheme.titleLarge,
             ),
           ),
           Expanded(
@@ -124,19 +105,16 @@ class _ForSaleState extends State<ForSale> {
                       padding: const EdgeInsets.all(16.0),
                       child: Row(
                         children: <Widget>[
-                          // This container is a placeholder for your item's image
+                          // display the item image
                           Container(
                             width: 100,
                             height: 100,
                             decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                colors: [Colors.blue[900]!, Colors.blue[200]!],
-                                begin: Alignment.topLeft,
-                                end: Alignment.bottomRight,
+                              image: DecorationImage(
+                                image: NetworkImage(item.itemImage),
+                                fit: BoxFit.cover,
                               ),
                             ),
-                            child:
-                                Icon(Icons.image, size: 50), // Placeholder icon
                           ),
                           SizedBox(width: 16),
                           // This column contains the item's name, condition, and price
@@ -145,28 +123,24 @@ class _ForSaleState extends State<ForSale> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
                                 Text(
-                                  item['name'],
-                                  style: TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black87,
-                                  ),
+                                  item.itemName,
+                                  style:
+                                      Theme.of(context).textTheme.titleMedium,
                                 ),
-                                SizedBox(height: 10),
+                                const SizedBox(height: 10),
                                 Text(
-                                  'Condition: ${item['condition']}',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    color: Colors.grey[600],
-                                  ),
+                                  'Condition: ${item.itemCondition}',
+                                  style: Theme.of(context).textTheme.bodyMedium,
                                 ),
                                 Text(
-                                  'Price: ${item['price']}',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    color: Colors.blue,
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                                  'Price: ${item.itemPrice}',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyMedium
+                                      ?.copyWith(
+                                        color: Theme.of(context).primaryColor,
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                 ),
                               ],
                             ),
@@ -186,5 +160,5 @@ class _ForSaleState extends State<ForSale> {
 }
 
 void main() {
-  runApp(ForSale(userName: "User"));
+  runApp(ForSale(userName: "User", items: List.empty()));
 }

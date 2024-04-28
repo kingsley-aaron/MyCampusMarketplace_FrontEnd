@@ -1,11 +1,12 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:mycampusmarketplace/Models/user.dart';
 import 'package:mycampusmarketplace/Repositories/itemClient.dart';
 import '../main.dart' as m;
 import 'myListings.dart';
-
-// To Do
-// Handle UserID dynamically instead of using a hard-coded value
-// Clean up code as needed
+import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:path/path.dart' as path;
 
 class ListItemPage extends StatefulWidget {
   final String userName;
@@ -28,20 +29,46 @@ class _ListItemPageState extends State<ListItemPage> {
 
   final ItemClient itemClient = ItemClient();
 
+  List<String> selectedImages = []; //plan on saving one image
+
   @override
   void dispose() {
     // Clean up the controllers when the widget is disposed
     _itemNameController.dispose();
     _itemPriceController.dispose();
     _itemDescriptionController.dispose();
+    _quantityController.dispose();
     super.dispose();
+  }
+
+  Future<void> _pickImages() async {
+    final picker = ImagePicker();
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+
+    if (pickedFile != null) {
+      // extracting the file extension
+      final fileExtension = path.extension(pickedFile.path);
+      // generate a unique filename based on current timestamp
+      final uniqueFileName =
+          DateTime.now().millisecondsSinceEpoch.toString() + fileExtension;
+
+      // save the file to the temporary directory with the unique filename
+      final tempDir = await getTemporaryDirectory();
+      final tempPath = tempDir.path;
+      final File newImage =
+          await File(pickedFile.path).copy('$tempPath/$uniqueFileName');
+
+      setState(() {
+        selectedImages.clear(); // clear the previous selected image
+        selectedImages.add(newImage.path); // add the new selected image
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        //title: Text('List New Item'),
         actions: [
           IconButton(
             icon: Icon(Icons.home),
@@ -53,7 +80,10 @@ class _ListItemPageState extends State<ListItemPage> {
             padding: const EdgeInsets.all(8.0),
             child: Row(
               children: [
-                Text('Welcome, $userName'),
+                Text(
+                  'Welcome, $userName',
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
                 PopupMenuButton<String>(
                   onSelected: (value) {
                     if (value == 'myListings') {
@@ -70,13 +100,19 @@ class _ListItemPageState extends State<ListItemPage> {
                   },
                   itemBuilder: (BuildContext context) =>
                       <PopupMenuEntry<String>>[
-                    const PopupMenuItem<String>(
+                    PopupMenuItem<String>(
                       value: 'myListings',
-                      child: Text('My Listings'),
+                      child: Text(
+                        'My Listings',
+                        style: Theme.of(context).textTheme.titleMedium,
+                      ),
                     ),
-                    const PopupMenuItem<String>(
+                    PopupMenuItem<String>(
                       value: 'signOut',
-                      child: Text('Sign Out'),
+                      child: Text(
+                        'Sign Out',
+                        style: Theme.of(context).textTheme.titleMedium,
+                      ),
                     ),
                   ],
                 ),
@@ -85,6 +121,7 @@ class _ListItemPageState extends State<ListItemPage> {
           ),
         ],
       ),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SingleChildScrollView(
         padding: EdgeInsets.all(16.0),
         child: Column(
@@ -94,14 +131,11 @@ class _ListItemPageState extends State<ListItemPage> {
               padding: EdgeInsets.all(16.0),
               child: Text(
                 'List New Item',
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: Theme.of(context).textTheme.titleLarge,
                 textAlign: TextAlign.center,
               ),
             ),
-            Text('Item Name'),
+            Text('Item Name', style: Theme.of(context).textTheme.bodyLarge),
             TextField(
               controller: _itemNameController,
               decoration: InputDecoration(
@@ -109,7 +143,7 @@ class _ListItemPageState extends State<ListItemPage> {
               ),
             ),
             SizedBox(height: 16.0),
-            Text('Item Price'),
+            Text('Item Price', style: Theme.of(context).textTheme.bodyLarge),
             TextField(
               controller: _itemPriceController,
               decoration: InputDecoration(
@@ -117,7 +151,7 @@ class _ListItemPageState extends State<ListItemPage> {
               ),
             ),
             SizedBox(height: 16.0),
-            Text('Condition'),
+            Text('Condition', style: Theme.of(context).textTheme.bodyLarge),
             DropdownButton<int>(
               value: _selectedConditionIndex,
               onChanged: (value) {
@@ -149,7 +183,10 @@ class _ListItemPageState extends State<ListItemPage> {
               ],
             ),
             SizedBox(height: 16.0),
-            Text('Quantity'), // New field: Quantity
+            Text('Quantity',
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyLarge), // New field: Quantity
             TextFormField(
               controller: _quantityController,
               keyboardType: TextInputType.number,
@@ -158,7 +195,8 @@ class _ListItemPageState extends State<ListItemPage> {
               ),
             ),
             SizedBox(height: 16.0),
-            Text('Item Description'),
+            Text('Item Description',
+                style: Theme.of(context).textTheme.bodyLarge),
             TextField(
               controller: _itemDescriptionController,
               maxLines: null,
@@ -167,8 +205,30 @@ class _ListItemPageState extends State<ListItemPage> {
               ),
             ),
             SizedBox(height: 16.0),
-            Text('Upload Photo'),
-            // Add a button or widget to load a photo here
+            Text('Upload Photo', style: Theme.of(context).textTheme.bodyLarge),
+            ElevatedButton(
+              onPressed: _pickImages,
+              child: Text('Pick Images'),
+            ),
+            SizedBox(height: 16.0),
+            Text('Selected Images:'),
+            SizedBox(height: 8.0),
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: selectedImages.map((imagePath) {
+                  return Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Image.file(
+                      File(imagePath),
+                      width: 100,
+                      height: 100,
+                      fit: BoxFit.cover,
+                    ),
+                  );
+                }).toList(),
+              ),
+            ),
             SizedBox(height: 16.0),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -177,7 +237,10 @@ class _ListItemPageState extends State<ListItemPage> {
                   onPressed: () {
                     _submitForm();
                   },
-                  child: Text('Submit'),
+                  child: Text(
+                    'Submit',
+                    style: Theme.of(context).textTheme.labelLarge,
+                  ),
                 ),
                 ElevatedButton(
                   onPressed: () {
@@ -185,11 +248,16 @@ class _ListItemPageState extends State<ListItemPage> {
                     _itemNameController.clear();
                     _itemPriceController.clear();
                     _itemDescriptionController.clear();
+                    _quantityController.clear(); // Clear quantity controller
                     setState(() {
                       _selectedConditionIndex = 0;
+                      selectedImages.clear();
                     });
                   },
-                  child: Text('Clear'),
+                  child: Text(
+                    'Clear',
+                    style: Theme.of(context).textTheme.labelLarge,
+                  ),
                 ),
               ],
             ),
@@ -216,9 +284,9 @@ class _ListItemPageState extends State<ListItemPage> {
     String itemPrice = _itemPriceController.text;
     String itemDescription = _itemDescriptionController.text;
     String itemQuantity = _quantityController.text;
-    String userId = "1"; // this value is hard coded, not dynamic yet
     String selectedCondition;
-    // condition check for item insertion
+
+    // Condition check for item insertion
     switch (_selectedConditionIndex) {
       case 1:
         selectedCondition = 'New';
@@ -235,27 +303,50 @@ class _ListItemPageState extends State<ListItemPage> {
       default:
         selectedCondition = '';
     }
+
     // create session state via user client
     // and post data from list item page
-    String sessionState = m.client.sessionState;
-    itemClient
-        .postItem(
-      itemName,
-      itemDescription,
-      itemPrice,
-      selectedCondition,
-      itemQuantity,
-      userId,
-      sessionState,
-    )
-        .then((response) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(response),
-        ),
-      );
-    }).catchError((error) {
-      print(error);
+
+    String sessionState = m.userClient.sessionState;
+
+    m.userClient.getUser().then((user) {
+      // dynamic user id
+      if (user != null) {
+        String userId = user.userID.toString();
+
+        // post each selected image
+        for (String imagePath in selectedImages) {
+          File itemImage = File(imagePath);
+
+          itemClient
+              .postItem(
+            itemName,
+            itemDescription,
+            itemPrice,
+            selectedCondition,
+            itemQuantity,
+            userId,
+            sessionState,
+            itemImage,
+          )
+              .then((response) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(response),
+              ),
+            );
+            Navigator.pop(context);
+          }).catchError((error) {
+            print(error);
+          });
+        }
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('An error occurred.'),
+          ),
+        );
+      }
     });
   }
 }

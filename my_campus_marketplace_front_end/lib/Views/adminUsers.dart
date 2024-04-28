@@ -1,48 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:mycampusmarketplace/Models/user.dart';
+import 'package:mycampusmarketplace/Repositories/userClient.dart';
+import 'package:mycampusmarketplace/main.dart' as m;
+import 'package:mycampusmarketplace/main.dart';
 import 'expandedUser.dart';
 
 class AdminUsers extends StatefulWidget {
   final String userName;
+  List<User> users = List.empty();
 
-  AdminUsers({required this.userName});
+  AdminUsers({required this.userName, required this.users});
+
+  UserClient userClient = m.userClient;
 
   @override
-  State<AdminUsers> createState() => _AdminUsersState(userName);
+  State<AdminUsers> createState() => _AdminUsersState(userName, users);
 }
 
 class _AdminUsersState extends State<AdminUsers> {
-  _AdminUsersState(userName);
+  _AdminUsersState(userName, users);
 
   late String userName = widget.userName;
-  final List<Map<String, dynamic>> users = [
-    {
-      'name': 'User 1',
-      'studentId': '12345',
-      'email': 'sample@my.sctcc.edu',
-    },
-    {
-      'name': 'User 2',
-      'studentId': '98765',
-      'email': 'sample@my.sctcc.edu',
-    },
-    {
-      'name': 'User 3',
-      'studentId': '24680',
-      'email': 'sample@my.sctcc.edu',
-    },
-    {
-      'name': 'User 4',
-      'studentId': '13579',
-      'email': 'sample@my.sctcc.edu',
-    },
-    {
-      'name': 'User 5',
-      'studentId': '11111',
-      'email': 'sample@my.sctcc.edu',
-    }
-    //replace with user data from database
-  ];
+  late List<User> users = widget.users;
 
   @override
   Widget build(BuildContext context) {
@@ -97,7 +76,13 @@ class _AdminUsersState extends State<AdminUsers> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => ExpandedUser(user: user),
+
+
+                        /*
+                          This might be causign any error
+                        */
+
+                        builder: (context) => ExpandedUser(user:Map()),
                       ),
                     );
                   },
@@ -107,43 +92,35 @@ class _AdminUsersState extends State<AdminUsers> {
                       child: Row(
                         children: <Widget>[                       
                           SizedBox(width: 16),
-                          // This column contains the item's name, condition, and price
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Text(
-                                  user['name'],
-                                  style: TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black87,
+                          // This column contains the ID, and email
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Text(
+                                    'Student ID: ${user.studentID}',
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black87,
+                                    ),
+                                  ),
+                                  SizedBox(height:10),
+                                  Text(
+                                    'Student Email: ${user.studentEmail}',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      color: Colors.black54,
                                   ),
                                 ),
-                                SizedBox(height: 10),
-                                Text(
-                                  'Student ID: ${user['studentId']}',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    color: Colors.grey[600],
-                                  ),
-                                ),
-                                Text(
-                                  'Student Email: ${user['email']}',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    color: Colors.blue,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+                              ]
+                             )
+                          )
+                        ]
+                      )
+                    ),                                   
                   ),
-                );
+                );     
               },
             ),
           ),
@@ -153,6 +130,13 @@ class _AdminUsersState extends State<AdminUsers> {
   }
 }
 
+Future<User?> getUserList() async {
+  User? users =
+    await userClient.getUser();
+
+  return users;
+}
+
 void main() {
-  runApp(AdminUsers(userName: "User"));
+  runApp(AdminUsers(userName: "User", users: List.empty()));
 }

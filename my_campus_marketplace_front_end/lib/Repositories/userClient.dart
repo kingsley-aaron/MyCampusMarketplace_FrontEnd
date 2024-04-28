@@ -3,7 +3,8 @@ import 'dart:convert';
 
 import 'package:mycampusmarketplace/Models/user.dart';
 
-const String apiAddress = "http://10.0.2.2/api/";
+//const String apiAddress = "http://10.0.2.2/api/";
+const String apiAddress = "https://helpmewithfinals.com/api/";
 
 class UserClient {
   String sessionState = "";
@@ -208,10 +209,13 @@ class UserClient {
       return null;
     }
   }
-  
 
   //only use for functions that don't already return a string error message, such as the getUser function
   Future<String> getErrorMessage() async {
     return errorMessage;
+  }
+
+  String getSessionState() {
+    return sessionState;
   }
 }

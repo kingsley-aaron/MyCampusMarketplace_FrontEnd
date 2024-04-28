@@ -24,7 +24,10 @@ class ExpandedUser extends StatelessWidget {
             padding: const EdgeInsets.all(8.0),
             child: Row(
               children: [
-                Text('Welcome, User'), // Replace User with your actual username
+                Text(
+                  'Welcome, User',
+                  style: Theme.of(context).textTheme.titleMedium,
+                ), // Replace User with your actual username
                 PopupMenuButton<String>(
                   onSelected: (value) {
                     if (value == 'signOut') {
@@ -33,9 +36,10 @@ class ExpandedUser extends StatelessWidget {
                   },
                   itemBuilder: (BuildContext context) =>
                       <PopupMenuEntry<String>>[
-                    const PopupMenuItem<String>(
+                    PopupMenuItem<String>(
                       value: 'signOut',
-                      child: Text('Sign Out'),
+                      child: Text('Sign Out',
+                          style: Theme.of(context).textTheme.titleMedium),
                     ),
                   ],
                 ),
@@ -44,6 +48,7 @@ class ExpandedUser extends StatelessWidget {
           ),
         ],
       ),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -51,20 +56,20 @@ class ExpandedUser extends StatelessWidget {
           children: <Widget>[
             Text(
               'Last name, First initial',
-              style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
-            ), 
+              style: Theme.of(context).textTheme.titleLarge,
+            ),
             SizedBox(height: 8.0),
             Center(
               child: Text(
                 'Student ID: ${user['studentId']}',
-                style: TextStyle(fontSize: 16.0), // Adjust font size here
+                style: Theme.of(context).textTheme.bodyMedium,
               ),
             ),
             SizedBox(height: 8.0),
             Center(
               child: Text(
                 'Student Email: $studentEmail',
-                style: TextStyle(fontSize: 16.0),
+                style: Theme.of(context).textTheme.bodyMedium,
               ),
             ),
             SizedBox(height: 16.0), // Add some space between text and buttons
@@ -81,6 +86,14 @@ class ExpandedUser extends StatelessWidget {
                       */
                     },
                     child: Text('Ban User'),
+                    style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
+                      padding: EdgeInsets.symmetric(
+                          vertical: 12.0, horizontal: 24.0),
+                      textStyle: Theme.of(context).textTheme.labelLarge,
+                    ),
                   ),
                 ],
               ),
