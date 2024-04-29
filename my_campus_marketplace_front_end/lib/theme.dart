@@ -61,6 +61,7 @@ class AppTheme {
         fontFamily: 'Quicksand',
       ),
     ),
+    popupMenuTheme: PopupMenuThemeData(color: Colors.white),
     scaffoldBackgroundColor:
         Colors.blue.shade100, // Set scaffold background color
   );

@@ -16,7 +16,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       actions: [
         IconButton(
-          icon: Icon(Icons.home),
+          icon: Icon(Icons.home, color: Color.fromRGBO(129, 55, 16, 1)),
           onPressed: onHomePressed,
         ),
         Padding(

@@ -211,7 +211,8 @@ class _ListItemPageState extends State<ListItemPage> {
               child: Text('Pick Images'),
             ),
             SizedBox(height: 16.0),
-            Text('Selected Images:'),
+            Text('Selected Images:',
+                style: Theme.of(context).textTheme.bodyLarge),
             SizedBox(height: 8.0),
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
