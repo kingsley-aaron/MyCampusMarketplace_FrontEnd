@@ -91,6 +91,8 @@ class _ForSaleState extends State<ForSale> {
               itemCount: items.length,
               itemBuilder: (context, index) {
                 var item = items[index];
+                String formattedPrice =
+                    '\$${item.itemPrice.toStringAsFixed(2)}';
                 return GestureDetector(
                   onTap: () {
                     Navigator.push(
@@ -133,7 +135,7 @@ class _ForSaleState extends State<ForSale> {
                                   style: Theme.of(context).textTheme.bodyMedium,
                                 ),
                                 Text(
-                                  'Price: ${item.itemPrice}',
+                                  'Price: $formattedPrice',
                                   style: Theme.of(context)
                                       .textTheme
                                       .bodyMedium

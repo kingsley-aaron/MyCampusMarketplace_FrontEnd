@@ -1,17 +1,40 @@
 import 'package:flutter/material.dart';
 import 'package:mycampusmarketplace/Models/item.dart';
-import 'package:mycampusmarketplace/theme.dart';
+import 'package:mycampusmarketplace/Repositories/itemClient.dart';
+import 'package:mycampusmarketplace/main.dart';
 import 'myListings.dart';
+import 'package:mycampusmarketplace/theme.dart';
 
-class ExpandedSale extends StatelessWidget {
+class ExpandedSale extends StatefulWidget {
   final Item item;
 
   ExpandedSale({Key? key, required this.item}) : super(key: key);
 
   @override
+  _ExpandedSaleState createState() => _ExpandedSaleState();
+}
+
+class _ExpandedSaleState extends State<ExpandedSale> {
+  late String sellerEmail = 'Loading...'; // insert value
+  final ItemClient itemClient = ItemClient();
+
+  @override
+  void initState() {
+    super.initState();
+    fetchSellerEmail();
+  }
+
+  // fetches seller email
+  void fetchSellerEmail() async {
+    String email = await userClient.getSellerEmailById(widget.item.userId);
+    setState(() {
+      sellerEmail = email;
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    // Assume the seller's email is stored in the item map with the key 'email'
-    String sellerEmail = ''; // Assuming the key is 'email'
+    String formattedPrice = '\$${widget.item.itemPrice.toStringAsFixed(2)}';
 
     return Scaffold(
       appBar: AppBar(
@@ -76,33 +99,24 @@ class ExpandedSale extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Text(
-              item.itemName,
+              widget.item.itemName,
               style: AppTheme.themeData.textTheme.bodyMedium,
             ),
             SizedBox(height: 8.0),
             AspectRatio(
-              aspectRatio: 1.5,
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12.0),
-                  gradient: LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                    colors: [
-                      Colors.blue.shade900,
-                      Colors.blue.shade200,
-                    ],
-                  ),
-                ),
-                child: Center(
-                  child: Icon(Icons.image, size: 100.0),
+              aspectRatio: 38 / 28, // will probably have to be adjusted
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(12.0),
+                child: Image.network(
+                  widget.item.itemImage,
+                  fit: BoxFit.cover,
                 ),
               ),
             ),
             SizedBox(height: 8.0),
             Center(
               child: Text(
-                'Condition: ${item.itemCondition}',
+                'Condition: ${widget.item.itemCondition}',
                 style: AppTheme.themeData.textTheme.bodyMedium,
               ),
             ),
@@ -111,14 +125,14 @@ class ExpandedSale extends StatelessWidget {
             ),
             Center(
               child: Text(
-                'Price: ${item.itemPrice}',
+                'Price: $formattedPrice',
                 style: AppTheme.themeData.textTheme.bodyMedium,
               ),
             ),
             SizedBox(height: 8.0),
             Center(
               child: Text(
-                'Description: ${item.itemDesc}',
+                'Description: ${widget.item.itemDesc}',
                 style: AppTheme.themeData.textTheme.bodyMedium,
               ),
             ),
@@ -136,9 +150,7 @@ class ExpandedSale extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   ElevatedButton(
-                    onPressed: () {
-                      // Implement delete functionality
-                    },
+                    onPressed: () {},
                     child: Text('Delete'),
                     style: ElevatedButton.styleFrom(
                       textStyle: AppTheme.themeData.textTheme.bodyLarge,
