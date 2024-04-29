@@ -17,9 +17,10 @@ class ItemClient {
         Uri.parse('${apiAddress}fetchitem.php?id=$itemId'),
         headers: {'Cookie': "PHPSESSID=$sessionState"},
       );
+      var data = json.decode(response.body);
+
       // getting item was a success
       if (response.statusCode == 200) {
-        var data = json.decode(response.body);
         bool wanted = false;
 
         if (data['success']) {
@@ -41,21 +42,11 @@ class ItemClient {
               itemAdded: DateTime.parse(data['ItemAdded']));
         } else {
           //determine error message based on API response
-          if (data['reason'][0] == "missing_data") {
-            errorMessage =
-                "The application had an error. Please contact the administrators.";
-          } else if (data['reason'][0] == "server_error") {
-            errorMessage =
-                "There was an issue with the server. Please try again later.";
-          } else if (data['reason'][0] == "not_found") {
-            errorMessage = "The requested item was not found.";
-          } else {
-            errorMessage = "An error occurred.";
-          }
+          errorMessage = data['data'];
           return null;
         }
       } else if (response.statusCode == 404) {
-        errorMessage = "The requested item was not found.";
+        errorMessage = data['data'];
         return null;
       } else {
         errorMessage = "An error occurred.";
@@ -107,19 +98,18 @@ class ItemClient {
       request.headers['Cookie'] = "PHPSESSID=$sessionState";
 
       var response = await request.send();
+      var responseData = await response.stream.bytesToString();
+      var data = json.decode(responseData);
 
       // check the response status code
       if (response.statusCode == 200) {
-        var responseData = await response.stream.bytesToString();
-        var data = json.decode(responseData);
-
         if (data['success']) {
           return "Success";
         } else {
           return data['data'];
         }
       } else {
-        return "An error occurred.";
+        return data['data'];
       }
     } catch (e) {
       return e.toString();
