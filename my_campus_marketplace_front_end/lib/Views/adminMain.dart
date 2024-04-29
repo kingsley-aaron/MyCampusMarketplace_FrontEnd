@@ -116,11 +116,11 @@ class _AdminHomeState extends State<AdminHome> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => AdminItems(
-                            userName: userName, items: items
-                          ),
+                          builder: (context) =>
+                              AdminItems(userName: userName, items: items),
                         ),
                       );
+                      getItems();
                     },
                     child: const Text('Items'),
                   ),
@@ -131,9 +131,8 @@ class _AdminHomeState extends State<AdminHome> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => AdminUsers(
-                            userName: userName, users: users
-                          ),
+                          builder: (context) =>
+                              AdminUsers(userName: userName, users: users),
                         ),
                       );
                     },
