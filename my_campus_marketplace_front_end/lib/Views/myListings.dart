@@ -8,7 +8,7 @@ class MyListings extends StatelessWidget {
       appBar: AppBar(
         title: Text(
           'My Listings',
-          style: Theme.of(context).textTheme.headline6,
+          style: Theme.of(context).textTheme.titleLarge,
         ),
       ),
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -18,7 +18,7 @@ class MyListings extends StatelessWidget {
           children: [
             Text(
               'This is where your listings will be displayed.',
-              style: Theme.of(context).textTheme.bodyText1,
+              style: Theme.of(context).textTheme.bodyLarge,
             ),
             ElevatedButton(
               onPressed: () {
@@ -35,7 +35,7 @@ class MyListings extends StatelessWidget {
               },
               child: Text(
                 'Go to For Sale Page',
-                style: Theme.of(context).textTheme.bodyText1,
+                style: Theme.of(context).textTheme.bodyLarge,
               ),
             ),
           ],
