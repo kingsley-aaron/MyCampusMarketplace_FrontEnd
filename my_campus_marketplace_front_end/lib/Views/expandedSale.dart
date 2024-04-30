@@ -202,6 +202,3 @@ Future<String> deleteItem(int itemId, String sessionState) async {
   return result;
 }
 
-
-
-}
