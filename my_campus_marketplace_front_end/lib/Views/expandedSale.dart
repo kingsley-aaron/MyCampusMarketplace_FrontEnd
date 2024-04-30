@@ -1,28 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:mycampusmarketplace/Models/item.dart';
 import 'package:mycampusmarketplace/Repositories/itemClient.dart';
+import 'package:mycampusmarketplace/main.dart' as m;
 import 'package:mycampusmarketplace/main.dart';
 import 'myListings.dart';
 import 'package:mycampusmarketplace/theme.dart';
 
+
 class ExpandedSale extends StatefulWidget {
   final Item item;
 
+
   ExpandedSale({Key? key, required this.item}) : super(key: key);
+
 
   @override
   _ExpandedSaleState createState() => _ExpandedSaleState();
 }
 
+
 class _ExpandedSaleState extends State<ExpandedSale> {
   late String sellerEmail = 'Loading...'; // insert value
   final ItemClient itemClient = ItemClient();
+
 
   @override
   void initState() {
     super.initState();
     fetchSellerEmail();
   }
+
 
   // fetches seller email
   void fetchSellerEmail() async {
@@ -32,9 +39,11 @@ class _ExpandedSaleState extends State<ExpandedSale> {
     });
   }
 
+
   @override
   Widget build(BuildContext context) {
     String formattedPrice = '\$${widget.item.itemPrice.toStringAsFixed(2)}';
+
 
     return Scaffold(
       appBar: AppBar(
@@ -50,10 +59,6 @@ class _ExpandedSaleState extends State<ExpandedSale> {
             padding: const EdgeInsets.all(8.0),
             child: Row(
               children: [
-                Text(
-                  'Welcome, User',
-                  style: Theme.of(context).textTheme.titleMedium,
-                ),
                 PopupMenuButton<String>(
                   onSelected: (value) {
                     if (value == 'myListings') {
@@ -104,20 +109,23 @@ class _ExpandedSaleState extends State<ExpandedSale> {
             ),
             SizedBox(height: 8.0),
             AspectRatio(
-              aspectRatio: 38 / 28, // will probably have to be adjusted
+              aspectRatio: 38 / 28,
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(12.0),
                 child: Image.network(
                   widget.item.itemImage,
                   fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) {
+                    return Container(
+                      color: Colors.grey[300],
+                      alignment: Alignment.center,
+                      child: Text(
+                        'Image not available',
+                        style: TextStyle(fontSize: 16),
+                      ),
+                    );
+                  },
                 ),
-              ),
-            ),
-            SizedBox(height: 8.0),
-            Center(
-              child: Text(
-                'Condition: ${widget.item.itemCondition}',
-                style: AppTheme.themeData.textTheme.bodyMedium,
               ),
             ),
             SizedBox(
@@ -150,7 +158,19 @@ class _ExpandedSaleState extends State<ExpandedSale> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () async {
+                      String sessionState = m.userClient.getSessionState();
+                      String result =
+                          await deleteItem(widget.item.itemId, sessionState);
+                      if (result == "Success") {
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            content: Text("Item successfully deleted!")));
+                        Navigator.pop(context);
+                      } else {
+                        ScaffoldMessenger.of(context)
+                            .showSnackBar(SnackBar(content: Text(result)));
+                      }
+                    },
                     child: Text('Delete'),
                     style: ElevatedButton.styleFrom(
                       textStyle: AppTheme.themeData.textTheme.bodyLarge,
@@ -173,4 +193,15 @@ class _ExpandedSaleState extends State<ExpandedSale> {
       ),
     );
   }
+}
+
+
+Future<String> deleteItem(int itemId, String sessionState) async {
+  ItemClient itemClient = ItemClient();
+  String result = await itemClient.deleteItem(itemId, sessionState);
+  return result;
+}
+
+
+
 }
