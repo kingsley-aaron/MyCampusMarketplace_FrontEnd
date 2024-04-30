@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:mycampusmarketplace/Repositories/itemClient.dart';
 import 'package:mycampusmarketplace/Repositories/userClient.dart';
 import 'package:mycampusmarketplace/Views/loginview.dart';
-import 'Views/mainMenu.dart';
-import 'Views/adminMain.dart';
+import 'package:mycampusmarketplace/Views/adminMain.dart';
 import 'package:mycampusmarketplace/homeview.dart';
 import 'dart:async';
+import 'theme.dart'; // Import your custom theme
 
 void main() {
   runApp(const MyApp());
@@ -21,15 +21,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Login/Signup Page',
-      theme: ThemeData(
-        hintColor: Color.fromARGB(219, 240, 193, 178),
-        focusColor: Color.fromARGB(219, 240, 193, 178),
-        inputDecorationTheme: InputDecorationTheme(
-          focusedBorder: UnderlineInputBorder(
-            borderSide: BorderSide(color: Color.fromARGB(219, 240, 193, 178)),
-          ),
-        ),
-      ),
+      theme: AppTheme.themeData, // Use your custom theme here
       home: SplashScreen(),
     );
   }

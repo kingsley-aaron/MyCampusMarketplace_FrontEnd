@@ -3,7 +3,6 @@ import 'package:mycampusmarketplace/Models/item.dart';
 import 'package:mycampusmarketplace/Models/user.dart';
 import 'package:mycampusmarketplace/Repositories/itemClient.dart';
 import 'package:mycampusmarketplace/main.dart' as m;
-import 'package:mycampusmarketplace/main.dart';
 import 'expandedSale.dart';
 import 'myListings.dart';
 
@@ -35,7 +34,10 @@ class _ForSaleState extends State<ForSale> {
             padding: const EdgeInsets.all(8.0),
             child: Row(
               children: [
-                Text('Welcome, $userName'),
+                Text(
+                  'Welcome, $userName',
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
                 PopupMenuButton<String>(
                   onSelected: (value) {
                     if (value == 'myListings') {
@@ -52,13 +54,19 @@ class _ForSaleState extends State<ForSale> {
                   },
                   itemBuilder: (BuildContext context) =>
                       <PopupMenuEntry<String>>[
-                    const PopupMenuItem<String>(
+                    PopupMenuItem<String>(
                       value: 'myListings',
-                      child: Text('My Listings'),
+                      child: Text(
+                        'My Listings',
+                        style: Theme.of(context).textTheme.titleMedium,
+                      ),
                     ),
-                    const PopupMenuItem<String>(
+                    PopupMenuItem<String>(
                       value: 'signOut',
-                      child: Text('Sign Out'),
+                      child: Text(
+                        'Sign Out',
+                        style: Theme.of(context).textTheme.titleMedium,
+                      ),
                     ),
                   ],
                 ),
@@ -67,6 +75,7 @@ class _ForSaleState extends State<ForSale> {
           ),
         ],
       ),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -74,10 +83,7 @@ class _ForSaleState extends State<ForSale> {
             padding: const EdgeInsets.all(16.0),
             child: Text(
               'Items for Sale',
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-              ),
+              style: Theme.of(context).textTheme.titleLarge,
             ),
           ),
           Expanded(
@@ -118,27 +124,23 @@ class _ForSaleState extends State<ForSale> {
                               children: <Widget>[
                                 Text(
                                   item.itemName,
-                                  style: TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black87,
-                                  ),
+                                  style:
+                                      Theme.of(context).textTheme.titleMedium,
                                 ),
-                                SizedBox(height: 10),
+                                const SizedBox(height: 10),
                                 Text(
                                   'Condition: ${item.itemCondition}',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    color: Colors.grey[600],
-                                  ),
+                                  style: Theme.of(context).textTheme.bodyMedium,
                                 ),
                                 Text(
                                   'Price: ${item.itemPrice}',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    color: Colors.blue,
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyMedium
+                                      ?.copyWith(
+                                        color: Theme.of(context).primaryColor,
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                 ),
                               ],
                             ),
