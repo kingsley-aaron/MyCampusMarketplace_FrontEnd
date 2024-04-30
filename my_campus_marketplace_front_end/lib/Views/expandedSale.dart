@@ -1,49 +1,53 @@
 import 'package:flutter/material.dart';
 import 'package:mycampusmarketplace/Models/item.dart';
 import 'package:mycampusmarketplace/Repositories/itemClient.dart';
+import 'package:mycampusmarketplace/Views/editListingScreen.dart';
 import 'package:mycampusmarketplace/main.dart' as m;
-import 'package:mycampusmarketplace/main.dart';
 import 'myListings.dart';
 import 'package:mycampusmarketplace/theme.dart';
-
 
 class ExpandedSale extends StatefulWidget {
   final Item item;
 
-
   ExpandedSale({Key? key, required this.item}) : super(key: key);
-
 
   @override
   _ExpandedSaleState createState() => _ExpandedSaleState();
 }
 
-
 class _ExpandedSaleState extends State<ExpandedSale> {
   late String sellerEmail = 'Loading...'; // insert value
   final ItemClient itemClient = ItemClient();
-
+  bool isCurrentUser = false;
 
   @override
   void initState() {
     super.initState();
     fetchSellerEmail();
+    checkIfCurrentUser();
   }
-
 
   // fetches seller email
   void fetchSellerEmail() async {
-    String email = await userClient.getSellerEmailById(widget.item.userId);
+    String email = await m.userClient.getSellerEmailById(widget.item.userId);
     setState(() {
       sellerEmail = email;
     });
   }
 
+  void checkIfCurrentUser() {
+    m.userClient.getUser().then((user) {
+      if (user != null && user.userID == widget.item.userId) {
+        setState(() {
+          isCurrentUser = true;
+        });
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     String formattedPrice = '\$${widget.item.itemPrice.toStringAsFixed(2)}';
-
 
     return Scaffold(
       appBar: AppBar(
@@ -128,6 +132,13 @@ class _ExpandedSaleState extends State<ExpandedSale> {
                 ),
               ),
             ),
+            SizedBox(height: 8.0),
+            Center(
+              child: Text(
+                'Condition: ${widget.item.itemCondition}',
+                style: AppTheme.themeData.textTheme.bodyMedium,
+              ),
+            ),
             SizedBox(
               height: 8.0,
             ),
@@ -152,42 +163,55 @@ class _ExpandedSaleState extends State<ExpandedSale> {
               ),
             ),
             SizedBox(height: 16.0),
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: 16.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  ElevatedButton(
-                    onPressed: () async {
-                      String sessionState = m.userClient.getSessionState();
-                      String result =
-                          await deleteItem(widget.item.itemId, sessionState);
-                      if (result == "Success") {
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                            content: Text("Item successfully deleted!")));
-                        Navigator.pop(context);
-                      } else {
-                        ScaffoldMessenger.of(context)
-                            .showSnackBar(SnackBar(content: Text(result)));
-                      }
-                    },
-                    child: Text('Delete'),
-                    style: ElevatedButton.styleFrom(
-                      textStyle: AppTheme.themeData.textTheme.bodyLarge,
+            if (isCurrentUser) // shows buttons to current user's items
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 16.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    ElevatedButton(
+                      onPressed: () async {
+                        String sessionState = m.userClient.getSessionState();
+                        String result =
+                            await deleteItem(widget.item.itemId, sessionState);
+                        if (result == "Success") {
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              content: Text("Item successfully deleted!")));
+                          Navigator.pop(context);
+                        } else {
+                          ScaffoldMessenger.of(context)
+                              .showSnackBar(SnackBar(content: Text(result)));
+                        }
+                      },
+                      child: Text('Delete'),
+                      style: ElevatedButton.styleFrom(
+                        textStyle: AppTheme.themeData.textTheme.bodyLarge,
+                      ),
                     ),
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      // Implement mark as sold functionality
-                    },
-                    child: Text('Mark as Sold'),
-                    style: ElevatedButton.styleFrom(
-                      textStyle: AppTheme.themeData.textTheme.bodyLarge,
+                    // added edit page button
+                    ElevatedButton(
+                      onPressed: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                EditListingScreen(item: widget.item)),
+                      ),
+                      child: Text('Edit'),
+                      style: ElevatedButton.styleFrom(
+                          textStyle: AppTheme.themeData.textTheme.bodyLarge),
                     ),
-                  ),
-                ],
+                    ElevatedButton(
+                      onPressed: () {
+                        // Implement mark as sold functionality
+                      },
+                      child: Text('Mark as Sold'),
+                      style: ElevatedButton.styleFrom(
+                        textStyle: AppTheme.themeData.textTheme.bodyLarge,
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
           ],
         ),
       ),
@@ -195,10 +219,8 @@ class _ExpandedSaleState extends State<ExpandedSale> {
   }
 }
 
-
 Future<String> deleteItem(int itemId, String sessionState) async {
   ItemClient itemClient = ItemClient();
   String result = await itemClient.deleteItem(itemId, sessionState);
   return result;
 }
-
