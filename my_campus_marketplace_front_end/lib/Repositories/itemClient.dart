@@ -104,7 +104,7 @@ class ItemClient {
       // check the response status code
       if (response.statusCode == 200) {
         if (data['success']) {
-          return "Success";
+          return "Item Successfully Posted!";
         } else {
           return data['data'];
         }
@@ -115,6 +115,33 @@ class ItemClient {
       return e.toString();
     }
   }
+
+  Future<String> deleteItem(int itemId, String sessionState) async {
+    try {
+      // Sending delete item request to server
+      var url = Uri.parse('${apiAddress}deletepost.php?itemId=$itemId');
+      var response = await http.delete(
+        url,
+        headers: {'Cookie': "PHPSESSID=$sessionState"},
+      );
+      // check status code
+      if (response.statusCode == 200) {
+        var data = json.decode(response.body);
+        if (data['success']) {
+          return "Success";
+        } else {
+          // error logging on why item won't delete
+          return "Failed to delete item: ${data['data']}";
+        }
+      } else {
+        // additional error handling
+        return "HTTP error ${response.statusCode}: ${response.body}";
+      }
+    } catch (e) {
+      return "Exception caught: $e";
+    }
+  }
+
 
   //The filter parameters are optional and must be called by name. Condition and orderBy are arrays that can filter on multiple values.
   Future<List<Item>> getForSaleItems(String sessionState,
@@ -317,7 +344,6 @@ class ItemClient {
         itemAdded: DateTime.parse(item['ItemAdded']),
       ));
     }
-
     return items;
   }
 
