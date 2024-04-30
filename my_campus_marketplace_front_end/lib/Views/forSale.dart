@@ -107,17 +107,21 @@ class _ForSaleState extends State<ForSale> {
                       padding: const EdgeInsets.all(16.0),
                       child: Row(
                         children: <Widget>[
-                          // display the item image
                           Container(
                             width: 100,
                             height: 100,
-                            decoration: BoxDecoration(
-                              image: DecorationImage(
-                                image: NetworkImage(item.itemImage),
-                                fit: BoxFit.cover,
-                              ),
+                            child: Image.network(
+                              item.itemImage,
+                              fit: BoxFit.cover,
+                              errorBuilder: (BuildContext context,
+                                  Object exception, StackTrace? stackTrace) {
+                                // returns an image based on stack trace (if not found)
+                                return Icon(Icons.image_not_supported,
+                                    size: 100, color: Colors.grey);
+                              },
                             ),
                           ),
+
                           SizedBox(width: 16),
                           // This column contains the item's name, condition, and price
                           Expanded(
