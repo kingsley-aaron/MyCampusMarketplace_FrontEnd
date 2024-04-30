@@ -1,14 +1,25 @@
-import 'listItem.dart';
+import 'package:mycampusmarketplace/Models/item.dart';
+import 'package:mycampusmarketplace/Repositories/itemClient.dart';
+import 'package:mycampusmarketplace/Repositories/userClient.dart';
+import 'package:mycampusmarketplace/main.dart';
+import '../Models/user.dart';
 import '../main.dart' as m;
+import 'listItem.dart';
 import 'package:flutter/material.dart';
 import 'package:mycampusmarketplace/views/loginview.dart';
-import 'adminUsers.dart';
-import 'adminItems.dart';
+import 'forSale.dart';
+import 'myListings.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:mycampusmarketplace/views/adminItems.dart';
+import 'package:mycampusmarketplace/views/adminusers.dart';
 
 class AdminHome extends StatefulWidget {
   final String userName;
 
   AdminHome({required this.userName});
+
+  ItemClient itemClient = m.itemClient;
+  UserClient userClient = m.userClient;
 
   @override
   State<AdminHome> createState() => _AdminHomeState(userName);
@@ -17,6 +28,39 @@ class AdminHome extends StatefulWidget {
 class _AdminHomeState extends State<AdminHome> {
   _AdminHomeState(userName);
   late String userName = widget.userName;
+
+  List<Item> items = List.empty();
+  List<User> users = List.empty();
+
+  void getItems() {
+    setState(() {
+      widget.itemClient
+          .getForSaleItems(m.userClient.getSessionState(),
+              condition: ["new", "likenew"],
+              minPrice: 30,
+              maxPrice: 1000,
+              orderBy: ["Items.ItemPrice", "-Items.ItemName"])
+          .then((response) => onGetItemsSuccess(response));
+    });
+  }
+
+  void onGetItemsSuccess(List<Item>? newItems) {
+    setState(() {
+      if (newItems != null && newItems.isNotEmpty) {
+        items = newItems;
+        // Navigate to For Sale screen
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ForSale(userName: userName, items: items),
+          ),
+        );
+      } else {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(const SnackBar(content: Text("Error")));
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -72,11 +116,11 @@ class _AdminHomeState extends State<AdminHome> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => AdminItems(
-                            userName: userName,
-                          ),
+                          builder: (context) =>
+                              AdminItems(userName: userName, items: items),
                         ),
                       );
+                      getItems();
                     },
                     child: const Text('Items'),
                   ),
@@ -87,9 +131,8 @@ class _AdminHomeState extends State<AdminHome> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => AdminUsers(
-                            userName: userName,
-                          ),
+                          builder: (context) =>
+                              AdminUsers(userName: userName, users: users),
                         ),
                       );
                     },
