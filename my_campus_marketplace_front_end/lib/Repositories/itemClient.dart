@@ -116,6 +116,67 @@ class ItemClient {
     }
   }
 
+  Future<String> editItem({
+    required int itemId,
+    String? itemName,
+    String? itemDesc,
+    String? itemCondition,
+    String? itemPrice,
+    String? itemQuantity,
+    File? itemImage,
+    required String sessionState,
+  }) async {
+    try {
+      // Sending edit item request to server
+      var request = http.MultipartRequest(
+        'POST',
+        Uri.parse('${apiAddress}editpost.php'),
+      );
+
+
+      // set required headers
+      request.headers['Content-Type'] = 'multipart/form-data';
+      request.headers['Cookie'] = "PHPSESSID=$sessionState";
+
+
+      // set request body fields
+      request.fields['ItemID'] = itemId.toString();
+      if (itemName != null) request.fields['ItemName'] = itemName;
+      if (itemDesc != null) request.fields['ItemDesc'] = itemDesc;
+      if (itemCondition != null)
+        request.fields['ItemCondition'] = itemCondition;
+      if (itemPrice != null) request.fields['ItemPrice'] = itemPrice.toString();
+      if (itemQuantity != null)
+        request.fields['ItemQuantity'] = itemQuantity.toString();
+
+
+      // add image file to the request if provided
+      if (itemImage != null) {
+        request.files.add(
+          await http.MultipartFile.fromPath('ItemImage', itemImage.path),
+        );
+      }
+      // send the request
+      var response = await request.send();
+      var responseData = await response.stream.bytesToString();
+      var data = json.decode(responseData);
+
+
+      // check the response status code
+      if (response.statusCode == 200) {
+        if (data['success']) {
+          return "Success";
+        } else {
+          return "Failed to edit item: ${data['reason'].join(", ")}";
+        }
+      } else {
+        return "HTTP error ${response.statusCode}: ${data['reason'].join(", ")}";
+      }
+    } catch (e) {
+      return "Exception caught: $e";
+    }
+  }
+
   Future<String> deleteItem(int itemId, String sessionState) async {
     try {
       // Sending delete item request to server
