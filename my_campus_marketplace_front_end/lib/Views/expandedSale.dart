@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:mycampusmarketplace/Models/item.dart';
+import 'package:mycampusmarketplace/Models/user.dart';
+import 'package:mycampusmarketplace/Repositories/userClient.dart';
 import 'package:mycampusmarketplace/theme.dart';
 import 'myListings.dart';
+import '../main.dart';
 
 class ExpandedSale extends StatelessWidget {
   final Item item;
@@ -12,6 +15,7 @@ class ExpandedSale extends StatelessWidget {
   Widget build(BuildContext context) {
     // Assume the seller's email is stored in the item map with the key 'email'
     String sellerEmail = ''; // Assuming the key is 'email'
+    bool adminCheck = false;
 
     return Scaffold(
       appBar: AppBar(
@@ -134,23 +138,31 @@ class ExpandedSale extends StatelessWidget {
               padding: EdgeInsets.symmetric(horizontal: 16.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
+                children: [                
                   ElevatedButton(
-                    onPressed: () {
-                      // Implement delete functionality
-                    },
-                    child: Text('Delete'),
-                    style: ElevatedButton.styleFrom(
-                      textStyle: AppTheme.themeData.textTheme.bodyLarge,
+                     onPressed: () {
+                        // Implement delete functionality
+                     },
+                     child: Text('Delete'),
+                     style: ElevatedButton.styleFrom(
+                       textStyle: AppTheme.themeData.textTheme.bodyLarge,
+                      ),
                     ),
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
+
+                  /*
+                  visibility for sold button logic here with
+                  Visibility(visible: )
+                  */
+                  Visibility(visible: adminCheck,
+                  child:
+                    ElevatedButton(
+                      onPressed: () {
                       // Implement mark as sold functionality
-                    },
-                    child: Text('Mark as Sold'),
-                    style: ElevatedButton.styleFrom(
-                      textStyle: AppTheme.themeData.textTheme.bodyLarge,
+                      },
+                      child: Text('Mark as Sold'),
+                      style: ElevatedButton.styleFrom(
+                        textStyle: AppTheme.themeData.textTheme.bodyLarge,
+                      ),
                     ),
                   ),
                 ],
