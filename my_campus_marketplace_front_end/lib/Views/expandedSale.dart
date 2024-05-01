@@ -200,9 +200,22 @@ class _ExpandedSaleState extends State<ExpandedSale> {
                       style: ElevatedButton.styleFrom(
                           textStyle: AppTheme.themeData.textTheme.bodyLarge),
                     ),
+                    // mark as sold, treated as the delete function when item is gone
                     ElevatedButton(
-                      onPressed: () {
-                        // Implement mark as sold functionality
+                      onPressed: () async {
+                        String sessionState = m.userClient.getSessionState();
+                        String result =
+                            await deleteItem(widget.item.itemId, sessionState);
+                        if (result == "Success") {
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              content:
+                                  Text("Item successfully marked as sold!")));
+                          Navigator.pop(context);
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              content: Text(
+                                  "Failed to be mark as sold, please try again.")));
+                        }
                       },
                       child: Text('Mark as Sold'),
                       style: ElevatedButton.styleFrom(
