@@ -47,7 +47,7 @@ class _AdminHomeState extends State<AdminHome> {
 
   void onGetItemsSuccess(List<Item>? newItems) {
     setState(() {
-      if (newItems != null && newItems.isNotEmpty) {
+      if (newItems != null) {
         items = newItems;
         // Navigate to For Sale screen
         Navigator.push(
@@ -90,13 +90,6 @@ class _AdminHomeState extends State<AdminHome> {
                 children: [
                   ElevatedButton(
                     onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              AdminItems(userName: userName, items: items),
-                        ),
-                      );
                       getItems();
                     },
                     child: const Text('Items'),
