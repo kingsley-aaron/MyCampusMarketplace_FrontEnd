@@ -5,6 +5,7 @@ import 'package:mycampusmarketplace/Repositories/itemClient.dart';
 import 'package:mycampusmarketplace/main.dart' as m;
 import 'adminExpandedSale.dart';
 import 'adminUsers.dart';
+import 'package:mycampusmarketplace/Views/adminAppBar.dart';
 
 class AdminItems extends StatefulWidget {
   final String userName;
@@ -27,32 +28,8 @@ class _AdminItemsState extends State<AdminItems> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        // title: Text('My Campus Marketplace'),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              children: [
-                Text('Welcome, $userName'),
-                PopupMenuButton<String>(
-                  onSelected: (value) {
-                    if (value == 'signOut') {
-                      //_logout();
-                    }
-                  },
-                  itemBuilder: (BuildContext context) =>
-                      <PopupMenuEntry<String>>[
-                    const PopupMenuItem<String>(
-                      value: 'signOut',
-                      child: Text('Sign Out'),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ],
+      appBar: CustomAdminAppBar(
+        userName: userName,
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

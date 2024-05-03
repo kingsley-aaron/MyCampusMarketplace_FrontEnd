@@ -106,15 +106,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   const SizedBox(height: 20),
                   ElevatedButton(
                     onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => ForSale(
-                            userName: userName,
-                            items: [],
-                          ),
-                        ),
-                      );
                       getItems(); // Moved outside the child property
                     },
                     style: ElevatedButton.styleFrom(
