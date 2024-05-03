@@ -6,6 +6,7 @@ import 'myListings.dart';
 class EditListingScreen extends StatefulWidget {
   final Item item;
 
+
   EditListingScreen({required this.item});
 
   @override
@@ -18,6 +19,7 @@ class _EditListingScreenState extends State<EditListingScreen> {
   late TextEditingController _itemDescriptionController;
   late TextEditingController _itemQuantityController;
   int _selectedConditionIndex = 0; // default
+
 
   @override
   void initState() {
@@ -39,6 +41,7 @@ class _EditListingScreenState extends State<EditListingScreen> {
     _itemPriceController.dispose();
     _itemDescriptionController.dispose();
     _itemQuantityController.dispose();
+
     super.dispose();
   }
 
@@ -163,6 +166,7 @@ class _EditListingScreenState extends State<EditListingScreen> {
               ),
             ),
             SizedBox(height: 16.0),
+
             Text('Item Description'),
             TextField(
               controller: _itemDescriptionController,
@@ -200,6 +204,7 @@ class _EditListingScreenState extends State<EditListingScreen> {
       ),
     );
   }
+
 
   void _submitForm() async {
     // Perform validation

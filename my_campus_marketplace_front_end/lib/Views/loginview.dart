@@ -247,7 +247,7 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
                   });
                 },
                 style: ButtonStyle(
-                  overlayColor: WidgetStateColor.resolveWith(
+                  overlayColor: MaterialStateColor.resolveWith(
                     (states) => Color.fromARGB(219, 208, 138, 116),
                   ),
                 ),
