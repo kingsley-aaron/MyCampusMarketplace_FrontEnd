@@ -288,8 +288,9 @@ class UserClient {
   Future<String> getErrorMessage() async {
     return errorMessage;
   }
-
+      }
   String getSessionState() {
     return sessionState;
   }
 }
+
