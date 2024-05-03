@@ -90,13 +90,6 @@ class _AdminHomeState extends State<AdminHome> {
                 children: [
                   ElevatedButton(
                     onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              AdminItems(userName: userName, items: items),
-                        ),
-                      );
                       getItems();
                     },
                     child: const Text('Items'),
