@@ -113,7 +113,7 @@ class _ExpandedSaleState extends State<ExpandedSale> {
           children: <Widget>[
             Text(
               widget.item.itemName,
-              style: AppTheme.themeData.textTheme.bodyMedium,
+              style: AppTheme.heading(),
             ),
             SizedBox(height: 8.0),
             AspectRatio(
@@ -140,7 +140,7 @@ class _ExpandedSaleState extends State<ExpandedSale> {
             Center(
               child: Text(
                 'Condition: ${widget.item.itemCondition}',
-                style: AppTheme.themeData.textTheme.bodyMedium,
+                style: AppTheme.themeData.textTheme.bodyLarge,
               ),
             ),
             SizedBox(
@@ -149,21 +149,21 @@ class _ExpandedSaleState extends State<ExpandedSale> {
             Center(
               child: Text(
                 'Price: $formattedPrice',
-                style: AppTheme.themeData.textTheme.bodyMedium,
+                style: AppTheme.themeData.textTheme.bodyLarge,
               ),
             ),
             SizedBox(height: 8.0),
             Center(
               child: Text(
                 'Description: ${widget.item.itemDesc}',
-                style: AppTheme.themeData.textTheme.bodyMedium,
+                style: AppTheme.themeData.textTheme.bodyLarge,
               ),
             ),
             SizedBox(height: 8.0),
             Center(
               child: Text(
                 'Seller\'s Email: $sellerEmail',
-                style: AppTheme.themeData.textTheme.bodyMedium,
+                style: AppTheme.themeData.textTheme.bodyLarge,
               ),
             ),
             SizedBox(height: 16.0),

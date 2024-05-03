@@ -58,7 +58,16 @@ class AppTheme {
         fontFamily: 'Quicksand',
       ),
     ),
+    popupMenuTheme: PopupMenuThemeData(color: Colors.white),
     scaffoldBackgroundColor:
         Colors.blue.shade100, // Set scaffold background color
   );
+
+  static TextStyle heading() {
+    return TextStyle(
+      fontFamily: 'Quicksand',
+      fontSize: 18,
+      fontWeight: FontWeight.bold,
+    );
+  }
 }

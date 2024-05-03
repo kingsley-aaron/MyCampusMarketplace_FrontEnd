@@ -356,7 +356,7 @@ class ItemClient {
             print(errorMessage);
             return items;
           }
-          return items;
+          //return items;
         } else {
           //determine error message based on API response
           if (data['reason'][0] == "server_error") {

@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:mycampusmarketplace/Models/user.dart';
 import 'package:mycampusmarketplace/Repositories/itemClient.dart';
+import 'package:mycampusmarketplace/theme.dart';
 import '../main.dart' as m;
 import 'myListings.dart';
 import 'package:image_picker/image_picker.dart';
@@ -91,6 +92,11 @@ class _ListItemPageState extends State<ListItemPage> {
               controller: _itemNameController,
               decoration: InputDecoration(
                 hintText: 'Enter item name',
+                border: UnderlineInputBorder(
+                  borderSide: BorderSide(
+                    color: Color.fromARGB(219, 208, 138, 116),
+                  ),
+                ),
               ),
             ),
             SizedBox(height: 16.0),
@@ -99,6 +105,11 @@ class _ListItemPageState extends State<ListItemPage> {
               controller: _itemPriceController,
               decoration: InputDecoration(
                 hintText: 'Enter item price',
+                border: UnderlineInputBorder(
+                  borderSide: BorderSide(
+                    color: Color.fromARGB(219, 208, 138, 116),
+                  ),
+                ),
               ),
             ),
             SizedBox(height: 16.0),
@@ -110,28 +121,47 @@ class _ListItemPageState extends State<ListItemPage> {
                   _selectedConditionIndex = value!;
                 });
               },
-              items: <DropdownMenuItem<int>>[
+              items: [
                 DropdownMenuItem(
                   value: 0,
-                  child: Text('Select Condition'),
+                  child: Text(
+                    'Select Condition',
+                    style: Theme.of(context).textTheme.bodyLarge,
+                  ),
                 ),
                 DropdownMenuItem(
                   value: 1,
-                  child: Text('New'),
+                  child: Text(
+                    'New',
+                    style: Theme.of(context).textTheme.bodyLarge,
+                  ),
                 ),
                 DropdownMenuItem(
                   value: 2,
-                  child: Text('Used - Like New'),
+                  child: Text(
+                    'Used - Like New',
+                    style: Theme.of(context).textTheme.bodyLarge,
+                  ),
                 ),
                 DropdownMenuItem(
                   value: 3,
-                  child: Text('Used - Good'),
+                  child: Text(
+                    'Used - Good',
+                    style: Theme.of(context).textTheme.bodyLarge,
+                  ),
                 ),
                 DropdownMenuItem(
                   value: 4,
-                  child: Text('Used - Fair'),
+                  child: Text(
+                    'Used - Fair',
+                    style: Theme.of(context).textTheme.bodyLarge,
+                  ),
                 ),
               ],
+              underline: Container(
+                height: 1,
+                color: Color.fromARGB(219, 208, 138, 116),
+              ),
             ),
             SizedBox(height: 16.0),
             Text('Quantity',
@@ -143,6 +173,11 @@ class _ListItemPageState extends State<ListItemPage> {
               keyboardType: TextInputType.number,
               decoration: InputDecoration(
                 hintText: 'Enter quantity',
+                border: UnderlineInputBorder(
+                  borderSide: BorderSide(
+                    color: Color.fromARGB(219, 208, 138, 116),
+                  ),
+                ),
               ),
             ),
             SizedBox(height: 16.0),
@@ -153,6 +188,11 @@ class _ListItemPageState extends State<ListItemPage> {
               maxLines: null,
               decoration: InputDecoration(
                 hintText: 'Enter item description',
+                border: UnderlineInputBorder(
+                  borderSide: BorderSide(
+                    color: Color.fromARGB(219, 208, 138, 116),
+                  ),
+                ),
               ),
             ),
             SizedBox(height: 16.0),
@@ -162,7 +202,8 @@ class _ListItemPageState extends State<ListItemPage> {
               child: Text('Pick Images'),
             ),
             SizedBox(height: 16.0),
-            Text('Selected Images:'),
+            Text('Selected Images:',
+                style: Theme.of(context).textTheme.bodyLarge),
             SizedBox(height: 8.0),
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,

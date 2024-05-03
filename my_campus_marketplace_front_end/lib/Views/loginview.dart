@@ -223,7 +223,6 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
                   ),
                   child: InkWell(
                     onTap: _isLogin ? _login : _signup,
-                    splashColor: Color.fromARGB(219, 240, 193, 178),
                     child: Container(
                       padding: EdgeInsets.symmetric(
                           vertical: 12.0, horizontal: 24.0),
@@ -273,15 +272,15 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
         return AlertDialog(
           title: Text(
             "Error",
-            style: TextStyle(
-              fontFamily: 'Quicksand',
-            ),
+            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                  fontFamily: 'Quicksand',
+                ),
           ),
           content: Text(
             message,
-            style: TextStyle(
-              fontFamily: 'Quicksand',
-            ),
+            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                  fontFamily: 'Quicksand',
+                ),
           ),
           actions: <Widget>[
             GestureDetector(
@@ -292,10 +291,10 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
                 padding: EdgeInsets.symmetric(horizontal: 10),
                 child: Text(
                   "OK",
-                  style: TextStyle(
-                    fontFamily: 'Quicksand',
-                    color: Color.fromRGBO(129, 55, 16, 1),
-                  ),
+                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                        fontFamily: 'Quicksand',
+                        color: Color.fromRGBO(129, 55, 16, 1),
+                      ),
                 ),
               ),
             ),

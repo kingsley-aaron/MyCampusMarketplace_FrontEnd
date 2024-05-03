@@ -36,7 +36,7 @@ class MyListings extends StatelessWidget {
               },
               child: Text(
                 'Go to For Sale Page',
-                style: Theme.of(context).textTheme.bodyLarge,
+                style: Theme.of(context).textTheme.labelLarge,
               ),
             ),
           ],
