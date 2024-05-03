@@ -3,7 +3,7 @@ import 'package:mycampusmarketplace/Models/item.dart';
 import 'package:mycampusmarketplace/Models/user.dart';
 import 'package:mycampusmarketplace/Repositories/itemClient.dart';
 import 'package:mycampusmarketplace/main.dart' as m;
-import 'adminExpandedSale.dart';
+import 'expandedSale.dart';
 import 'adminUsers.dart';
 import 'package:mycampusmarketplace/Views/adminAppBar.dart';
 
@@ -54,7 +54,7 @@ class _AdminItemsState extends State<AdminItems> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => AdminExpandedSale(item: item, userName: userName),
+                        builder: (context) => ExpandedSale(item: item),
                       ),
                     );
                   },

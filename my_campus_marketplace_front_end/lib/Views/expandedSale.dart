@@ -20,6 +20,7 @@ class _ExpandedSaleState extends State<ExpandedSale> {
   late String sellerEmail = 'Loading...'; // insert value
   final ItemClient itemClient = ItemClient();
   bool isCurrentUser = false;
+  bool isAdmin = false;
 
   @override
   void initState() {
@@ -42,6 +43,8 @@ class _ExpandedSaleState extends State<ExpandedSale> {
         setState(() {
           isCurrentUser = true;
         });
+      } else if (user?.admin == true) {
+        isAdmin = true;
       }
     });
   }
@@ -170,25 +173,6 @@ class _ExpandedSaleState extends State<ExpandedSale> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    ElevatedButton(
-                      onPressed: () async {
-                        String sessionState = m.userClient.getSessionState();
-                        String result =
-                            await deleteItem(widget.item.itemId, sessionState);
-                        if (result == "Success") {
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                              content: Text("Item successfully deleted!")));
-                          Navigator.pop(context);
-                        } else {
-                          ScaffoldMessenger.of(context)
-                              .showSnackBar(SnackBar(content: Text(result)));
-                        }
-                      },
-                      child: Text('Delete'),
-                      style: ElevatedButton.styleFrom(
-                        textStyle: AppTheme.themeData.textTheme.bodyLarge,
-                      ),
-                    ),
                     // added edit page button
                     ElevatedButton(
                       onPressed: () => Navigator.push(
@@ -226,6 +210,30 @@ class _ExpandedSaleState extends State<ExpandedSale> {
                   ],
                 ),
               ),
+              if (isCurrentUser || isAdmin)
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 130.0),
+                child:
+                  ElevatedButton(
+                      onPressed: () async {
+                        String sessionState = m.userClient.getSessionState();
+                        String result =
+                            await deleteItem(widget.item.itemId, sessionState);
+                        if (result == "Success") {
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              content: Text("Item successfully deleted!")));
+                          Navigator.pop(context);
+                        } else {
+                          ScaffoldMessenger.of(context)
+                              .showSnackBar(SnackBar(content: Text(result)));
+                        }
+                      },
+                      child: Text('Delete'),
+                      style: ElevatedButton.styleFrom(
+                        textStyle: AppTheme.themeData.textTheme.bodyLarge,
+                      ),
+                    ),
+                ),
           ],
         ),
       ),
