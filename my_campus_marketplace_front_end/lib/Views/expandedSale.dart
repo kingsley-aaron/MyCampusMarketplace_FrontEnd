@@ -8,8 +8,10 @@ import '../main.dart';
 
 class ExpandedSale extends StatelessWidget {
   final Item item;
+  final String userName;
 
-  ExpandedSale({Key? key, required this.item}) : super(key: key);
+  ExpandedSale({Key? key, required this.item, required this.userName})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -41,8 +43,9 @@ class ExpandedSale extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) =>
-                              MyListings(), // Navigate to My Listings screen
+                          builder: (context) => MyListings(
+                              userName:
+                                  userName), // Navigate to My Listings screen
                         ),
                       );
                       // Navigate to My Listings screen
@@ -138,26 +141,26 @@ class ExpandedSale extends StatelessWidget {
               padding: EdgeInsets.symmetric(horizontal: 16.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [                
+                children: [
                   ElevatedButton(
-                     onPressed: () {
-                        // Implement delete functionality
-                     },
-                     child: Text('Delete'),
-                     style: ElevatedButton.styleFrom(
-                       textStyle: AppTheme.themeData.textTheme.bodyLarge,
-                      ),
+                    onPressed: () {
+                      // Implement delete functionality
+                    },
+                    child: Text('Delete'),
+                    style: ElevatedButton.styleFrom(
+                      textStyle: AppTheme.themeData.textTheme.bodyLarge,
                     ),
+                  ),
 
                   /*
                   visibility for sold button logic here with
                   Visibility(visible: )
                   */
-                  Visibility(visible: adminCheck,
-                  child:
-                    ElevatedButton(
+                  Visibility(
+                    visible: adminCheck,
+                    child: ElevatedButton(
                       onPressed: () {
-                      // Implement mark as sold functionality
+                        // Implement mark as sold functionality
                       },
                       child: Text('Mark as Sold'),
                       style: ElevatedButton.styleFrom(

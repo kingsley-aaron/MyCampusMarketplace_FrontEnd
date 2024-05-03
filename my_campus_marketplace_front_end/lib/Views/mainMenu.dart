@@ -76,7 +76,9 @@ class _HomeScreenState extends State<HomeScreen> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => MyListings(),
+                          builder: (context) => MyListings(
+                            userName: userName,
+                          ),
                         ),
                       );
                     } else if (value == 'signOut') {

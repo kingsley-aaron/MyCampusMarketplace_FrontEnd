@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'myListings.dart';
+import 'mainMenu.dart';
 
 class EditListingScreen extends StatefulWidget {
   final Map<String, dynamic> item;
+  final String userName;
 
-  EditListingScreen({required this.item});
+  EditListingScreen({required this.item, required this.userName});
 
   @override
   _EditListingScreenState createState() => _EditListingScreenState();
@@ -52,15 +54,17 @@ class _EditListingScreenState extends State<EditListingScreen> {
             padding: const EdgeInsets.all(8.0),
             child: Row(
               children: [
-                Text('Welcome, User'), // Replace User with your actual username
+                Text(
+                    'Welcome, ${widget.userName}'), // Replace User with your actual username
                 PopupMenuButton<String>(
                   onSelected: (value) {
                     if (value == 'myListings') {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) =>
-                              MyListings(), // Navigate to My Listings screen
+                          builder: (context) => MyListings(
+                            userName: widget.userName,
+                          ), // Navigate to My Listings screen
                         ),
                       );
                     } else if (value == 'signOut') {

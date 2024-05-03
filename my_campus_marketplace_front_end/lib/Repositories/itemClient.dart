@@ -58,6 +58,31 @@ class ItemClient {
     }
   }
 
+  Future<List<Item>> fetchUserListings(String userName) async {
+    try {
+      var response = await http.get(
+        Uri.parse('$apiAddress/fetchuserlistings.php?username=$userName'),
+        // Add any required headers or cookies here...
+      );
+
+      if (response.statusCode == 200) {
+        var data = json.decode(response.body);
+        if (data['success']) {
+          return _parseList(data['data']);
+        } else {
+          errorMessage = data['data'];
+          return [];
+        }
+      } else {
+        errorMessage = "Failed to fetch user listings";
+        return [];
+      }
+    } catch (e) {
+      errorMessage = "Error: $e";
+      return [];
+    }
+  }
+
   Future<String> postItem(
     String itemName,
     String itemDesc,

@@ -45,7 +45,9 @@ class _ForSaleState extends State<ForSale> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => MyListings(),
+                          builder: (context) => MyListings(
+                            userName: userName,
+                          ),
                         ),
                       );
                     } else if (value == 'signOut') {
@@ -96,7 +98,8 @@ class _ForSaleState extends State<ForSale> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => ExpandedSale(item: item),
+                        builder: (context) =>
+                            ExpandedSale(item: item, userName: userName),
                       ),
                     );
                   },

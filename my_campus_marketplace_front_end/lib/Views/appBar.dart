@@ -36,7 +36,9 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => MyListings(),
+                          builder: (context) => MyListings(
+                            userName: userName,
+                          ),
                         ),
                       );
                     } else if (value == 'signOut') {

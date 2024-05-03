@@ -91,7 +91,9 @@ class _ListItemPageState extends State<ListItemPage> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => MyListings(),
+                          builder: (context) => MyListings(
+                            userName: userName,
+                          ),
                         ),
                       );
                     } else if (value == 'signOut') {
