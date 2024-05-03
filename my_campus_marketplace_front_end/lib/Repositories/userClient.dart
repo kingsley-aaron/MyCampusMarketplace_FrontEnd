@@ -210,27 +210,6 @@ class UserClient {
     }
   }
 
-  Future<String> getSellerEmailById(int userId) async {
-    try {
-      var response = await http.get(
-        Uri.parse('${apiAddress}fetchuser.php?user=$userId&by=id'),
-        headers: {'Cookie': "PHPSESSID=$sessionState"},
-      );
-      if (response.statusCode == 200) {
-        var data = json.decode(response.body);
-        if (data['success']) {
-          return data['data']['StudentEmail'];
-        } else {
-          return 'Unknown';
-        }
-      } else {
-        return 'Unknown';
-      }
-    } catch (e) {
-      return 'Unknown';
-    }
-  }
-
   //only use for functions that don't already return a string error message, such as the getUser function
   Future<String> getErrorMessage() async {
     return errorMessage;
