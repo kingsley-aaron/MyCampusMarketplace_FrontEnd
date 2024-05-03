@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mycampusmarketplace/Models/item.dart';
 import 'package:mycampusmarketplace/Models/user.dart';
 import 'package:mycampusmarketplace/Repositories/itemClient.dart';
+import 'package:mycampusmarketplace/Views/appBar.dart';
 import 'package:mycampusmarketplace/main.dart' as m;
 import 'expandedSale.dart';
 import 'myListings.dart';
@@ -27,64 +28,8 @@ class _ForSaleState extends State<ForSale> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        // title: Text('My Campus Marketplace'),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              children: [
-                Text(
-                  'Welcome, $userName',
-                  style: Theme.of(context)
-                      .textTheme
-                      .titleMedium
-                      ?.copyWith(fontFamily: 'Quicksand'),
-                ),
-                PopupMenuButton<String>(
-                  // Set the color of the popup menu to white
-                  color: Colors.white,
-                  onSelected: (value) {
-                    if (value == 'myListings') {
-                      // Navigate to My Listings screen
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => MyListings(),
-                        ),
-                      );
-                    } else if (value == 'signOut') {
-                      //_logout();
-                    }
-                  },
-                  itemBuilder: (BuildContext context) =>
-                      <PopupMenuEntry<String>>[
-                    PopupMenuItem<String>(
-                      value: 'myListings',
-                      child: Text(
-                        'My Listings',
-                        style: Theme.of(context)
-                            .textTheme
-                            .titleMedium
-                            ?.copyWith(fontFamily: 'Quicksand'),
-                      ),
-                    ),
-                    PopupMenuItem<String>(
-                      value: 'signOut',
-                      child: Text(
-                        'Sign Out',
-                        style: Theme.of(context)
-                            .textTheme
-                            .titleMedium
-                            ?.copyWith(fontFamily: 'Quicksand'),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ],
+      appBar: CustomAppBar(
+        userName: userName,
       ),
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: Column(
@@ -105,6 +50,8 @@ class _ForSaleState extends State<ForSale> {
               itemCount: items.length,
               itemBuilder: (context, index) {
                 var item = items[index];
+                String formattedPrice =
+                    '\$${item.itemPrice.toStringAsFixed(2)}';
                 return GestureDetector(
                   onTap: () {
                     Navigator.push(
@@ -120,17 +67,21 @@ class _ForSaleState extends State<ForSale> {
                       padding: const EdgeInsets.all(16.0),
                       child: Row(
                         children: <Widget>[
-                          // display the item image
                           Container(
                             width: 100,
                             height: 100,
-                            decoration: BoxDecoration(
-                              image: DecorationImage(
-                                image: NetworkImage(item.itemImage),
-                                fit: BoxFit.cover,
-                              ),
+                            child: Image.network(
+                              item.itemImage,
+                              fit: BoxFit.cover,
+                              errorBuilder: (BuildContext context,
+                                  Object exception, StackTrace? stackTrace) {
+                                // returns an image based on stack trace (if not found)
+                                return Icon(Icons.image_not_supported,
+                                    size: 100, color: Colors.grey);
+                              },
                             ),
                           ),
+
                           SizedBox(width: 16),
                           // This column contains the item's name, condition, and price
                           Expanded(
@@ -153,7 +104,7 @@ class _ForSaleState extends State<ForSale> {
                                       ?.copyWith(fontFamily: 'Quicksand'),
                                 ),
                                 Text(
-                                  'Price: \$${item.itemPrice.toStringAsFixed(2)}',
+                                  'Price: $formattedPrice',
                                   style: Theme.of(context)
                                       .textTheme
                                       .bodyLarge

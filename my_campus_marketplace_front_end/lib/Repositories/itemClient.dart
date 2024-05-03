@@ -17,9 +17,10 @@ class ItemClient {
         Uri.parse('${apiAddress}fetchitem.php?id=$itemId'),
         headers: {'Cookie': "PHPSESSID=$sessionState"},
       );
+      var data = json.decode(response.body);
+
       // getting item was a success
       if (response.statusCode == 200) {
-        var data = json.decode(response.body);
         bool wanted = false;
 
         if (data['success']) {
@@ -41,21 +42,11 @@ class ItemClient {
               itemAdded: DateTime.parse(data['ItemAdded']));
         } else {
           //determine error message based on API response
-          if (data['reason'][0] == "missing_data") {
-            errorMessage =
-                "The application had an error. Please contact the administrators.";
-          } else if (data['reason'][0] == "server_error") {
-            errorMessage =
-                "There was an issue with the server. Please try again later.";
-          } else if (data['reason'][0] == "not_found") {
-            errorMessage = "The requested item was not found.";
-          } else {
-            errorMessage = "An error occurred.";
-          }
+          errorMessage = data['data'];
           return null;
         }
       } else if (response.statusCode == 404) {
-        errorMessage = "The requested item was not found.";
+        errorMessage = data['data'];
         return null;
       } else {
         errorMessage = "An error occurred.";
@@ -107,24 +98,111 @@ class ItemClient {
       request.headers['Cookie'] = "PHPSESSID=$sessionState";
 
       var response = await request.send();
+      var responseData = await response.stream.bytesToString();
+      var data = json.decode(responseData);
 
       // check the response status code
       if (response.statusCode == 200) {
-        var responseData = await response.stream.bytesToString();
-        var data = json.decode(responseData);
-
         if (data['success']) {
-          return "Success";
+          return "Item Successfully Posted!";
         } else {
           return data['data'];
         }
       } else {
-        return "An error occurred.";
+        return data['data'];
       }
     } catch (e) {
       return e.toString();
     }
   }
+
+  Future<String> editItem({
+    required int itemId,
+    String? itemName,
+    String? itemDesc,
+    String? itemCondition,
+    String? itemPrice,
+    String? itemQuantity,
+    File? itemImage,
+    required String sessionState,
+  }) async {
+    try {
+      // Sending edit item request to server
+      var request = http.MultipartRequest(
+        'POST',
+        Uri.parse('${apiAddress}editpost.php'),
+      );
+
+
+      // set required headers
+      request.headers['Content-Type'] = 'multipart/form-data';
+      request.headers['Cookie'] = "PHPSESSID=$sessionState";
+
+
+      // set request body fields
+      request.fields['ItemID'] = itemId.toString();
+      if (itemName != null) request.fields['ItemName'] = itemName;
+      if (itemDesc != null) request.fields['ItemDesc'] = itemDesc;
+      if (itemCondition != null)
+        request.fields['ItemCondition'] = itemCondition;
+      if (itemPrice != null) request.fields['ItemPrice'] = itemPrice.toString();
+      if (itemQuantity != null)
+        request.fields['ItemQuantity'] = itemQuantity.toString();
+
+
+      // add image file to the request if provided
+      if (itemImage != null) {
+        request.files.add(
+          await http.MultipartFile.fromPath('ItemImage', itemImage.path),
+        );
+      }
+      // send the request
+      var response = await request.send();
+      var responseData = await response.stream.bytesToString();
+      var data = json.decode(responseData);
+
+
+      // check the response status code
+      if (response.statusCode == 200) {
+        if (data['success']) {
+          return "Success";
+        } else {
+          return "Failed to edit item: ${data['reason'].join(", ")}";
+        }
+      } else {
+        return "HTTP error ${response.statusCode}: ${data['reason'].join(", ")}";
+      }
+    } catch (e) {
+      return "Exception caught: $e";
+    }
+  }
+
+  Future<String> deleteItem(int itemId, String sessionState) async {
+    try {
+      // Sending delete item request to server
+      var url = Uri.parse('${apiAddress}deletepost.php?itemId=$itemId');
+      var response = await http.delete(
+        url,
+        headers: {'Cookie': "PHPSESSID=$sessionState"},
+      );
+      // check status code
+      if (response.statusCode == 200) {
+        var data = json.decode(response.body);
+        if (data['success']) {
+          return "Success";
+        } else {
+          // error logging on why item won't delete
+          return "Failed to delete item: ${data['data']}";
+        }
+      } else {
+        // additional error handling
+        return "HTTP error ${response.statusCode}: ${response.body}";
+      }
+    } catch (e) {
+      return "Exception caught: $e";
+    }
+  }
+
 
   //The filter parameters are optional and must be called by name. Condition and orderBy are arrays that can filter on multiple values.
   Future<List<Item>> getForSaleItems(String sessionState,
@@ -327,7 +405,6 @@ class ItemClient {
         itemAdded: DateTime.parse(item['ItemAdded']),
       ));
     }
-
     return items;
   }
 

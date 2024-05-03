@@ -8,6 +8,7 @@ import 'myListings.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as path;
+import 'package:mycampusmarketplace/Views/appBar.dart';
 
 class ListItemPage extends StatefulWidget {
   final String userName;
@@ -69,58 +70,8 @@ class _ListItemPageState extends State<ListItemPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        actions: [
-          IconButton(
-            icon: Icon(Icons.home),
-            onPressed: () {
-              Navigator.pop(context); // Navigate back to the home screen
-            },
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              children: [
-                Text(
-                  'Welcome, $userName',
-                  style: Theme.of(context).textTheme.titleMedium,
-                ),
-                PopupMenuButton<String>(
-                  onSelected: (value) {
-                    if (value == 'myListings') {
-                      // Navigate to My Listings screen
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => MyListings(),
-                        ),
-                      );
-                    } else if (value == 'signOut') {
-                      //_logout();
-                    }
-                  },
-                  itemBuilder: (BuildContext context) =>
-                      <PopupMenuEntry<String>>[
-                    PopupMenuItem<String>(
-                      value: 'myListings',
-                      child: Text(
-                        'My Listings',
-                        style: Theme.of(context).textTheme.titleMedium,
-                      ),
-                    ),
-                    PopupMenuItem<String>(
-                      value: 'signOut',
-                      child: Text(
-                        'Sign Out',
-                        style: Theme.of(context).textTheme.titleMedium,
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ],
+      appBar: CustomAppBar(
+        userName: userName,
       ),
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SingleChildScrollView(

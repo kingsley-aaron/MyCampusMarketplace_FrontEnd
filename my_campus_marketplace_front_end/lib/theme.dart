@@ -48,9 +48,6 @@ class AppTheme {
     textButtonTheme: TextButtonThemeData(
       style: TextButton.styleFrom(
         foregroundColor: Color.fromRGBO(129, 55, 16, 1),
-        overlayColor: WidgetStateColor.resolveWith(
-          (states) => Color.fromARGB(219, 208, 138, 116),
-        ),
       ),
     ),
     dialogTheme: DialogTheme(

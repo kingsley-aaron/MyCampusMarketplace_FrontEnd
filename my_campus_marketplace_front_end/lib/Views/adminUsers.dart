@@ -4,6 +4,7 @@ import 'package:mycampusmarketplace/Repositories/userClient.dart';
 import 'package:mycampusmarketplace/main.dart' as m;
 import 'package:mycampusmarketplace/main.dart';
 import 'expandedUser.dart';
+import 'package:mycampusmarketplace/Views/adminAppBar.dart';
 
 class AdminUsers extends StatefulWidget {
   final String userName;
@@ -26,32 +27,8 @@ class _AdminUsersState extends State<AdminUsers> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        // title: Text('My Campus Marketplace'),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              children: [
-                Text('Welcome, $userName'),
-                PopupMenuButton<String>(
-                  onSelected: (value) {
-                    if (value == 'signOut') {
-                      //_logout();
-                    }
-                  },
-                  itemBuilder: (BuildContext context) =>
-                      <PopupMenuEntry<String>>[
-                    const PopupMenuItem<String>(
-                      value: 'signOut',
-                      child: Text('Sign Out'),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ],
+      appBar: CustomAdminAppBar(
+        userName: userName,
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -76,51 +53,44 @@ class _AdminUsersState extends State<AdminUsers> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-
-
                         /*
                           This might be causign any error
                         */
 
-                        builder: (context) => ExpandedUser(user:Map()),
+                        builder: (context) => ExpandedUser(user: Map()),
                       ),
                     );
                   },
                   child: Card(
                     child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Row(
-                        children: <Widget>[                       
+                        padding: const EdgeInsets.all(16.0),
+                        child: Row(children: <Widget>[
                           SizedBox(width: 16),
                           // This column contains the ID, and email
-                            Expanded(
+                          Expanded(
                               child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  Text(
-                                    'Student ID: ${user.studentID}',
-                                    style: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.black87,
-                                    ),
-                                  ),
-                                  SizedBox(height:10),
-                                  Text(
-                                    'Student Email: ${user.studentEmail}',
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      color: Colors.black54,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                Text(
+                                  'Student ID: ${user.studentID}',
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black87,
                                   ),
                                 ),
-                              ]
-                             )
-                          )
-                        ]
-                      )
-                    ),                                   
+                                SizedBox(height: 10),
+                                Text(
+                                  'Student Email: ${user.studentEmail}',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.black54,
+                                  ),
+                                ),
+                              ]))
+                        ])),
                   ),
-                );     
+                );
               },
             ),
           ),
@@ -131,8 +101,7 @@ class _AdminUsersState extends State<AdminUsers> {
 }
 
 Future<User?> getUserList() async {
-  User? users =
-    await userClient.getUser();
+  User? users = await userClient.getUser();
 
   return users;
 }
