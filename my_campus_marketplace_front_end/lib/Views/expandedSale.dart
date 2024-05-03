@@ -1,21 +1,53 @@
 import 'package:flutter/material.dart';
 import 'package:mycampusmarketplace/Models/item.dart';
-import 'package:mycampusmarketplace/Models/user.dart';
-import 'package:mycampusmarketplace/Repositories/userClient.dart';
-import 'package:mycampusmarketplace/theme.dart';
+import 'package:mycampusmarketplace/Repositories/itemClient.dart';
+import 'package:mycampusmarketplace/Views/editListingScreen.dart';
+import 'package:mycampusmarketplace/main.dart' as m;
 import 'myListings.dart';
-import '../main.dart';
+import 'package:mycampusmarketplace/theme.dart';
 
-class ExpandedSale extends StatelessWidget {
+class ExpandedSale extends StatefulWidget {
   final Item item;
 
   ExpandedSale({Key? key, required this.item}) : super(key: key);
 
   @override
+  _ExpandedSaleState createState() => _ExpandedSaleState();
+}
+
+class _ExpandedSaleState extends State<ExpandedSale> {
+  late String sellerEmail = 'Loading...'; // insert value
+  final ItemClient itemClient = ItemClient();
+  bool isCurrentUser = false;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchSellerEmail();
+    checkIfCurrentUser();
+  }
+
+  // fetches seller email
+  void fetchSellerEmail() async {
+    String email = await m.userClient.getSellerEmailById(widget.item.userId);
+    setState(() {
+      sellerEmail = email;
+    });
+  }
+
+  void checkIfCurrentUser() {
+    m.userClient.getUser().then((user) {
+      if (user != null && user.userID == widget.item.userId) {
+        setState(() {
+          isCurrentUser = true;
+        });
+      }
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    // Assume the seller's email is stored in the item map with the key 'email'
-    String sellerEmail = ''; // Assuming the key is 'email'
-    bool adminCheck = false;
+    String formattedPrice = '\$${widget.item.itemPrice.toStringAsFixed(2)}';
 
     return Scaffold(
       appBar: AppBar(
@@ -31,10 +63,6 @@ class ExpandedSale extends StatelessWidget {
             padding: const EdgeInsets.all(8.0),
             child: Row(
               children: [
-                Text(
-                  'Welcome, User',
-                  style: Theme.of(context).textTheme.titleMedium,
-                ),
                 PopupMenuButton<String>(
                   onSelected: (value) {
                     if (value == 'myListings') {
@@ -80,33 +108,34 @@ class ExpandedSale extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Text(
-              item.itemName,
+              widget.item.itemName,
               style: AppTheme.themeData.textTheme.bodyMedium,
             ),
             SizedBox(height: 8.0),
             AspectRatio(
-              aspectRatio: 1.5,
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12.0),
-                  gradient: LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                    colors: [
-                      Colors.blue.shade900,
-                      Colors.blue.shade200,
-                    ],
-                  ),
-                ),
-                child: Center(
-                  child: Icon(Icons.image, size: 100.0),
+              aspectRatio: 38 / 28,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(12.0),
+                child: Image.network(
+                  widget.item.itemImage,
+                  fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) {
+                    return Container(
+                      color: Colors.grey[300],
+                      alignment: Alignment.center,
+                      child: Text(
+                        'Image not available',
+                        style: TextStyle(fontSize: 16),
+                      ),
+                    );
+                  },
                 ),
               ),
             ),
             SizedBox(height: 8.0),
             Center(
               child: Text(
-                'Condition: ${item.itemCondition}',
+                'Condition: ${widget.item.itemCondition}',
                 style: AppTheme.themeData.textTheme.bodyMedium,
               ),
             ),
@@ -115,14 +144,14 @@ class ExpandedSale extends StatelessWidget {
             ),
             Center(
               child: Text(
-                'Price: ${item.itemPrice}',
+                'Price: $formattedPrice',
                 style: AppTheme.themeData.textTheme.bodyMedium,
               ),
             ),
             SizedBox(height: 8.0),
             Center(
               child: Text(
-                'Description: ${item.itemDesc}',
+                'Description: ${widget.item.itemDesc}',
                 style: AppTheme.themeData.textTheme.bodyMedium,
               ),
             ),
@@ -134,43 +163,77 @@ class ExpandedSale extends StatelessWidget {
               ),
             ),
             SizedBox(height: 16.0),
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: 16.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [                
-                  ElevatedButton(
-                     onPressed: () {
-                        // Implement delete functionality
-                     },
-                     child: Text('Delete'),
-                     style: ElevatedButton.styleFrom(
-                       textStyle: AppTheme.themeData.textTheme.bodyLarge,
+            if (isCurrentUser) // shows buttons to current user's items
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 16.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    ElevatedButton(
+                      onPressed: () async {
+                        String sessionState = m.userClient.getSessionState();
+                        String result =
+                            await deleteItem(widget.item.itemId, sessionState);
+                        if (result == "Success") {
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              content: Text("Item successfully deleted!")));
+                          Navigator.pop(context);
+                        } else {
+                          ScaffoldMessenger.of(context)
+                              .showSnackBar(SnackBar(content: Text(result)));
+                        }
+                      },
+                      child: Text('Delete'),
+                      style: ElevatedButton.styleFrom(
+                        textStyle: AppTheme.themeData.textTheme.bodyLarge,
                       ),
                     ),
-
-                  /*
-                  visibility for sold button logic here with
-                  Visibility(visible: )
-                  */
-                  Visibility(visible: adminCheck,
-                  child:
+                    // added edit page button
                     ElevatedButton(
-                      onPressed: () {
-                      // Implement mark as sold functionality
+                      onPressed: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                EditListingScreen(item: widget.item)),
+                      ),
+                      child: Text('Edit'),
+                      style: ElevatedButton.styleFrom(
+                          textStyle: AppTheme.themeData.textTheme.bodyLarge),
+                    ),
+                    // mark as sold, treated as the delete function when item is gone
+                    ElevatedButton(
+                      onPressed: () async {
+                        String sessionState = m.userClient.getSessionState();
+                        String result =
+                            await deleteItem(widget.item.itemId, sessionState);
+                        if (result == "Success") {
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              content:
+                                  Text("Item successfully marked as sold!")));
+                          Navigator.pop(context);
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              content: Text(
+                                  "Failed to be mark as sold, please try again.")));
+                        }
                       },
                       child: Text('Mark as Sold'),
                       style: ElevatedButton.styleFrom(
                         textStyle: AppTheme.themeData.textTheme.bodyLarge,
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
           ],
         ),
       ),
     );
   }
+}
+
+Future<String> deleteItem(int itemId, String sessionState) async {
+  ItemClient itemClient = ItemClient();
+  String result = await itemClient.deleteItem(itemId, sessionState);
+  return result;
 }
