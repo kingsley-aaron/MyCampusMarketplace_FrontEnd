@@ -65,4 +65,12 @@ class AppTheme {
     scaffoldBackgroundColor:
         Colors.blue.shade100, // Set scaffold background color
   );
+
+  static TextStyle heading() {
+    return TextStyle(
+      fontFamily: 'Quicksand',
+      fontSize: 18,
+      fontWeight: FontWeight.bold,
+    );
+  }
 }

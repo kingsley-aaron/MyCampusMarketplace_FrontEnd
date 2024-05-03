@@ -29,7 +29,7 @@ class ExpandedSale extends StatelessWidget {
               children: [
                 Text(
                   'Welcome, User',
-                  style: Theme.of(context).textTheme.titleMedium,
+                  style: AppTheme.themeData.textTheme.titleMedium,
                 ),
                 PopupMenuButton<String>(
                   onSelected: (value) {
@@ -77,7 +77,7 @@ class ExpandedSale extends StatelessWidget {
           children: <Widget>[
             Text(
               item.itemName,
-              style: AppTheme.themeData.textTheme.bodyMedium,
+              style: AppTheme.heading(),
             ),
             SizedBox(height: 8.0),
             AspectRatio(
@@ -89,8 +89,8 @@ class ExpandedSale extends StatelessWidget {
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                     colors: [
-                      Colors.blue.shade900,
-                      Colors.blue.shade200,
+                      Color.fromRGBO(250, 132, 102, 0.641),
+                      Color.fromARGB(103, 208, 138, 116),
                     ],
                   ),
                 ),
@@ -103,7 +103,7 @@ class ExpandedSale extends StatelessWidget {
             Center(
               child: Text(
                 'Condition: ${item.itemCondition}',
-                style: AppTheme.themeData.textTheme.bodyMedium,
+                style: AppTheme.themeData.textTheme.bodyLarge,
               ),
             ),
             SizedBox(
@@ -111,22 +111,22 @@ class ExpandedSale extends StatelessWidget {
             ),
             Center(
               child: Text(
-                'Price: ${item.itemPrice}',
-                style: AppTheme.themeData.textTheme.bodyMedium,
+                'Price: \$${item.itemPrice.toStringAsFixed(2)}',
+                style: AppTheme.themeData.textTheme.bodyLarge,
               ),
             ),
             SizedBox(height: 8.0),
             Center(
               child: Text(
                 'Description: ${item.itemDesc}',
-                style: AppTheme.themeData.textTheme.bodyMedium,
+                style: AppTheme.themeData.textTheme.bodyLarge,
               ),
             ),
             SizedBox(height: 8.0),
             Center(
               child: Text(
                 'Seller\'s Email: $sellerEmail',
-                style: AppTheme.themeData.textTheme.bodyMedium,
+                style: AppTheme.themeData.textTheme.bodyLarge,
               ),
             ),
             SizedBox(height: 16.0),
@@ -144,6 +144,7 @@ class ExpandedSale extends StatelessWidget {
                       textStyle: AppTheme.themeData.textTheme.bodyLarge,
                     ),
                   ),
+<<<<<<< Updated upstream
                   ElevatedButton(
                     onPressed: () {
                       // Implement mark as sold functionality
@@ -151,6 +152,23 @@ class ExpandedSale extends StatelessWidget {
                     child: Text('Mark as Sold'),
                     style: ElevatedButton.styleFrom(
                       textStyle: AppTheme.themeData.textTheme.bodyLarge,
+=======
+
+                  /*
+                  visibility for sold button logic here with
+                  Visibility(visible: )
+                  */
+                  Visibility(
+                    visible: adminCheck,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        // Implement mark as sold functionality
+                      },
+                      child: Text('Mark as Sold'),
+                      style: ElevatedButton.styleFrom(
+                        textStyle: AppTheme.themeData.textTheme.bodyLarge,
+                      ),
+>>>>>>> Stashed changes
                     ),
                   ),
                 ],

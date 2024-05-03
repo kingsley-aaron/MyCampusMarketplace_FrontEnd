@@ -147,18 +147,22 @@ class _ForSaleState extends State<ForSale> {
                                 const SizedBox(height: 10),
                                 Text(
                                   'Condition: ${item.itemCondition}',
+<<<<<<< Updated upstream
                                   style: Theme.of(context)
                                       .textTheme
                                       .bodyMedium
                                       ?.copyWith(fontFamily: 'Quicksand'),
+=======
+                                  style: Theme.of(context).textTheme.bodyLarge,
+>>>>>>> Stashed changes
                                 ),
                                 Text(
-                                  'Price: ${item.itemPrice}',
+                                  'Price: \$${item.itemPrice.toStringAsFixed(2)}',
                                   style: Theme.of(context)
                                       .textTheme
-                                      .bodyMedium
+                                      .bodyLarge
                                       ?.copyWith(
-                                        color: Theme.of(context).primaryColor,
+                                        color: Color.fromRGBO(129, 55, 16, 1),
                                         fontWeight: FontWeight.bold,
                                         fontFamily: 'Quicksand',
                                       ),

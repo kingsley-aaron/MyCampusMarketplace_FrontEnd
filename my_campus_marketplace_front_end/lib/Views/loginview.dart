@@ -223,7 +223,6 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
                   ),
                   child: InkWell(
                     onTap: _isLogin ? _login : _signup,
-                    splashColor: Color.fromARGB(219, 240, 193, 178),
                     child: Container(
                       padding: EdgeInsets.symmetric(
                           vertical: 12.0, horizontal: 24.0),
@@ -246,11 +245,14 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
                     _isLogin = !_isLogin;
                   });
                 },
+<<<<<<< Updated upstream
                 style: ButtonStyle(
                   overlayColor: WidgetStateColor.resolveWith(
                     (states) => Color.fromARGB(219, 208, 138, 116),
                   ),
                 ),
+=======
+>>>>>>> Stashed changes
                 child: Text(
                   _isLogin ? 'Create an account' : 'Have an account? Sign in',
                   style: TextStyle(
@@ -273,15 +275,15 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
         return AlertDialog(
           title: Text(
             "Error",
-            style: TextStyle(
-              fontFamily: 'Quicksand',
-            ),
+            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                  fontFamily: 'Quicksand',
+                ),
           ),
           content: Text(
             message,
-            style: TextStyle(
-              fontFamily: 'Quicksand',
-            ),
+            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                  fontFamily: 'Quicksand',
+                ),
           ),
           actions: <Widget>[
             GestureDetector(
@@ -292,10 +294,10 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
                 padding: EdgeInsets.symmetric(horizontal: 10),
                 child: Text(
                   "OK",
-                  style: TextStyle(
-                    fontFamily: 'Quicksand',
-                    color: Color.fromRGBO(129, 55, 16, 1),
-                  ),
+                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                        fontFamily: 'Quicksand',
+                        color: Color.fromRGBO(129, 55, 16, 1),
+                      ),
                 ),
               ),
             ),
