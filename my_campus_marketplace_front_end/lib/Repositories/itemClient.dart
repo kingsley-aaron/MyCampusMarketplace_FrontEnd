@@ -226,27 +226,6 @@ class ItemClient {
         orderBy: orderBy);
   }
 
-  //see getForSaleItems documentation, everything is the same
-  Future<List<Item>> getWantedItems(String sessionState,
-      {int? listSize,
-      List<String>? condition,
-      double? minPrice,
-      double? maxPrice,
-      String? keyword,
-      String? keywordSearchType,
-      String? username,
-      List<String>? orderBy}) async {
-    return _getItems(sessionState, true,
-        listSize: listSize,
-        condition: condition,
-        minPrice: minPrice,
-        maxPrice: maxPrice,
-        keyword: keyword,
-        keywordSearchType: keywordSearchType,
-        username: username,
-        orderBy: orderBy);
-  }
-
   Future<List<Item>> _getItems(String sessionState, bool wanted,
       {int? listSize,
       List<String>? condition,
