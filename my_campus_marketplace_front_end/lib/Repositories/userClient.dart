@@ -228,6 +228,7 @@ class UserClient {
           return users;
         }
       } 
+    }
   }
   
   Future<String> getSellerEmailById(int userId) async {
@@ -281,7 +282,7 @@ class UserClient {
           creationDate: DateTime.parse(user['UserCreated'])));
     }
     return users;
-  }
+  
       }
   //only use for functions that don't already return a string error message, such as the getUser function
   Future<String> getErrorMessage() async {
