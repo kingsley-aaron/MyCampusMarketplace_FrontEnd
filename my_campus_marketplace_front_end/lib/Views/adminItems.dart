@@ -3,7 +3,7 @@ import 'package:mycampusmarketplace/Models/item.dart';
 import 'package:mycampusmarketplace/Models/user.dart';
 import 'package:mycampusmarketplace/Repositories/itemClient.dart';
 import 'package:mycampusmarketplace/main.dart' as m;
-import 'expandedSale.dart';
+import 'adminExpandedSale.dart';
 import 'adminUsers.dart';
 
 class AdminItems extends StatefulWidget {
@@ -77,7 +77,7 @@ class _AdminItemsState extends State<AdminItems> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => ExpandedSale(item: item),
+                        builder: (context) => AdminExpandedSale(item: item),
                       ),
                     );
                   },
