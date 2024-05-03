@@ -4,7 +4,7 @@ class AppTheme {
   static final ThemeData themeData = ThemeData(
     appBarTheme: AppBarTheme(
       backgroundColor: Colors.transparent,
-      elevation: 0, // Adjust the elevation for the drop shadow
+      elevation: 0,
       centerTitle: true,
     ),
     inputDecorationTheme: InputDecorationTheme(
@@ -59,8 +59,7 @@ class AppTheme {
       ),
     ),
     popupMenuTheme: PopupMenuThemeData(color: Colors.white),
-    scaffoldBackgroundColor:
-        Colors.blue.shade100, // Set scaffold background color
+    scaffoldBackgroundColor: Colors.blue.shade100,
   );
 
   static TextStyle heading() {

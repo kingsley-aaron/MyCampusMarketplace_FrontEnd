@@ -202,8 +202,12 @@ class _ListItemPageState extends State<ListItemPage> {
               child: Text('Pick Images'),
             ),
             SizedBox(height: 16.0),
-            Text('Selected Images:',
-                style: Theme.of(context).textTheme.bodyLarge),
+            Text(
+              'Selected Images:',
+              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                    fontFamily: 'Quicksand',
+                  ),
+            ),
             SizedBox(height: 8.0),
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
@@ -265,7 +269,12 @@ class _ListItemPageState extends State<ListItemPage> {
       // Show error message or dialog for condition not selected
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Please select a condition.'),
+          content: Text(
+            'Please select a condition.',
+            style: TextStyle(
+              fontFamily: 'Quicksand',
+            ),
+          ),
         ),
       );
       return;

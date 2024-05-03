@@ -210,30 +210,29 @@ class _ExpandedSaleState extends State<ExpandedSale> {
                   ],
                 ),
               ),
-              if (isCurrentUser || isAdmin)
+            if (isCurrentUser || isAdmin)
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 130.0),
-                child:
-                  ElevatedButton(
-                      onPressed: () async {
-                        String sessionState = m.userClient.getSessionState();
-                        String result =
-                            await deleteItem(widget.item.itemId, sessionState);
-                        if (result == "Success") {
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                              content: Text("Item successfully deleted!")));
-                          Navigator.pop(context);
-                        } else {
-                          ScaffoldMessenger.of(context)
-                              .showSnackBar(SnackBar(content: Text(result)));
-                        }
-                      },
-                      child: Text('Delete'),
-                      style: ElevatedButton.styleFrom(
-                        textStyle: AppTheme.themeData.textTheme.bodyLarge,
-                      ),
-                    ),
+                child: ElevatedButton(
+                  onPressed: () async {
+                    String sessionState = m.userClient.getSessionState();
+                    String result =
+                        await deleteItem(widget.item.itemId, sessionState);
+                    if (result == "Success") {
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: Text("Item successfully deleted!")));
+                      Navigator.pop(context);
+                    } else {
+                      ScaffoldMessenger.of(context)
+                          .showSnackBar(SnackBar(content: Text(result)));
+                    }
+                  },
+                  child: Text('Delete'),
+                  style: ElevatedButton.styleFrom(
+                    textStyle: AppTheme.themeData.textTheme.bodyLarge,
+                  ),
                 ),
+              ),
           ],
         ),
       ),
