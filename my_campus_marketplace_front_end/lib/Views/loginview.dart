@@ -245,14 +245,11 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
                     _isLogin = !_isLogin;
                   });
                 },
-<<<<<<< Updated upstream
                 style: ButtonStyle(
                   overlayColor: WidgetStateColor.resolveWith(
                     (states) => Color.fromARGB(219, 208, 138, 116),
                   ),
                 ),
-=======
->>>>>>> Stashed changes
                 child: Text(
                   _isLogin ? 'Create an account' : 'Have an account? Sign in',
                   style: TextStyle(

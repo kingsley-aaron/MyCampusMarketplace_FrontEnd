@@ -144,7 +144,6 @@ class ExpandedSale extends StatelessWidget {
                       textStyle: AppTheme.themeData.textTheme.bodyLarge,
                     ),
                   ),
-<<<<<<< Updated upstream
                   ElevatedButton(
                     onPressed: () {
                       // Implement mark as sold functionality
@@ -152,23 +151,6 @@ class ExpandedSale extends StatelessWidget {
                     child: Text('Mark as Sold'),
                     style: ElevatedButton.styleFrom(
                       textStyle: AppTheme.themeData.textTheme.bodyLarge,
-=======
-
-                  /*
-                  visibility for sold button logic here with
-                  Visibility(visible: )
-                  */
-                  Visibility(
-                    visible: adminCheck,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        // Implement mark as sold functionality
-                      },
-                      child: Text('Mark as Sold'),
-                      style: ElevatedButton.styleFrom(
-                        textStyle: AppTheme.themeData.textTheme.bodyLarge,
-                      ),
->>>>>>> Stashed changes
                     ),
                   ),
                 ],

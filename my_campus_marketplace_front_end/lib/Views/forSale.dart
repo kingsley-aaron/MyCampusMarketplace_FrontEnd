@@ -147,14 +147,10 @@ class _ForSaleState extends State<ForSale> {
                                 const SizedBox(height: 10),
                                 Text(
                                   'Condition: ${item.itemCondition}',
-<<<<<<< Updated upstream
                                   style: Theme.of(context)
                                       .textTheme
                                       .bodyMedium
                                       ?.copyWith(fontFamily: 'Quicksand'),
-=======
-                                  style: Theme.of(context).textTheme.bodyLarge,
->>>>>>> Stashed changes
                                 ),
                                 Text(
                                   'Price: \$${item.itemPrice.toStringAsFixed(2)}',
