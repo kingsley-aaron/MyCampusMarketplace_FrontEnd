@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mycampusmarketplace/Models/item.dart';
 import 'package:mycampusmarketplace/Models/user.dart';
 import 'package:mycampusmarketplace/Repositories/itemClient.dart';
+import 'package:mycampusmarketplace/Views/appBar.dart';
 import 'package:mycampusmarketplace/main.dart' as m;
 import 'expandedSale.dart';
 import 'myListings.dart';
@@ -27,53 +28,8 @@ class _ForSaleState extends State<ForSale> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        // title: Text('My Campus Marketplace'),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              children: [
-                Text(
-                  'Welcome, $userName',
-                  style: Theme.of(context).textTheme.titleMedium,
-                ),
-                PopupMenuButton<String>(
-                  onSelected: (value) {
-                    if (value == 'myListings') {
-                      // Navigate to My Listings screen
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => MyListings(),
-                        ),
-                      );
-                    } else if (value == 'signOut') {
-                      //_logout();
-                    }
-                  },
-                  itemBuilder: (BuildContext context) =>
-                      <PopupMenuEntry<String>>[
-                    PopupMenuItem<String>(
-                      value: 'myListings',
-                      child: Text(
-                        'My Listings',
-                        style: Theme.of(context).textTheme.titleMedium,
-                      ),
-                    ),
-                    PopupMenuItem<String>(
-                      value: 'signOut',
-                      child: Text(
-                        'Sign Out',
-                        style: Theme.of(context).textTheme.titleMedium,
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ],
+      appBar: CustomAppBar(
+        userName: userName,
       ),
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: Column(

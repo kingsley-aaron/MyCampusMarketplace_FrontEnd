@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mycampusmarketplace/Models/item.dart';
 import 'package:mycampusmarketplace/Repositories/itemClient.dart';
 import 'package:mycampusmarketplace/Views/editListingScreen.dart';
+import 'package:mycampusmarketplace/Views/appBar.dart';
 import 'package:mycampusmarketplace/main.dart' as m;
 import 'myListings.dart';
 import 'package:mycampusmarketplace/theme.dart';
