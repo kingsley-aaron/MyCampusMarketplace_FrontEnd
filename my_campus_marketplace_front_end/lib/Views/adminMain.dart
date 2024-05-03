@@ -53,7 +53,33 @@ class _AdminHomeState extends State<AdminHome> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => ForSale(userName: userName, items: items),
+            builder: (context) => AdminItems(userName: userName, items: items),
+          ),
+        );
+      } else {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(const SnackBar(content: Text("Error")));
+      }
+    });
+  }
+
+  void getUsers() {
+    setState(() {
+      widget.userClient
+          .getUsers(m.userClient.getSessionState())
+          .then((response) => onGetUsersSuccess(response));
+    });
+  }
+
+  void onGetUsersSuccess(List<User>? newUsers) {
+    setState(() {
+      if (newUsers != null) {
+        users = newUsers;
+        // Navigate to users screen
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => AdminUsers(userName: userName, users: users),
           ),
         );
       } else {
@@ -97,14 +123,7 @@ class _AdminHomeState extends State<AdminHome> {
                   const SizedBox(height: 20),
                   ElevatedButton(
                     onPressed: () {
-                      // Navigate to For Sale screen
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              AdminUsers(userName: userName, users: users),
-                        ),
-                      );
+                      getUsers();
                     },
                     child: const Text('Users'),
                   ),

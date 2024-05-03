@@ -68,14 +68,11 @@ class _AdminItemsState extends State<AdminItems> {
                             width: 100,
                             height: 100,
                             decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                colors: [Colors.blue[900]!, Colors.blue[200]!],
-                                begin: Alignment.topLeft,
-                                end: Alignment.bottomRight,
+                              image: DecorationImage(
+                                image: NetworkImage(item.itemImage),
+                                fit: BoxFit.cover,
                               ),
                             ),
-                            child:
-                                Icon(Icons.image, size: 50), // Placeholder icon
                           ),
                           SizedBox(width: 16),
                           // This column contains the item's name, condition, and price

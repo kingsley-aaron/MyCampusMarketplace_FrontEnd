@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mycampusmarketplace/Views/loginview.dart';
 import 'package:mycampusmarketplace/Views/myListings.dart';
+import 'package:mycampusmarketplace/theme.dart';
 import 'package:mycampusmarketplace/Views/mainMenu.dart';
 import 'package:mycampusmarketplace/theme.dart';
 import 'package:mycampusmarketplace/main.dart' as m;
@@ -81,6 +82,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                         ),
                       );
                     } else if (value == 'signOut') {
+                      // Perform sign out
                       _logout(context); // Call logout function
                     }
                   },
@@ -107,6 +109,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           ),
         ),
       ],
+
       // Apply the AppBar theme styles
       backgroundColor: AppTheme.themeData.appBarTheme.backgroundColor,
       elevation: AppTheme.themeData.appBarTheme.elevation,

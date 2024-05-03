@@ -245,11 +245,6 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
                     _isLogin = !_isLogin;
                   });
                 },
-                style: ButtonStyle(
-                  overlayColor: MaterialStateColor.resolveWith(
-                    (states) => Color.fromARGB(219, 208, 138, 116),
-                  ),
-                ),
                 child: Text(
                   _isLogin ? 'Create an account' : 'Have an account? Sign in',
                   style: TextStyle(
