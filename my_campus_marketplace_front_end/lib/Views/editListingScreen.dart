@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:mycampusmarketplace/Models/item.dart';
+import '../main.dart' as m;
 import 'myListings.dart';
 
 class EditListingScreen extends StatefulWidget {
-  final Map<String, dynamic> item;
+  final Item item;
+
 
   EditListingScreen({required this.item});
 
@@ -14,17 +17,21 @@ class _EditListingScreenState extends State<EditListingScreen> {
   late TextEditingController _itemNameController;
   late TextEditingController _itemPriceController;
   late TextEditingController _itemDescriptionController;
-  late int _selectedConditionIndex;
+  late TextEditingController _itemQuantityController;
+  int _selectedConditionIndex = 0; // default
+
 
   @override
   void initState() {
     super.initState();
     // Initialize controllers and set initial values
-    _itemNameController = TextEditingController(text: widget.item['name']);
-    _itemPriceController = TextEditingController(text: widget.item['price']);
+    _itemNameController = TextEditingController(text: widget.item.itemName);
+    _itemPriceController =
+        TextEditingController(text: widget.item.itemPrice.toString());
     _itemDescriptionController =
-        TextEditingController(text: widget.item['description']);
-    _selectedConditionIndex = widget.item['condition'];
+        TextEditingController(text: widget.item.itemDesc);
+    _itemQuantityController =
+        TextEditingController(text: widget.item.itemQuantity.toString());
   }
 
   @override
@@ -33,6 +40,8 @@ class _EditListingScreenState extends State<EditListingScreen> {
     _itemNameController.dispose();
     _itemPriceController.dispose();
     _itemDescriptionController.dispose();
+    _itemQuantityController.dispose();
+
     super.dispose();
   }
 
@@ -148,6 +157,16 @@ class _EditListingScreenState extends State<EditListingScreen> {
               ],
             ),
             SizedBox(height: 16.0),
+            Text('Quantity', style: Theme.of(context).textTheme.bodyLarge),
+            TextFormField(
+              controller: _itemQuantityController,
+              keyboardType: TextInputType.number,
+              decoration: InputDecoration(
+                hintText: 'Enter quantity',
+              ),
+            ),
+            SizedBox(height: 16.0),
+
             Text('Item Description'),
             TextField(
               controller: _itemDescriptionController,
@@ -186,25 +205,64 @@ class _EditListingScreenState extends State<EditListingScreen> {
     );
   }
 
-  void _submitForm() {
+
+  void _submitForm() async {
     // Perform validation
     if (_selectedConditionIndex == 0) {
-      // Show error message or dialog for condition not selected
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Please select a condition.'),
-        ),
-      );
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text('Please select a condition.')));
       return;
     }
-
-    // Continue with form submission
+    // checks item condition
+    String itemCondition;
+    switch (_selectedConditionIndex) {
+      case 1:
+        itemCondition = 'New';
+        break;
+      case 2:
+        itemCondition = 'Used - Like New';
+        break;
+      case 3:
+        itemCondition = 'Used - Good';
+        break;
+      case 4:
+        itemCondition = 'Used - Fair';
+        break;
+      default:
+        itemCondition = '';
+        break;
+    }
+    // controllers upon editing (populated)
     String itemName = _itemNameController.text;
     String itemPrice = _itemPriceController.text;
     String itemDescription = _itemDescriptionController.text;
-    int selectedCondition = _selectedConditionIndex;
+    String itemQuantity = _itemQuantityController.text;
 
-    // Now you can use the itemName, itemPrice, itemDescription, and selectedCondition
-    // variables to perform your form submission logic
+    // fetch user sessionstate
+    String sessionState = m.userClient.getSessionState();
+
+    try {
+      String result = await m.itemClient.editItem(
+        itemId: widget.item.itemId,
+        itemName: itemName,
+        itemDesc: itemDescription,
+        itemCondition: itemCondition,
+        itemPrice: itemPrice,
+        itemQuantity: itemQuantity,
+        sessionState: sessionState,
+      );
+
+      if (result == "Success") {
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text("Item updated successfully!")));
+        Navigator.pop(context); // after item has been updated, push context
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text("Failed to update item: $result")));
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text("Error updating item: $e")));
+    }
   }
 }
