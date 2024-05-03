@@ -104,7 +104,7 @@ class ItemClient {
       // check the response status code
       if (response.statusCode == 200) {
         if (data['success']) {
-          return "Success";
+          return "Item Successfully Posted!";
         } else {
           return data['data'];
         }
@@ -116,6 +116,89 @@ class ItemClient {
     }
   }
 
+  Future<String> editItem({
+    required int itemId,
+    String? itemName,
+    String? itemDesc,
+    String? itemCondition,
+    String? itemPrice,
+    String? itemQuantity,
+    File? itemImage,
+    required String sessionState,
+  }) async {
+    try {
+      // Sending edit item request to server
+      var request = http.MultipartRequest(
+        'POST',
+        Uri.parse('${apiAddress}editpost.php'),
+      );
+
+      // set required headers
+      request.headers['Content-Type'] = 'multipart/form-data';
+      request.headers['Cookie'] = "PHPSESSID=$sessionState";
+
+      // set request body fields
+      request.fields['ItemID'] = itemId.toString();
+      if (itemName != null) request.fields['ItemName'] = itemName;
+      if (itemDesc != null) request.fields['ItemDesc'] = itemDesc;
+      if (itemCondition != null)
+        request.fields['ItemCondition'] = itemCondition;
+      if (itemPrice != null) request.fields['ItemPrice'] = itemPrice.toString();
+      if (itemQuantity != null)
+        request.fields['ItemQuantity'] = itemQuantity.toString();
+
+      // add image file to the request if provided
+      if (itemImage != null) {
+        request.files.add(
+          await http.MultipartFile.fromPath('ItemImage', itemImage.path),
+        );
+      }
+      // send the request
+      var response = await request.send();
+      var responseData = await response.stream.bytesToString();
+      var data = json.decode(responseData);
+
+      // check the response status code
+      if (response.statusCode == 200) {
+        if (data['success']) {
+          return "Success";
+        } else {
+          return "Failed to edit item: ${data['reason'].join(", ")}";
+        }
+      } else {
+        return "HTTP error ${response.statusCode}: ${data['reason'].join(", ")}";
+      }
+    } catch (e) {
+      return "Exception caught: $e";
+    }
+  }
+
+  Future<String> deleteItem(int itemId, String sessionState) async {
+    try {
+      // Sending delete item request to server
+      var url = Uri.parse('${apiAddress}deletepost.php?itemId=$itemId');
+      var response = await http.delete(
+        url,
+        headers: {'Cookie': "PHPSESSID=$sessionState"},
+      );
+      // check status code
+      if (response.statusCode == 200) {
+        var data = json.decode(response.body);
+        if (data['success']) {
+          return "Success";
+        } else {
+          // error logging on why item won't delete
+          return "Failed to delete item: ${data['data']}";
+        }
+      } else {
+        // additional error handling
+        return "HTTP error ${response.statusCode}: ${response.body}";
+      }
+    } catch (e) {
+      return "Exception caught: $e";
+    }
+  }
+
   //The filter parameters are optional and must be called by name. Condition and orderBy are arrays that can filter on multiple values.
   Future<List<Item>> getForSaleItems(String sessionState,
       {int?
@@ -123,6 +206,10 @@ class ItemClient {
       List<String>? condition, //valid values: "new", "fair", "good", "likenew"
       double? minPrice,
       double? maxPrice,
+      String?
+          keyword, //if you pass multiple words separated by spaces, it will search for all words separately. To search for a multi-word phrase, enclose it in quotes
+      String?
+          keywordSearchType, //completely optional. Valid values are ItemName, ItemDesc, and Both. Defaults to both if you don't pass anything
       String? username,
       List<String>?
           orderBy //valid values: "Items.ItemName", "Items.ItemDesc", "Items.ItemCondition", "Items.ItemAdded", and "Items.ItemPrice"
@@ -133,23 +220,8 @@ class ItemClient {
         condition: condition,
         minPrice: minPrice,
         maxPrice: maxPrice,
-        username: username,
-        orderBy: orderBy);
-  }
-
-  //see getForSaleItems documentation, everything is the same
-  Future<List<Item>> getWantedItems(String sessionState,
-      {int? listSize,
-      List<String>? condition,
-      double? minPrice,
-      double? maxPrice,
-      String? username,
-      List<String>? orderBy}) async {
-    return _getItems(sessionState, true,
-        listSize: listSize,
-        condition: condition,
-        minPrice: minPrice,
-        maxPrice: maxPrice,
+        keyword: keyword,
+        keywordSearchType: keywordSearchType,
         username: username,
         orderBy: orderBy);
   }
@@ -159,6 +231,8 @@ class ItemClient {
       List<String>? condition,
       double? minPrice,
       double? maxPrice,
+      String? keyword,
+      String? keywordSearchType,
       String? username,
       List<String>? orderBy}) async {
     List<Item> items = List.empty(growable: true);
@@ -185,6 +259,18 @@ class ItemClient {
 
       if (maxPrice != null) {
         request += "&maxprice=$maxPrice";
+      }
+
+      if (keyword != null) {
+        String encodedKeyword = keyword.replaceAll(" ", "%");
+
+        request += "&keyword=$encodedKeyword";
+
+        if (keywordSearchType != null) {
+          request += "&keywordtype=$keywordSearchType";
+        } else {
+          request += "&keywordtype=both";
+        }
       }
 
       if (username != null) {
@@ -268,7 +354,7 @@ class ItemClient {
             print(errorMessage);
             return items;
           }
-          return items;
+          //return items;
         } else {
           //determine error message based on API response
           if (data['reason'][0] == "server_error") {
@@ -317,7 +403,6 @@ class ItemClient {
         itemAdded: DateTime.parse(item['ItemAdded']),
       ));
     }
-
     return items;
   }
 

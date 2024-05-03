@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'forSale.dart'; // Importing forSale.dart
+import 'package:mycampusmarketplace/Views/appBar.dart';
 
 class MyListings extends StatelessWidget {
   @override
@@ -35,7 +36,7 @@ class MyListings extends StatelessWidget {
               },
               child: Text(
                 'Go to For Sale Page',
-                style: Theme.of(context).textTheme.bodyLarge,
+                style: Theme.of(context).textTheme.labelLarge,
               ),
             ),
           ],

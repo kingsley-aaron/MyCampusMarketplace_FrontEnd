@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:mycampusmarketplace/Views/loginview.dart';
-import 'package:mycampusmarketplace/Views/myListings.dart';
-import 'package:mycampusmarketplace/theme.dart';
-import 'package:mycampusmarketplace/Views/mainMenu.dart';
+import 'package:mycampusmarketplace/Views/adminMain.dart';
 import 'package:mycampusmarketplace/theme.dart';
 import 'package:mycampusmarketplace/main.dart' as m;
 
-class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
+class CustomAdminAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String userName;
 
-  CustomAppBar({
+  CustomAdminAppBar({
     required this.userName,
   });
 
@@ -52,12 +50,12 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       actions: [
         IconButton(
-          icon: Icon(Icons.home, color: Color.fromRGBO(129, 55, 16, 1)),
+          icon: Icon(Icons.home),
           onPressed: () {
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(
-                  builder: (context) => HomeScreen(userName: userName)),
+                  builder: (context) => AdminHome(userName: userName)),
             );
           },
         ),
@@ -74,27 +72,12 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                 child: PopupMenuButton<String>(
                   padding: EdgeInsets.zero,
                   onSelected: (value) {
-                    if (value == 'myListings') {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => MyListings(),
-                        ),
-                      );
-                    } else if (value == 'signOut') {
-                      // Perform sign out
+                    if (value == 'signOut') {
                       _logout(context); // Call logout function
                     }
                   },
                   itemBuilder: (BuildContext context) =>
                       <PopupMenuEntry<String>>[
-                    PopupMenuItem<String>(
-                      value: 'myListings',
-                      child: Text(
-                        'My Listings',
-                        style: Theme.of(context).textTheme.titleMedium,
-                      ),
-                    ),
                     PopupMenuItem<String>(
                       value: 'signOut',
                       child: Text(
@@ -109,7 +92,6 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           ),
         ),
       ],
-
       // Apply the AppBar theme styles
       backgroundColor: AppTheme.themeData.appBarTheme.backgroundColor,
       elevation: AppTheme.themeData.appBarTheme.elevation,

@@ -8,6 +8,7 @@ import 'package:mycampusmarketplace/Models/item.dart';
 import 'package:mycampusmarketplace/Repositories/itemClient.dart';
 import 'package:mycampusmarketplace/Repositories/userClient.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'appBar.dart';
 
 class HomeScreen extends StatefulWidget {
   final String userName;
@@ -29,11 +30,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void getItems() {
     setState(() {
       widget.itemClient
-          .getForSaleItems(m.userClient.getSessionState(),
-              condition: ["new", "likenew"],
-              minPrice: 30,
-              maxPrice: 1000,
-              orderBy: ["Items.ItemPrice", "-Items.ItemName"])
+          .getForSaleItems(m.userClient.getSessionState())
           .then((response) => onGetItemsSuccess(response));
     });
   }
@@ -59,52 +56,9 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        actions: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              children: [
-                Text(
-                  'Welcome, $userName',
-                  style: Theme.of(context).textTheme.titleMedium,
-                ),
-                PopupMenuButton<String>(
-                  onSelected: (value) {
-                    if (value == 'myListings') {
-                      // Navigate to My Listings screen
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => MyListings(),
-                        ),
-                      );
-                    } else if (value == 'signOut') {
-                      _logout();
-                    }
-                  },
-                  itemBuilder: (BuildContext context) =>
-                      <PopupMenuEntry<String>>[
-                    PopupMenuItem<String>(
-                      value: 'myListings',
-                      child: Text(
-                        'My Listings',
-                        style: Theme.of(context).textTheme.titleMedium,
-                      ),
-                    ),
-                    PopupMenuItem<String>(
-                      value: 'signOut',
-                      child: Text(
-                        'Sign Out',
-                        style: Theme.of(context).textTheme.titleMedium,
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ],
+      appBar: CustomAppBar(
+        // Use the AppBar widget
+        userName: userName,
       ),
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: Column(

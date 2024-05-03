@@ -12,6 +12,7 @@ import 'myListings.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:mycampusmarketplace/views/adminItems.dart';
 import 'package:mycampusmarketplace/views/adminusers.dart';
+import 'package:mycampusmarketplace/Views/adminAppBar.dart';
 
 class AdminHome extends StatefulWidget {
   final String userName;
@@ -91,32 +92,8 @@ class _AdminHomeState extends State<AdminHome> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        // title: Text('My Campus Marketplace'),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              children: [
-                Text('Welcome, $userName'),
-                PopupMenuButton<String>(
-                  onSelected: (value) {
-                    if (value == 'signOut') {
-                      _logout();
-                    }
-                  },
-                  itemBuilder: (BuildContext context) =>
-                      <PopupMenuEntry<String>>[
-                    const PopupMenuItem<String>(
-                      value: 'signOut',
-                      child: Text('Sign Out'),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ],
+      appBar: CustomAdminAppBar(
+        userName: userName,
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
