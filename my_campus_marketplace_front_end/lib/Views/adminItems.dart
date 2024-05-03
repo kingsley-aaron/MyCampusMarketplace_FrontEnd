@@ -77,7 +77,7 @@ class _AdminItemsState extends State<AdminItems> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => AdminExpandedSale(item: item),
+                        builder: (context) => AdminExpandedSale(item: item, userName: userName),
                       ),
                     );
                   },

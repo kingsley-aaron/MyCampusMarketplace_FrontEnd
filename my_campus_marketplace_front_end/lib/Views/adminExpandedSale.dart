@@ -8,14 +8,16 @@ import 'package:mycampusmarketplace/theme.dart';
 
 class AdminExpandedSale extends StatefulWidget {
   final Item item;
+  final String userName;
 
-  AdminExpandedSale({Key? key, required this.item}) : super(key: key);
+  AdminExpandedSale({Key? key, required this.item, required this.userName}) : super(key: key);
 
   @override
   _ExpandedSaleState createState() => _ExpandedSaleState();
 }
 
 class _ExpandedSaleState extends State<AdminExpandedSale> {
+  late String userName = widget.userName;
   late String sellerEmail = 'Loading...'; // insert value
   final ItemClient itemClient = ItemClient();
   bool isCurrentUser = false;
@@ -53,6 +55,14 @@ class _ExpandedSaleState extends State<AdminExpandedSale> {
       appBar: AppBar(
         //title: Text(item['name']),
         actions: [
+          Padding(padding: const EdgeInsets.all(8),
+            child: 
+              Row(
+                children: [
+                  Text('Welcome, $userName'),
+                ],
+              ),
+            ),
           IconButton(
             icon: Icon(Icons.home),
             onPressed: () {
