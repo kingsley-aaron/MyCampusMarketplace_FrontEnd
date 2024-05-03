@@ -30,18 +30,14 @@ class _HomeScreenState extends State<HomeScreen> {
   void getItems() {
     setState(() {
       widget.itemClient
-          .getForSaleItems(m.userClient.getSessionState(),
-              condition: ["new", "likenew"],
-              minPrice: 30,
-              maxPrice: 1000,
-              orderBy: ["Items.ItemPrice", "-Items.ItemName"])
+          .getForSaleItems(m.userClient.getSessionState())
           .then((response) => onGetItemsSuccess(response));
     });
   }
 
   void onGetItemsSuccess(List<Item>? newItems) {
     setState(() {
-      if (newItems != null && newItems.isNotEmpty) {
+      if (newItems != null) {
         items = newItems;
         // Navigate to For Sale screen
         Navigator.push(

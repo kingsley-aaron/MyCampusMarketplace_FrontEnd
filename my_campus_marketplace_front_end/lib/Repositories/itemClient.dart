@@ -133,11 +133,9 @@ class ItemClient {
         Uri.parse('${apiAddress}editpost.php'),
       );
 
-
       // set required headers
       request.headers['Content-Type'] = 'multipart/form-data';
       request.headers['Cookie'] = "PHPSESSID=$sessionState";
-
 
       // set request body fields
       request.fields['ItemID'] = itemId.toString();
@@ -149,7 +147,6 @@ class ItemClient {
       if (itemQuantity != null)
         request.fields['ItemQuantity'] = itemQuantity.toString();
 
-
       // add image file to the request if provided
       if (itemImage != null) {
         request.files.add(
@@ -160,7 +157,6 @@ class ItemClient {
       var response = await request.send();
       var responseData = await response.stream.bytesToString();
       var data = json.decode(responseData);
-
 
       // check the response status code
       if (response.statusCode == 200) {
@@ -203,7 +199,6 @@ class ItemClient {
     }
   }
 
-
   //The filter parameters are optional and must be called by name. Condition and orderBy are arrays that can filter on multiple values.
   Future<List<Item>> getForSaleItems(String sessionState,
       {int?
@@ -211,6 +206,10 @@ class ItemClient {
       List<String>? condition, //valid values: "new", "fair", "good", "likenew"
       double? minPrice,
       double? maxPrice,
+      String?
+          keyword, //if you pass multiple words separated by spaces, it will search for all words separately. To search for a multi-word phrase, enclose it in quotes
+      String?
+          keywordSearchType, //completely optional. Valid values are ItemName, ItemDesc, and Both. Defaults to both if you don't pass anything
       String? username,
       List<String>?
           orderBy //valid values: "Items.ItemName", "Items.ItemDesc", "Items.ItemCondition", "Items.ItemAdded", and "Items.ItemPrice"
@@ -221,6 +220,8 @@ class ItemClient {
         condition: condition,
         minPrice: minPrice,
         maxPrice: maxPrice,
+        keyword: keyword,
+        keywordSearchType: keywordSearchType,
         username: username,
         orderBy: orderBy);
   }
@@ -231,6 +232,8 @@ class ItemClient {
       List<String>? condition,
       double? minPrice,
       double? maxPrice,
+      String? keyword,
+      String? keywordSearchType,
       String? username,
       List<String>? orderBy}) async {
     return _getItems(sessionState, true,
@@ -238,6 +241,8 @@ class ItemClient {
         condition: condition,
         minPrice: minPrice,
         maxPrice: maxPrice,
+        keyword: keyword,
+        keywordSearchType: keywordSearchType,
         username: username,
         orderBy: orderBy);
   }
@@ -247,6 +252,8 @@ class ItemClient {
       List<String>? condition,
       double? minPrice,
       double? maxPrice,
+      String? keyword,
+      String? keywordSearchType,
       String? username,
       List<String>? orderBy}) async {
     List<Item> items = List.empty(growable: true);
@@ -273,6 +280,18 @@ class ItemClient {
 
       if (maxPrice != null) {
         request += "&maxprice=$maxPrice";
+      }
+
+      if (keyword != null) {
+        String encodedKeyword = keyword.replaceAll(" ", "%");
+
+        request += "&keyword=$encodedKeyword";
+
+        if (keywordSearchType != null) {
+          request += "&keywordtype=$keywordSearchType";
+        } else {
+          request += "&keywordtype=both";
+        }
       }
 
       if (username != null) {

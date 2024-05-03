@@ -47,7 +47,7 @@ class _AdminHomeState extends State<AdminHome> {
 
   void onGetItemsSuccess(List<Item>? newItems) {
     setState(() {
-      if (newItems != null && newItems.isNotEmpty) {
+      if (newItems != null) {
         items = newItems;
         // Navigate to For Sale screen
         Navigator.push(
