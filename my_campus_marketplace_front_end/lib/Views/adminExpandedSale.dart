@@ -162,8 +162,7 @@ class _ExpandedSaleState extends State<AdminExpandedSale> {
                 style: AppTheme.themeData.textTheme.bodyMedium,
               ),
             ),
-            SizedBox(height: 16.0),
-            if (isCurrentUser) // shows buttons to current user's items
+            SizedBox(height: 16.0), // shows buttons to current user's items
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 16.0),
                 child: Row(
@@ -187,41 +186,7 @@ class _ExpandedSaleState extends State<AdminExpandedSale> {
                       style: ElevatedButton.styleFrom(
                         textStyle: AppTheme.themeData.textTheme.bodyLarge,
                       ),
-                    ),
-                    // added edit page button
-                    ElevatedButton(
-                      onPressed: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                EditListingScreen(item: widget.item)),
-                      ),
-                      child: Text('Edit'),
-                      style: ElevatedButton.styleFrom(
-                          textStyle: AppTheme.themeData.textTheme.bodyLarge),
-                    ),
-                    // mark as sold, treated as the delete function when item is gone
-                    ElevatedButton(
-                      onPressed: () async {
-                        String sessionState = m.userClient.getSessionState();
-                        String result =
-                            await deleteItem(widget.item.itemId, sessionState);
-                        if (result == "Success") {
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                              content:
-                                  Text("Item successfully marked as sold!")));
-                          Navigator.pop(context);
-                        } else {
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                              content: Text(
-                                  "Failed to be mark as sold, please try again.")));
-                        }
-                      },
-                      child: Text('Mark as Sold'),
-                      style: ElevatedButton.styleFrom(
-                        textStyle: AppTheme.themeData.textTheme.bodyLarge,
-                      ),
-                    ),
+                    ),                            
                   ],
                 ),
               ),
