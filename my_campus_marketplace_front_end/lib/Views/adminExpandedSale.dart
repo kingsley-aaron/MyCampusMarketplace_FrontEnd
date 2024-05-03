@@ -5,12 +5,14 @@ import 'package:mycampusmarketplace/Views/editListingScreen.dart';
 import 'package:mycampusmarketplace/main.dart' as m;
 import 'myListings.dart';
 import 'package:mycampusmarketplace/theme.dart';
+import 'package:mycampusmarketplace/Views/adminAppBar.dart';
 
 class AdminExpandedSale extends StatefulWidget {
   final Item item;
   final String userName;
 
-  AdminExpandedSale({Key? key, required this.item, required this.userName}) : super(key: key);
+  AdminExpandedSale({Key? key, required this.item, required this.userName})
+      : super(key: key);
 
   @override
   _ExpandedSaleState createState() => _ExpandedSaleState();
@@ -52,64 +54,8 @@ class _ExpandedSaleState extends State<AdminExpandedSale> {
     String formattedPrice = '\$${widget.item.itemPrice.toStringAsFixed(2)}';
 
     return Scaffold(
-      appBar: AppBar(
-        //title: Text(item['name']),
-        actions: [
-          Padding(padding: const EdgeInsets.all(8),
-            child: 
-              Row(
-                children: [
-                  Text('Welcome, $userName'),
-                ],
-              ),
-            ),
-          IconButton(
-            icon: Icon(Icons.home),
-            onPressed: () {
-              Navigator.pop(context); // Navigate back to the home screen
-            },
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              children: [
-                PopupMenuButton<String>(
-                  onSelected: (value) {
-                    if (value == 'myListings') {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              MyListings(), // Navigate to My Listings screen
-                        ),
-                      );
-                      // Navigate to My Listings screen
-                    } else if (value == 'signOut') {
-                      // Perform sign out
-                    }
-                  },
-                  itemBuilder: (BuildContext context) =>
-                      <PopupMenuEntry<String>>[
-                    PopupMenuItem<String>(
-                      value: 'myListings',
-                      child: Text(
-                        'My Listings',
-                        style: AppTheme.themeData.textTheme.titleMedium,
-                      ),
-                    ),
-                    PopupMenuItem<String>(
-                      value: 'signOut',
-                      child: Text(
-                        'Sign Out',
-                        style: AppTheme.themeData.textTheme.titleMedium,
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ],
+      appBar: CustomAdminAppBar(
+        userName: userName, //title: Text(item['name']),
       ),
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SingleChildScrollView(
@@ -173,33 +119,33 @@ class _ExpandedSaleState extends State<AdminExpandedSale> {
               ),
             ),
             SizedBox(height: 16.0), // shows buttons to current user's items
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 16.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    ElevatedButton(
-                      onPressed: () async {
-                        String sessionState = m.userClient.getSessionState();
-                        String result =
-                            await deleteItem(widget.item.itemId, sessionState);
-                        if (result == "Success") {
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                              content: Text("Item successfully deleted!")));
-                          Navigator.pop(context);
-                        } else {
-                          ScaffoldMessenger.of(context)
-                              .showSnackBar(SnackBar(content: Text(result)));
-                        }
-                      },
-                      child: Text('Delete'),
-                      style: ElevatedButton.styleFrom(
-                        textStyle: AppTheme.themeData.textTheme.bodyLarge,
-                      ),
-                    ),                            
-                  ],
-                ),
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 16.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  ElevatedButton(
+                    onPressed: () async {
+                      String sessionState = m.userClient.getSessionState();
+                      String result =
+                          await deleteItem(widget.item.itemId, sessionState);
+                      if (result == "Success") {
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            content: Text("Item successfully deleted!")));
+                        Navigator.pop(context);
+                      } else {
+                        ScaffoldMessenger.of(context)
+                            .showSnackBar(SnackBar(content: Text(result)));
+                      }
+                    },
+                    child: Text('Delete'),
+                    style: ElevatedButton.styleFrom(
+                      textStyle: AppTheme.themeData.textTheme.bodyLarge,
+                    ),
+                  ),
+                ],
               ),
+            ),
           ],
         ),
       ),
