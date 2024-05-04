@@ -3,7 +3,6 @@ import 'dart:convert';
 
 import 'package:mycampusmarketplace/Models/user.dart';
 
-//const String apiAddress = "http://10.0.2.2/api/";
 const String apiAddress = "https://helpmewithfinals.com/api/";
 
 class UserClient {
@@ -12,40 +11,39 @@ class UserClient {
 
   Future<String> login(String userName, String passwordHash) async {
     try {
-      // Sending login request to server
       var response = await http.post(
         Uri.parse('${apiAddress}login.php'),
         body: {'userName': userName, 'passwordHash': passwordHash},
       );
 
-      // Parse data response
       var data = json.decode(response.body);
 
       if (response.statusCode == 200) {
         if (data['success']) {
-          // Login was successful
           sessionState = data['data'];
           print('Session ID: $sessionState');
           return "Success";
         } else {
-          if (data['reason'][0] == "banned") {
-            return "Your account has been permanently banned. Please contact the administrators if you believe this is a mistake.";
-          } else if (data['reason'][0] == "login") {
-            return "Your username or password was incorrect. Try again or create a new account.";
-          } else if (data['reason'][0] == "server_error") {
-            return "There was an issue with the server. Please try again later.";
-          } else if (data['reason'][0] == "wrong_method") {
-            return "There was an issue with the application. Please contact the administrators.";
+          if (data.containsKey('reason')) {
+            if (data['reason'][0] == "banned") {
+              return "Your account has been permanently banned. Please contact the administrators if you believe this is a mistake.";
+            } else if (data['reason'][0] == "login") {
+              return "Your username or password was incorrect. Try again or create a new account.";
+            } else if (data['reason'][0] == "server_error") {
+              return "There was an issue with the server. Please try again later.";
+            } else if (data['reason'][0] == "wrong_method") {
+              return "There was an issue with the application. Please contact the administrators.";
+            } else {
+              return "An error occurred. Please try again later.";
+            }
           } else {
             return "An error occurred. Please try again later.";
           }
         }
       } else {
-        // Handle non-200 status code
-        return "HTTP Error: ${response.statusCode}";
+        return "An error occurred. Please try again later.";
       }
     } catch (e) {
-      // Handle other errors
       return "Login failed.";
     }
   }
@@ -54,7 +52,6 @@ class UserClient {
       String studentEmail, String userName, String passwordHash) async {
     try {
       var response = await http.post(
-        // Sending signup request to server
         Uri.parse('${apiAddress}Signup.php'),
         body: {
           'firstName': firstName,
@@ -66,14 +63,12 @@ class UserClient {
         },
       );
 
-      // Parse data response
       var data = json.decode(response.body);
 
       if (response.statusCode == 200) {
         if (data['status'] == true &&
             data['message'] == "User successfully created.") {
-          return "Success"; // Signup was successful
-          // Error occurred.
+          return "Success";
         } else {
           return data['message'];
         }
@@ -87,20 +82,17 @@ class UserClient {
 
   Future<String> logout() async {
     try {
-      // Sending logout request to server
       var response = await http.post(
         Uri.parse('${apiAddress}logout.php'),
         headers: {'Cookie': "PHPSESSID=$sessionState"},
       );
 
-      // Parse data response
       var data = json.decode(response.body);
 
       if (response.statusCode == 200) {
         if (data['success']) {
-          return "Success"; // Logout was successful
+          return "Success";
         } else {
-          // Determine error message based on API response
           if (data['reason'][0] == "not_logged_in") {
             return "This user is not logged in.";
           } else if (data['reason'][0] == "server_error") {
@@ -110,28 +102,23 @@ class UserClient {
           }
         }
       } else {
-        // Handle non-200 status code
-        return "HTTP Error: ${response.statusCode}";
+        return "An error occurred. Please try again later.";
       }
     } catch (e) {
-      // Handle other errors
       return "An error occurred. Please try again later.";
     }
   }
 
   Future<User?> getUser() async {
     try {
-      // Sending login request to server
       var response = await http.post(
         Uri.parse('${apiAddress}fetchuser.php'),
         headers: {'Cookie': "PHPSESSID=$sessionState"},
       );
 
-      // Parse data response
       var data = json.decode(response.body);
       var userData = data['data'];
 
-      // initialize bool for new user object
       bool admin, banned;
 
       if (response.statusCode == 200) {
@@ -148,7 +135,6 @@ class UserClient {
             banned = true;
           }
 
-          // return new User object
           return User(
               userID: userData['UserId'],
               firstName: userData['FirstName'],
@@ -160,7 +146,6 @@ class UserClient {
               banned: banned,
               creationDate: DateTime.parse(userData['UserCreated']));
         } else {
-          //determine error message based on API response
           if (data['reason'][0] == "missing_data") {
             errorMessage =
                 "The application had an error. Please contact the administrators.";
@@ -183,12 +168,6 @@ class UserClient {
     }
   }
 
-  //banned = true will return only banned users
-  //banned = false will return only users that are not banned
-  //admin = true will return only admins
-  //admin = false will return only users who aren't admins
-  //combine at will, and see API documentation for more info
-  //no named parameters will return all users
   Future<List<User>> getUsers(String sessionState,
       {bool? banned, bool? admin}) async {
     List<User> users = List.empty(growable: true);
@@ -214,21 +193,17 @@ class UserClient {
 
       var data = json.decode(response.body);
 
-      // getting users was a success
       if (response.statusCode == 200) {
-        if (data['success']) {
+        if (data != null && data['success']) {
           users = _parseList(data['data']);
-
           return users;
         } else {
-          // determine error message based on API response
-          String errorMessage;
-          if (data['reason'][0] == "server_error") {
+          if (data != null && data['reason'][0] == "server_error") {
             errorMessage =
                 "There was an issue with the server. Please try again later.";
-          } else if (data['reason'][0] == "invalid_session") {
+          } else if (data != null && data['reason'][0] == "invalid_session") {
             errorMessage = "The session is no longer valid.";
-          } else if (data['reason'][0] == "not_authorized") {
+          } else if (data != null && data['reason'][0] == "not_authorized") {
             errorMessage = "Current user is not an administrator.";
           } else {
             errorMessage = "An error occurred.";
@@ -237,13 +212,11 @@ class UserClient {
           return users;
         }
       } else {
-        // Handle non-200 status code
-        print("HTTP Error: ${response.statusCode}");
+        errorMessage = "An error occurred. Please try again later.";
         return users;
       }
-    } catch (error) {
-      // Handle other errors
-      print("Error: $error");
+    } catch (e) {
+      errorMessage = e.toString();
       return users;
     }
   }
@@ -298,10 +271,10 @@ class UserClient {
           banned: banned,
           creationDate: DateTime.parse(user['UserCreated'])));
     }
+
     return users;
   }
 
-  //only use for functions that don't already return a string error message, such as the getUser function
   Future<String> getErrorMessage() async {
     return errorMessage;
   }
