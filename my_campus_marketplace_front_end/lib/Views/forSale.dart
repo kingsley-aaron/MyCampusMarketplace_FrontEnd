@@ -57,7 +57,8 @@ class _ForSaleState extends State<ForSale> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => ExpandedSale(item: item),
+                        builder: (context) =>
+                            ExpandedSale(username: userName, item: item),
                       ),
                     );
                   },

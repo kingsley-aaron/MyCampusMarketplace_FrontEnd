@@ -5,6 +5,9 @@ import 'package:mycampusmarketplace/theme.dart';
 import 'package:mycampusmarketplace/Views/mainMenu.dart';
 import 'package:mycampusmarketplace/theme.dart';
 import 'package:mycampusmarketplace/main.dart' as m;
+import 'package:mycampusmarketplace/Models/item.dart';
+import 'package:mycampusmarketplace/Repositories/itemClient.dart';
+import 'package:mycampusmarketplace/Repositories/userClient.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String userName;
@@ -78,7 +81,10 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => MyListings(),
+                          builder: (context) => MyListings(
+                            userName: userName,
+                            items: [],
+                          ),
                         ),
                       );
                     } else if (value == 'signOut') {

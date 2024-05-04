@@ -2,24 +2,27 @@ import 'package:flutter/material.dart';
 import 'package:mycampusmarketplace/Models/item.dart';
 import '../main.dart' as m;
 import 'myListings.dart';
+import 'package:mycampusmarketplace/Views/appBar.dart';
 
 class EditListingScreen extends StatefulWidget {
+  final String username;
   final Item item;
 
-
-  EditListingScreen({required this.item});
+  EditListingScreen({required this.username, required this.item});
 
   @override
-  _EditListingScreenState createState() => _EditListingScreenState();
+  _EditListingScreenState createState() =>
+      _EditListingScreenState(username, item);
 }
 
 class _EditListingScreenState extends State<EditListingScreen> {
+  _EditListingScreenState(username, item);
+  late String username = widget.username;
   late TextEditingController _itemNameController;
   late TextEditingController _itemPriceController;
   late TextEditingController _itemDescriptionController;
   late TextEditingController _itemQuantityController;
   int _selectedConditionIndex = 0; // default
-
 
   @override
   void initState() {
@@ -48,50 +51,8 @@ class _EditListingScreenState extends State<EditListingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Edit Listing'),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.home),
-            onPressed: () {
-              Navigator.pop(context); // Navigate back to the home screen
-            },
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              children: [
-                Text('Welcome, User'), // Replace User with your actual username
-                PopupMenuButton<String>(
-                  onSelected: (value) {
-                    if (value == 'myListings') {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              MyListings(), // Navigate to My Listings screen
-                        ),
-                      );
-                    } else if (value == 'signOut') {
-                      // Perform sign out
-                    }
-                  },
-                  itemBuilder: (BuildContext context) =>
-                      <PopupMenuEntry<String>>[
-                    const PopupMenuItem<String>(
-                      value: 'myListings',
-                      child: Text('My Listings'),
-                    ),
-                    const PopupMenuItem<String>(
-                      value: 'signOut',
-                      child: Text('Sign Out'),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ],
+      appBar: CustomAppBar(
+        userName: username,
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(16.0),
@@ -166,7 +127,6 @@ class _EditListingScreenState extends State<EditListingScreen> {
               ),
             ),
             SizedBox(height: 16.0),
-
             Text('Item Description'),
             TextField(
               controller: _itemDescriptionController,
@@ -204,7 +164,6 @@ class _EditListingScreenState extends State<EditListingScreen> {
       ),
     );
   }
-
 
   void _submitForm() async {
     // Perform validation

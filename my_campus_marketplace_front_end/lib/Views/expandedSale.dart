@@ -10,14 +10,17 @@ import 'package:mycampusmarketplace/theme.dart';
 
 class ExpandedSale extends StatefulWidget {
   final Item item;
+  final String username;
 
-  ExpandedSale({Key? key, required this.item}) : super(key: key);
+  ExpandedSale({Key? key, required this.item, required this.username})
+      : super(key: key);
 
   @override
   _ExpandedSaleState createState() => _ExpandedSaleState();
 }
 
 class _ExpandedSaleState extends State<ExpandedSale> {
+  late String username = widget.username;
   late String sellerEmail = 'Loading...'; // insert value
   final ItemClient itemClient = ItemClient();
   bool isCurrentUser = false;
@@ -55,60 +58,8 @@ class _ExpandedSaleState extends State<ExpandedSale> {
     String formattedPrice = '\$${widget.item.itemPrice.toStringAsFixed(2)}';
 
     return Scaffold(
-      appBar: AppBar(
-        //title: Text(item['name']),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.home),
-            onPressed: () {
-              Navigator.pop(context); // Navigate back to the home screen
-            },
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              children: [
-                Text(
-                  'Welcome, User',
-                  style: Theme.of(context).textTheme.titleMedium,
-                ),
-                PopupMenuButton<String>(
-                  onSelected: (value) {
-                    if (value == 'myListings') {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              MyListings(), // Navigate to My Listings screen
-                        ),
-                      );
-                      // Navigate to My Listings screen
-                    } else if (value == 'signOut') {
-                      // Perform sign out
-                    }
-                  },
-                  itemBuilder: (BuildContext context) =>
-                      <PopupMenuEntry<String>>[
-                    PopupMenuItem<String>(
-                      value: 'myListings',
-                      child: Text(
-                        'My Listings',
-                        style: AppTheme.themeData.textTheme.titleMedium,
-                      ),
-                    ),
-                    PopupMenuItem<String>(
-                      value: 'signOut',
-                      child: Text(
-                        'Sign Out',
-                        style: AppTheme.themeData.textTheme.titleMedium,
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ],
+      appBar: CustomAppBar(
+        userName: username,
       ),
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SingleChildScrollView(
@@ -183,8 +134,8 @@ class _ExpandedSaleState extends State<ExpandedSale> {
                       onPressed: () => Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) =>
-                                EditListingScreen(item: widget.item)),
+                            builder: (context) => EditListingScreen(
+                                username: username, item: widget.item)),
                       ),
                       child: Text('Edit'),
                       style: ElevatedButton.styleFrom(
