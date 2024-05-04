@@ -7,7 +7,6 @@ import 'package:mycampusmarketplace/main.dart' as m;
 import 'package:mycampusmarketplace/theme.dart';
 
 class ExpandedUser extends StatefulWidget {
-  //final Map<String, dynamic> user;
   final User user;
 
   ExpandedUser({Key? key, required this.user}) : super(key: key);
