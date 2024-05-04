@@ -57,7 +57,7 @@ class _AdminUsersState extends State<AdminUsers> {
                           This might be causign any error
                         */
 
-                        builder: (context) => ExpandedUser(user: Map()),
+                        builder: (context) => ExpandedUser(user: user),
                       ),
                     );
                   },
