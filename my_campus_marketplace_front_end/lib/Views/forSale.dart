@@ -25,6 +25,44 @@ class _ForSaleState extends State<ForSale> {
   late String userName = widget.userName;
   late List<Item> items = widget.items;
 
+  String selectedCondition = 'All'; // Default value
+  List<String> condition = [];
+  double? minPrice;
+  double? maxPrice;
+  String searchKeyword = '';
+  bool isExpanded = false; // Expansion panel state
+
+  void applyFilters() {
+    setState(() {
+      condition.add(selectedCondition);
+      widget.itemClient
+          .getForSaleItems(m.userClient.getSessionState(),
+              condition: condition,
+              minPrice: minPrice,
+              maxPrice: maxPrice,
+              keyword: searchKeyword)
+          .then((response) => onapplyFilterSuccess(response));
+    });
+  }
+
+  void onapplyFilterSuccess(List<Item>? newItems) {
+    setState(() {
+      if (newItems != null) {
+        items = newItems;
+        // Navigate to For Sale screen
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ForSale(userName: userName, items: items),
+          ),
+        );
+      } else {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(const SnackBar(content: Text("Error")));
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,12 +75,142 @@ class _ForSaleState extends State<ForSale> {
         children: [
           Padding(
             padding: const EdgeInsets.all(16.0),
-            child: Text(
-              'Items for Sale',
-              style: Theme.of(context)
-                  .textTheme
-                  .titleLarge
-                  ?.copyWith(fontFamily: 'Quicksand'),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Items for Sale',
+                  style: Theme.of(context)
+                      .textTheme
+                      .titleLarge
+                      ?.copyWith(fontFamily: 'Quicksand'),
+                ),
+                SizedBox(height: 16),
+                ExpansionPanelList(
+                  expansionCallback: (int index, bool isExpanded) {
+                    setState(() {
+                      this.isExpanded = !this.isExpanded;
+                    });
+                  },
+                  children: [
+                    ExpansionPanel(
+                      headerBuilder: (BuildContext context, bool isExpanded) {
+                        return ListTile(
+                          title: Text('Filters'),
+                        );
+                      },
+                      body: Column(
+                        children: [
+                          Row(
+                            children: [
+                              Expanded(
+                                child: DropdownButtonFormField<String>(
+                                  value: selectedCondition,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      selectedCondition = value!;
+                                    });
+                                  },
+                                  items: [
+                                    DropdownMenuItem<String>(
+                                      value: 'All',
+                                      child: Text('All'),
+                                    ),
+                                    DropdownMenuItem<String>(
+                                      value: 'new',
+                                      child: Text('New'),
+                                    ),
+                                    DropdownMenuItem<String>(
+                                      value: 'likenew',
+                                      child: Text('Used - Like New'),
+                                    ),
+                                    DropdownMenuItem<String>(
+                                      value: 'good',
+                                      child: Text('Used - Good'),
+                                    ),
+                                    DropdownMenuItem<String>(
+                                      value: 'fair',
+                                      child: Text('Used - Fair'),
+                                    ),
+                                  ],
+                                  decoration: InputDecoration(
+                                    labelText: 'Condition',
+                                    border: OutlineInputBorder(),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 16),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: TextFormField(
+                                  keyboardType: TextInputType.number,
+                                  decoration: InputDecoration(
+                                    labelText: 'Min Price',
+                                    border: OutlineInputBorder(),
+                                  ),
+                                  onChanged: (value) {
+                                    setState(() {
+                                      minPrice = double.tryParse(value);
+                                    });
+                                  },
+                                ),
+                              ),
+                              SizedBox(width: 16),
+                              Expanded(
+                                child: TextFormField(
+                                  keyboardType: TextInputType.number,
+                                  decoration: InputDecoration(
+                                    labelText: 'Max Price',
+                                    border: OutlineInputBorder(),
+                                  ),
+                                  onChanged: (value) {
+                                    setState(() {
+                                      maxPrice = double.tryParse(value);
+                                    });
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 16),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: TextFormField(
+                                  decoration: InputDecoration(
+                                    labelText: 'Search',
+                                    border: OutlineInputBorder(),
+                                  ),
+                                  onChanged: (value) {
+                                    setState(() {
+                                      searchKeyword = value;
+                                    });
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 16),
+                          Row(
+                            children: [
+                              ElevatedButton(
+                                onPressed: () {
+                                  applyFilters();
+                                },
+                                child: Text('Apply Filters'),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                      isExpanded: isExpanded,
+                    ),
+                  ],
+                ),
+              ],
             ),
           ),
           Expanded(
@@ -63,7 +231,7 @@ class _ForSaleState extends State<ForSale> {
                     );
                   },
                   child: Card(
-                    color: Colors.white, // Set card background color to white
+                    color: Colors.white,
                     child: Padding(
                       padding: const EdgeInsets.all(16.0),
                       child: Row(
@@ -76,15 +244,12 @@ class _ForSaleState extends State<ForSale> {
                               fit: BoxFit.cover,
                               errorBuilder: (BuildContext context,
                                   Object exception, StackTrace? stackTrace) {
-                                // returns an image based on stack trace (if not found)
                                 return Icon(Icons.image_not_supported,
                                     size: 100, color: Colors.grey);
                               },
                             ),
                           ),
-
                           SizedBox(width: 16),
-                          // This column contains the item's name, condition, and price
                           Expanded(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,

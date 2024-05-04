@@ -3,6 +3,7 @@ import 'package:mycampusmarketplace/Models/item.dart';
 import '../main.dart' as m;
 import 'myListings.dart';
 import 'package:mycampusmarketplace/Views/appBar.dart';
+import 'package:mycampusmarketplace/Views/mainMenu.dart';
 
 class EditListingScreen extends StatefulWidget {
   final String username;
@@ -214,7 +215,11 @@ class _EditListingScreenState extends State<EditListingScreen> {
       if (result == "Success") {
         ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text("Item updated successfully!")));
-        Navigator.pop(context); // after item has been updated, push context
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+              builder: (context) => HomeScreen(userName: username)),
+        ); // after item has been updated, push context
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text("Failed to update item: $result")));
