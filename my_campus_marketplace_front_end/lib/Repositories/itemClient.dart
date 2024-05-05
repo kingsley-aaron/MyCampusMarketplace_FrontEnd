@@ -3,7 +3,6 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:mycampusmarketplace/Models/item.dart';
 
-//const String apiAddress = "http://10.0.2.2/api/";
 const String apiAddress = "https://helpmewithfinals.com/api/";
 
 class ItemClient {
@@ -141,11 +140,13 @@ class ItemClient {
       request.fields['ItemID'] = itemId.toString();
       if (itemName != null) request.fields['ItemName'] = itemName;
       if (itemDesc != null) request.fields['ItemDesc'] = itemDesc;
-      if (itemCondition != null)
+      if (itemCondition != null) {
         request.fields['ItemCondition'] = itemCondition;
+      }
       if (itemPrice != null) request.fields['ItemPrice'] = itemPrice.toString();
-      if (itemQuantity != null)
+      if (itemQuantity != null) {
         request.fields['ItemQuantity'] = itemQuantity.toString();
+      }
 
       // add image file to the request if provided
       if (itemImage != null) {
@@ -304,11 +305,6 @@ class ItemClient {
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         if (data['success']) {
-          //this counts how many items are added to the list by a single request
-          int newItems = 0;
-          //this determines how many items down the full list the server should start when returning a request
-          int offset = 0;
-
           if (data['success']) {
             //this counts how many items are added to the list by a single request
             int newItems = 0;
@@ -351,7 +347,6 @@ class ItemClient {
             } else {
               errorMessage = "An error occurred.";
             }
-            print(errorMessage);
             return items;
           }
           //return items;
@@ -365,17 +360,14 @@ class ItemClient {
           } else {
             errorMessage = "An error occurred.";
           }
-          print(errorMessage);
           return items;
         }
       } else {
         errorMessage = "An error occurred.";
-        print(errorMessage);
         return items;
       }
     } catch (e) {
       errorMessage = e.toString();
-      print(errorMessage);
       return items;
     }
   }

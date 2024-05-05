@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mycampusmarketplace/Models/item.dart';
-import 'package:mycampusmarketplace/Models/user.dart';
 import 'package:mycampusmarketplace/Repositories/itemClient.dart';
 import 'package:mycampusmarketplace/main.dart' as m;
 import 'expandedSale.dart';
-import 'adminUsers.dart';
 import 'package:mycampusmarketplace/Views/adminAppBar.dart';
 
 class AdminItems extends StatefulWidget {

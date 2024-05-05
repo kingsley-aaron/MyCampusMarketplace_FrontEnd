@@ -3,11 +3,7 @@ import 'package:mycampusmarketplace/Views/loginview.dart';
 import 'package:mycampusmarketplace/Views/myListings.dart';
 import 'package:mycampusmarketplace/theme.dart';
 import 'package:mycampusmarketplace/Views/mainMenu.dart';
-import 'package:mycampusmarketplace/theme.dart';
 import 'package:mycampusmarketplace/main.dart' as m;
-import 'package:mycampusmarketplace/Models/item.dart';
-import 'package:mycampusmarketplace/Repositories/itemClient.dart';
-import 'package:mycampusmarketplace/Repositories/userClient.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String userName;

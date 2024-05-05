@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'forSale.dart';
 import 'listItem.dart';
-import 'myListings.dart';
 import 'package:mycampusmarketplace/views/loginview.dart';
 import 'package:mycampusmarketplace/main.dart' as m;
 import 'package:mycampusmarketplace/Models/item.dart';
 import 'package:mycampusmarketplace/Repositories/itemClient.dart';
-import 'package:mycampusmarketplace/Repositories/userClient.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'appBar.dart';
 
 class HomeScreen extends StatefulWidget {

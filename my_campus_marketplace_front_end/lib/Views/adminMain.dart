@@ -1,15 +1,10 @@
 import 'package:mycampusmarketplace/Models/item.dart';
 import 'package:mycampusmarketplace/Repositories/itemClient.dart';
 import 'package:mycampusmarketplace/Repositories/userClient.dart';
-import 'package:mycampusmarketplace/main.dart';
 import '../Models/user.dart';
 import '../main.dart' as m;
-import 'listItem.dart';
 import 'package:flutter/material.dart';
 import 'package:mycampusmarketplace/views/loginview.dart';
-import 'forSale.dart';
-import 'myListings.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:mycampusmarketplace/views/adminItems.dart';
 import 'package:mycampusmarketplace/views/adminusers.dart';
 import 'package:mycampusmarketplace/Views/adminAppBar.dart';

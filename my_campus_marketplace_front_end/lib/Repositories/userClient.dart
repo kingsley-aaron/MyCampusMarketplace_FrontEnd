@@ -21,7 +21,6 @@ class UserClient {
       if (response.statusCode == 200) {
         if (data['success']) {
           sessionState = data['data'];
-          print('Session ID: $sessionState');
           return "Success";
         } else {
           if (data.containsKey('reason')) {
@@ -184,6 +183,9 @@ class UserClient {
           }
           return null;
         }
+      } else {
+        errorMessage = "An error occurred.";
+        return null;
       }
     } catch (e) {
       errorMessage = e.toString();

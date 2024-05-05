@@ -1,19 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:mycampusmarketplace/theme.dart';
 import 'package:mycampusmarketplace/Models/user.dart';
 import 'package:mycampusmarketplace/Repositories/userClient.dart';
-import 'package:mycampusmarketplace/Views/appBar.dart';
 import 'package:mycampusmarketplace/main.dart' as m;
-import 'package:mycampusmarketplace/theme.dart';
 import 'package:mycampusmarketplace/Views/adminAppBar.dart';
 
 class ExpandedUser extends StatefulWidget {
   final User user;
   final String userName;
 
-
-  ExpandedUser({Key? key, required this.user, required this.userName}) 
-    : super(key: key);
+  ExpandedUser({Key? key, required this.user, required this.userName})
+      : super(key: key);
 
   @override
   _ExpandedUserState createState() => _ExpandedUserState();
@@ -28,7 +24,7 @@ class _ExpandedUserState extends State<ExpandedUser> {
     return Scaffold(
       appBar: CustomAdminAppBar(
         userName: userName,
-          ),
+      ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(

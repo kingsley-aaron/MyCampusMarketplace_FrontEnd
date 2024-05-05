@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mycampusmarketplace/Models/item.dart';
 import '../main.dart' as m;
-import 'myListings.dart';
 import 'package:mycampusmarketplace/Views/appBar.dart';
 import 'package:mycampusmarketplace/Views/mainMenu.dart';
 
