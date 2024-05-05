@@ -48,6 +48,29 @@ class UserClient {
     }
   }
 
+  Future<bool> adminAuth() async {
+    try {
+      var response = await http.post(
+        Uri.parse('${apiAddress}authAdmin.php'),
+        headers: {'Cookie': "PHPSESSID=$sessionState"},
+      );
+
+      var data = json.decode(response.body);
+
+      if (response.statusCode == 200) {
+        if (data['success']) {
+          return true;
+        } else {
+          return false;
+        }
+      } else {
+        return false;
+      }
+    } catch (e) {
+      return false;
+    }
+  }
+
   Future<String> signup(String firstName, String lastName, String studentID,
       String studentEmail, String userName, String passwordHash) async {
     try {
