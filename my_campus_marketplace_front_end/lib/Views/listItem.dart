@@ -1,10 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:mycampusmarketplace/Models/user.dart';
 import 'package:mycampusmarketplace/Repositories/itemClient.dart';
-import 'package:mycampusmarketplace/theme.dart';
 import '../main.dart' as m;
-import 'myListings.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as path;
