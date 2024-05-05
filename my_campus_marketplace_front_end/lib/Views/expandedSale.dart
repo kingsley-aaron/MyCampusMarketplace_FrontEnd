@@ -7,6 +7,7 @@ import 'package:mycampusmarketplace/Views/appBar.dart';
 import 'package:mycampusmarketplace/main.dart' as m;
 import 'myListings.dart';
 import 'package:mycampusmarketplace/theme.dart';
+import 'package:mycampusmarketplace/Views/mainMenu.dart';
 
 class ExpandedSale extends StatefulWidget {
   final Item item;
@@ -151,7 +152,12 @@ class _ExpandedSaleState extends State<ExpandedSale> {
                           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                               content:
                                   Text("Item successfully marked as sold!")));
-                          Navigator.pop(context);
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    HomeScreen(userName: username)),
+                          );
                         } else {
                           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                               content: Text(
@@ -177,7 +183,12 @@ class _ExpandedSaleState extends State<ExpandedSale> {
                     if (result == "Success") {
                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                           content: Text("Item successfully deleted!")));
-                      Navigator.pop(context);
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                HomeScreen(userName: username)),
+                      );
                     } else {
                       ScaffoldMessenger.of(context)
                           .showSnackBar(SnackBar(content: Text(result)));
