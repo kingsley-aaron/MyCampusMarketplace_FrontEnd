@@ -242,6 +242,92 @@ class UserClient {
     }
   }
 
+  Future<String> banUser(int userID) async {
+    try {
+      var response =
+          await http.post(Uri.parse('${apiAddress}banuser.php'), headers: {
+        'Cookie': "PHPSESSID=$sessionState",
+        'Content-Type': "application/x-www-form-urlencoded"
+      }, body: {
+        'id': userID.toString(),
+        'ban': "true"
+      });
+
+      var data = json.decode(response.body);
+
+      if (response.statusCode == 200) {
+        if (data['success']) {
+          return "Success";
+        } else {
+          if (data['reason'][0] == "missing_data_id") {
+            return "No user ID was provided.";
+          } else if (data['reason'][0] == "invalid_value_ban") {
+            return "Request was formatted incorrectly.";
+          } else if (data['reason'][0] == "server_error") {
+            return "There was an issue with the server. Please try again later.";
+          } else if (data['reason'][0] == "not_authorized") {
+            return "You are not authorized to ban users.";
+          } else {
+            return "An error occurred. Please try again later.";
+          }
+        }
+      } else if (response.statusCode == 400) {
+        return "Request was formatted incorrectly.";
+      } else if (response.statusCode == 403) {
+        return "You are not authorized to ban users.";
+      } else if (response.statusCode == 500) {
+        return "There was an issue with the server. Please try again later.";
+      } else {
+        return "Error.";
+      }
+    } catch (e) {
+      return "An error occurred. Please try again later.";
+    }
+  }
+
+  Future<String> unbanUser(int userID) async {
+    try {
+      var response =
+          await http.post(Uri.parse('${apiAddress}banuser.php'), headers: {
+        'Cookie': "PHPSESSID=$sessionState",
+        'Content-Type': "application/x-www-form-urlencoded"
+      }, body: {
+        'id': userID.toString(),
+        'ban': "false"
+      });
+
+      var data = json.decode(response.body);
+
+      if (response.statusCode == 200) {
+        if (data['success']) {
+          return "Success";
+        } else {
+          if (data['reason'][0] == "missing_data_id") {
+            return "No user ID was provided.";
+          } else if (data['reason'][0] == "invalid_value_ban") {
+            return "Request was formatted incorrectly.";
+          } else if (data['reason'][0] == "server_error") {
+            return "There was an issue with the server. Please try again later.";
+          } else if (data['reason'][0] == "not_authorized") {
+            return "You are not authorized to unban users.";
+          } else {
+            return "An error occurred. Please try again later.";
+          }
+        }
+      } else if (response.statusCode == 400) {
+        return "Request was formatted incorrectly.";
+      } else if (response.statusCode == 403) {
+        return "You are not authorized to unban users.";
+      } else if (response.statusCode == 500) {
+        return "There was an issue with the server. Please try again later.";
+      } else {
+        return "Error.";
+      }
+    } catch (e) {
+      return "An error occurred. Please try again later.";
+    }
+  }
+
   List<User> _parseList(dynamic jsonList) {
     List<User> users = List.empty(growable: true);
 

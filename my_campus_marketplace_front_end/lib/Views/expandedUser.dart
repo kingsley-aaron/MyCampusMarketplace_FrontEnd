@@ -18,7 +18,6 @@ class ExpandedUser extends StatefulWidget {
 class _ExpandedUserState extends State<ExpandedUser> {
   final UserClient userClient = UserClient();
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -91,12 +90,23 @@ class _ExpandedUserState extends State<ExpandedUser> {
                 children: [
                   ElevatedButton(
                     onPressed: () {
-                      /*
-                      Implement ban functionality here
-                      Preferably have button toggle between 'Ban' and 'Unban' for text with confirmation on both
-                      */
+                      _ban(context, widget.user.userID);
                     },
                     child: Text('Ban User'),
+                    style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
+                      padding: EdgeInsets.symmetric(
+                          vertical: 12.0, horizontal: 24.0),
+                      textStyle: Theme.of(context).textTheme.labelLarge,
+                    ),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      _unban(context, widget.user.userID);
+                    },
+                    child: Text('Unban User'),
                     style: ElevatedButton.styleFrom(
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20.0),
@@ -114,5 +124,60 @@ class _ExpandedUserState extends State<ExpandedUser> {
       ),
     );
   }
-}
 
+  void _ban(BuildContext context, int userID) async {
+    String banResponse = await m.userClient.banUser(userID);
+
+    if (banResponse == "Success") {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(const SnackBar(content: Text("User banned.")));
+    } else {
+      if (banResponse == "No user ID was provided.") {
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text("No user ID was provided.")));
+      } else if (banResponse == "Request was formatted incorrectly.") {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content: Text("Request was formatted incorrectly.")));
+      } else if (banResponse ==
+          "There was an issue with the server. Please try again later.") {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content: Text(
+                "There was an issue with the server. Please try again later.")));
+      } else if (banResponse == "You are not authorized to ban users.") {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content: Text("You are not authorized to ban users.")));
+      } else {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(const SnackBar(content: Text("Error.")));
+      }
+    }
+  }
+
+  void _unban(BuildContext context, int userID) async {
+    String banResponse = await m.userClient.unbanUser(userID);
+
+    if (banResponse == "Success") {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(const SnackBar(content: Text("User unbanned.")));
+    } else {
+      if (banResponse == "No user ID was provided.") {
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text("No user ID was provided.")));
+      } else if (banResponse == "Request was formatted incorrectly.") {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content: Text("Request was formatted incorrectly.")));
+      } else if (banResponse ==
+          "There was an issue with the server. Please try again later.") {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content: Text(
+                "There was an issue with the server. Please try again later.")));
+      } else if (banResponse == "You are not authorized to unban users.") {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content: Text("You are not authorized to unban users.")));
+      } else {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(const SnackBar(content: Text("Error.")));
+      }
+    }
+  }
+}
