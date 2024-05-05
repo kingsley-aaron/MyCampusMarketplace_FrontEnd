@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:mycampusmarketplace/Models/user.dart';
 import 'package:mycampusmarketplace/Repositories/userClient.dart';
 import 'package:mycampusmarketplace/main.dart' as m;
-import 'package:mycampusmarketplace/main.dart';
 import 'expandedUser.dart';
 import 'package:mycampusmarketplace/Views/adminAppBar.dart';
 
@@ -57,7 +56,10 @@ class _AdminUsersState extends State<AdminUsers> {
                           This might be causign any error
                         */
 
-                        builder: (context) => ExpandedUser(user: user),
+                        builder: (context) => ExpandedUser(
+                          user: user, 
+                          userName: userName,
+                        ),
                       ),
                     );
                   },
@@ -98,12 +100,6 @@ class _AdminUsersState extends State<AdminUsers> {
       ),
     );
   }
-}
-
-Future<User?> getUserList() async {
-  User? users = await userClient.getUser();
-
-  return users;
 }
 
 void main() {

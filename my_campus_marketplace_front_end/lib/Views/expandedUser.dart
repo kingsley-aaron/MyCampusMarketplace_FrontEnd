@@ -5,11 +5,15 @@ import 'package:mycampusmarketplace/Repositories/userClient.dart';
 import 'package:mycampusmarketplace/Views/appBar.dart';
 import 'package:mycampusmarketplace/main.dart' as m;
 import 'package:mycampusmarketplace/theme.dart';
+import 'package:mycampusmarketplace/Views/adminAppBar.dart';
 
 class ExpandedUser extends StatefulWidget {
   final User user;
+  final String userName;
 
-  ExpandedUser({Key? key, required this.user}) : super(key: key);
+
+  ExpandedUser({Key? key, required this.user, required this.userName}) 
+    : super(key: key);
 
   @override
   _ExpandedUserState createState() => _ExpandedUserState();
@@ -17,48 +21,14 @@ class ExpandedUser extends StatefulWidget {
 
 class _ExpandedUserState extends State<ExpandedUser> {
   final UserClient userClient = UserClient();
+  late String userName = widget.userName;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        //title: Text(item['name']),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.home),
-            onPressed: () {
-              Navigator.pop(context); // Navigate back to the home screen
-            },
+      appBar: CustomAdminAppBar(
+        userName: userName,
           ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              children: [
-                Text(
-                  'Welcome, User',
-                  style: Theme.of(context).textTheme.titleMedium,
-                ), // Replace User with your actual username
-                PopupMenuButton<String>(
-                  onSelected: (value) {
-                    if (value == 'signOut') {
-                      // _logOut();
-                    }
-                  },
-                  itemBuilder: (BuildContext context) =>
-                      <PopupMenuEntry<String>>[
-                    PopupMenuItem<String>(
-                      value: 'signOut',
-                      child: Text('Sign Out',
-                          style: Theme.of(context).textTheme.titleMedium),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
